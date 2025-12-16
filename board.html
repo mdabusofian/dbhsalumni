@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>পরিচালনা পর্ষদ | প্রাক্তন শিক্ষার্থী পরিষদ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600;700&display=swap');
+        
+        /* থিম ভ্যারিয়েবল (index.html এর সাথে মিল রেখে) */
+        :root { --bg-color: #020617; --text-color: #f8fafc; --card-bg: rgba(30, 41, 59, 0.7); }
+        .light-mode { --bg-color: #f1f5f9; --text-color: #0f172a; --card-bg: #ffffff; }
+
+        body { 
+            font-family: 'Hind Siliguri', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            overflow-x: hidden; 
+            transition: 0.3s;
+        }
+        
+        /* নেভিগেশন স্টাইল */
+        .glass-nav { 
+            background: rgba(15, 23, 42, 0.8); 
+            backdrop-filter: blur(10px); 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+        }
+
+        /* মেম্বার কার্ড স্টাইল */
+        .member-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+        .member-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px -5px rgba(59, 130, 246, 0.2);
+        }
+        .light-mode .member-card {
+            background: var(--card-bg);
+            border: 1px solid #e2e8f0;
+        }
+
+        .member-img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid #3b82f6;
+            margin: 0 auto 15px;
+        }
+
+        .btn-primary { 
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); 
+            transition: all 0.3s ease; 
+        }
+    </style>
+</head>
+<body id="body">
+
+    <nav class="glass-nav fixed w-full z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">
+                DBHSP <span class="font-light">ALUMNI</span>
+            </div>
+            <div class="hidden md:flex space-x-8 items-center text-white">
+                <a href="index.html#home" class="hover:text-blue-400 transition text-sm">হোম</a>
+                <a href="#" class="text-blue-400 font-bold transition text-sm border-b-2 border-blue-400 pb-1">পরিষদ</a> <a href="index.html#events" class="hover:text-blue-400 transition text-sm">ইভেন্ট</a>
+                <a href="gallery.html" class="hover:text-blue-400 transition text-sm">গ্যালারি</a>
+                <a href="index.html#directory" class="hover:text-blue-400 transition text-sm">ডিরেক্টরি</a>
+                <a href="index.html#registration" class="btn-primary px-6 py-2 rounded-full font-semibold text-sm">রেজিস্ট্রেশন</a>
+                <button onclick="toggleTheme()" class="ml-4 p-2 rounded-full bg-slate-800 hover:bg-slate-700">
+                    <i id="themeIcon" class="fas fa-sun"></i>
+                </button>
+            </div>
+            <button class="md:hidden text-2xl text-white" onclick="alert('মোবাইল মেনু আসছে...')">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+    <section id="board" class="py-24 px-6 min-h-screen pt-40">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-5xl font-bold mb-8 text-center">পরিচালনা <span class="text-blue-500">পর্ষদ</span></h2>
+            <p class="text-center text-slate-400 mb-16">২০২৪-২০২৫ মেয়াদের কার্যকরী সদস্য পরিচিতি</p>
+
+            <h3 class="text-3xl font-bold mb-10 border-b border-blue-600/50 pb-3 text-emerald-400 text-center">কেন্দ্রীয় কমিটি</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+                
+                <div class="member-card">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=600&q=80" class="member-img" alt="সভাপতি">
+                    <h4 class="text-xl font-bold mb-1 text-blue-400">ড. আহমেদ রেজা</h4>
+                    <p class="text-sm font-semibold mb-3 text-white">সভাপতি (ব্যাচ: ১৯৭২)</p>
+                    <p class="text-sm text-slate-400"><i class="fas fa-phone-alt mr-2"></i> ০১৯০০-১০০১১১</p>
+                    <p class="text-sm text-slate-400"><i class="fas fa-envelope mr-2"></i> reza@alumni.com</p>
+                </div>
+
+                <div class="member-card">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80" class="member-img" alt="সাধারণ সম্পাদক">
+                    <h4 class="text-xl font-bold mb-1 text-blue-400">ফারজানা হক</h4>
+                    <p class="text-sm font-semibold mb-3 text-white">সাধারণ সম্পাদক (ব্যাচ: ১৯৯০)</p>
+                    <p class="text-sm text-slate-400"><i class="fas fa-phone-alt mr-2"></i> ০১৮০০-২০০০২২</p>
+                    <p class="text-sm text-slate-400"><i class="fas fa-envelope mr-2"></i> farjana@alumni.com</p>
+                </div>
+
+                <div class="member-card">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a6dd7228f2d?auto=format&fit=crop&w=600&q=80" class="member-img" alt="কোষাধ্যক্ষ">
+                    <h4 class="text-xl font-bold mb-1 text-blue-400">মো. শামীম আহমেদ</h4>
+                    <p class="text-sm font-semibold mb-3 text-white">কোষাধ্যক্ষ (ব্যাচ: ২০০৫)</p>
+                    <p class="text-sm text-slate-400"><i class="fas fa-phone-alt mr-2"></i> ০১৭০০-৩০০৩৩৩</p>
+                    <p class="text-sm text-slate-400"><i class="fas fa-envelope mr-2"></i> shamim@alumni.com</p>
+                </div>
+                
+                <div class="member-card">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&q=80" class="member-img" alt="সাংগঠনিক সম্পাদক">
+                    <h4 class="text-xl font-bold mb-1 text-blue-400">নাজমুল হোসেন</h4>
+                    <p class="text-sm font-semibold mb-3 text-white">সাংগঠনিক সম্পাদক (ব্যাচ: ২০১০)</p>
+                    <p class="text-sm text-slate-400"><i class="fas fa-phone-alt mr-2"></i> ০১৬০০-৪০০০৪৪</p>
+                    <p class="text-sm text-slate-400"><i class="fas fa-envelope mr-2"></i> nazmul@alumni.com</p>
+                </div>
+            </div>
+
+            <h3 class="text-3xl font-bold mb-10 border-b border-blue-600/50 pb-3 text-emerald-400 text-center">কার্যকরী সদস্যবৃন্দ</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                 <div class="member-card p-4">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80" class="member-img w-20 h-20" alt="সদস্য ৫">
+                    <h4 class="text-md font-bold text-blue-400 mt-2">আশরাফুল</h4>
+                    <p class="text-xs font-semibold mb-2 text-white">সদস্য (ব্যাচ: ২০০৮)</p>
+                </div>
+                <div class="member-card p-4">
+                    <img src="https://images.unsplash.com/photo-1506794778202-dfa929cfd402?auto=format&fit=crop&w=600&q=80" class="member-img w-20 h-20" alt="সদস্য ৬">
+                    <h4 class="text-md font-bold text-blue-400 mt-2">তৌহিদ</h4>
+                    <p class="text-xs font-semibold mb-2 text-white">সদস্য (ব্যাচ: ১৯৯৮)</p>
+                </div>
+                <div class="member-card p-4">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29329?auto=format&fit=crop&w=600&q=80" class="member-img w-20 h-20" alt="সদস্য ৭">
+                    <h4 class="text-md font-bold text-blue-400 mt-2">সুমাইয়া</h4>
+                    <p class="text-xs font-semibold mb-2 text-white">সদস্য (ব্যাচ: ২০০২)</p>
+                </div>
+                <div class="member-card p-4">
+                    <img src="https://images.unsplash.com/photo-1628157588537-8cd665b16f2c?auto=format&fit=crop&w=600&q=80" class="member-img w-20 h-20" alt="সদস্য ৮">
+                    <h4 class="text-md font-bold text-blue-400 mt-2">কামাল</h4>
+                    <p class="text-xs font-semibold mb-2 text-white">সদস্য (ব্যাচ: ১৯৮৫)</p>
+                </div>
+                 <div class="member-card p-4">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80" class="member-img w-20 h-20" alt="সদস্য ৯">
+                    <h4 class="text-md font-bold text-blue-400 mt-2">আশরাফুল</h4>
+                    <p class="text-xs font-semibold mb-2 text-white">সদস্য (ব্যাচ: ২০০৮)</p>
+                </div>
+                <div class="member-card p-4">
+                    <img src="https://images.unsplash.com/photo-1506794778202-dfa929cfd402?auto=format&fit=crop&w=600&q=80" class="member-img w-20 h-20" alt="সদস্য ১০">
+                    <h4 class="text-md font-bold text-blue-400 mt-2">তৌহিদ</h4>
+                    <p class="text-xs font-semibold mb-2 text-white">সদস্য (ব্যাচ: ১৯৯৮)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="developer_info" class="py-16 px-6">
+        <div class="max-w-4xl mx-auto text-center border-t border-b border-slate-700/50 py-8">
+            <h3 class="text-3xl font-bold mb-4 text-purple-400">এই ওয়েবসাইটটির নির্মাতা</h3>
+            <div class="bg-slate-900 p-8 rounded-2xl inline-block">
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="member-img w-24 h-24 mb-4 border-purple-500" alt="নির্মাতার ছবি">
+                <h4 class="text-2xl font-bold mb-1 text-white">আপনার নাম লিখুন</h4>
+                <p class="text-md font-semibold mb-3 text-slate-300">প্রাক্তন শিক্ষার্থী, ব্যাচ: [আপনার ব্যাচ]</p>
+                <div class="flex flex-col space-y-1 text-left inline-block">
+                    <p class="text-sm text-slate-400"><i class="fas fa-mobile-alt mr-2 text-blue-500"></i> মোবাইল: [আপনার মোবাইল নং]</p>
+                    <p class="text-sm text-slate-400"><i class="fas fa-envelope mr-2 text-blue-500"></i> ইমেইল: [আপনার ইমেইল আইডি]</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer class="bg-slate-950 border-t border-slate-800 pt-16 pb-8 px-6">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+            <div>
+                <h4 class="text-xl font-bold mb-4 text-blue-400">জরুরী যোগাযোগ</h4>
+                <p class="text-slate-400 mb-2"><i class="fas fa-phone-alt mr-2"></i> ০১৭০০-০০০০০০</p>
+                <p class="text-slate-400 mb-2"><i class="fas fa-phone-alt mr-2"></i> ০১৬০০-০০০০০০</p>
+                <p class="text-slate-400"><i class="fas fa-envelope mr-2"></i> alumni@school.com</p>
+            </div>
+            <div class="text-center">
+                <h4 class="text-xl font-bold mb-4 text-blue-400">আমাদের অনুসরণ করুন</h4>
+                <div class="flex justify-center space-x-6">
+                    <a href="#" class="text-slate-400 hover:text-white text-2xl"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-slate-400 hover:text-white text-2xl"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="text-slate-400 hover:text-white text-2xl"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="md:text-right">
+                <p class="text-slate-500 text-sm mb-4">© ২০২৫ দৌলতপুর বহুমুখী উচ্চ বিদ্যালয় প্রাক্তন শিক্ষার্থী পরিষদ</p>
+                <p class="text-slate-400 text-sm">তৈরী করেছেন <span class="text-blue-500 font-bold underline">আপনার নাম</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ডার্ক/লাইট মোড লজিক
+        document.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('theme') === 'light-mode') {
+                document.body.classList.add('light-mode');
+                document.getElementById('themeIcon').classList.remove('fa-sun');
+                document.getElementById('themeIcon').classList.add('fa-moon');
+            } else {
+                document.getElementById('themeIcon').classList.remove('fa-moon');
+                document.getElementById('themeIcon').classList.add('fa-sun');
+            }
+        });
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const icon = document.getElementById('themeIcon');
+            icon.classList.toggle('fa-sun');
+            icon.classList.toggle('fa-moon');
+            if (document.body.classList.contains('light-mode')) {
+                localStorage.setItem('theme', 'light-mode');
+            } else {
+                localStorage.removeItem('theme');
+            }
+        }
+    </script>
+</body>
+</html>
