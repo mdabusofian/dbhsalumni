@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>প্রাক্তন শিক্ষার্থী পরিষদ | দৌলতপুর বহুমুখী উচ্চ বিদ্যালয়</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600;700&display=swap');
@@ -80,6 +81,7 @@
         #mobileMenu { display: none; }
         #mobileMenu.active { display: block; }
     </style>
+
 </head>
 <body>
 
@@ -288,7 +290,7 @@
                     </div>
                     
                     <div class="absolute bottom-2 right-4">
-                         <i class="fas fa-qrcode text-3xl text-slate-300"></i>
+                         <div id="qrcode" class="absolute bottom-2 right-4"></div>
                     </div>
                 </div>
 
@@ -326,84 +328,94 @@
         </div>
     </footer>
 
-    <script>
+   <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwg4wBbtvWiF0Zd9zzQfzQtd7aSZvgCNaCZ6GjMd5d8pnHfvfD6AS11mi1p77C6LFrF/exec';
+    
+    const fees = {
+        "পুনর্মিলনী ২০২৫": 1000,
+        "ইফতার মাহফিল": 300,
+        "আজীবন সদস্যপদ": 2000
+    };
 
+    function updateFee() {
+        const event = document.getElementById('event_type').value;
+        const fee = fees[event] || 0;
+        document.getElementById('fee_amount').innerText = fee;
+    }
 
-
-        
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbwg4wBbtvWiF0Zd9zzQfzQtd7aSZvgCNaCZ6GjMd5d8pnHfvfD6AS11mi1p77C6LFrF/exec';
-        
-        const fees = {
-            "পুনর্মিলনী ২০২৫": 1000,
-            "ইফতার মাহফিল": 300,
-            "আজীবন সদস্যপদ": 2000
+    // Image Preview Handler
+    function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function(){
+            const output = document.getElementById('cardPhoto');
+            output.src = reader.result;
         };
+        reader.readAsDataURL(event.target.files[0]);
+    }
 
-        function updateFee() {
-            const event = document.getElementById('event_type').value;
-            const fee = fees[event] || 0;
-            document.getElementById('fee_amount').innerText = fee;
-        }
+    document.addEventListener('DOMContentLoaded', () => {
+        const batch = document.getElementById('batch_no');
+        const year = document.getElementById('pass_year');
+        for(let i=1; i<=60; i++) batch.innerHTML += `<option value="${i}">${i} তম</option>`;
+        for(let i=2024; i>=1970; i--) year.innerHTML += `<option value="${i}">${i}</option>`;
+    });
 
-        // Image Preview Handler
-        function previewImage(event) {
-            const reader = new FileReader();
-            reader.onload = function(){
-                const output = document.getElementById('cardPhoto');
-                output.src = reader.result;
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
+    document.getElementById('regForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        const errorBox = document.getElementById('errorAlert');
+        
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> প্রসেসিং হচ্ছে...';
+        errorBox.style.display = 'none';
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const batch = document.getElementById('batch_no');
-            const year = document.getElementById('pass_year');
-            for(let i=1; i<=60; i++) batch.innerHTML += `<option value="${i}">${i} তম</option>`;
-            for(let i=2024; i>=1970; i--) year.innerHTML += `<option value="${i}">${i}</option>`;
-        });
+        const formData = new FormData(e.target);
+        formData.append('fee', document.getElementById('fee_amount').innerText);
 
-        document.getElementById('regForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            const errorBox = document.getElementById('errorAlert');
+        try {
+            const response = await fetch(scriptURL, {
+                method: 'POST',
+                body: new URLSearchParams(formData)
+            });
+
+            const result = await response.json();
             
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> প্রসেসিং হচ্ছে...';
-            errorBox.style.display = 'none';
+            if (result.result === 'success') {
+                document.getElementById('regForm').classList.add('hidden');
+                document.getElementById('successCard').style.display = 'block';
+                document.getElementById('regName').innerText = formData.get('name');
+                document.getElementById('cardName').innerText = formData.get('name');
+                document.getElementById('cardEvent').innerText = formData.get('event_type');
+                document.getElementById('cardBatch').innerText = formData.get('batch_no') + " তম";
+                document.getElementById('cardToken').innerText = result.token;
 
-            const formData = new FormData(e.target);
-            formData.append('fee', document.getElementById('fee_amount').innerText);
-
-            try {
-                const response = await fetch(scriptURL, {
-                    method: 'POST',
-                    body: new URLSearchParams(formData)
-                });
-
-                const result = await response.json();
-                
-                if (result.result === 'success') {
-                    document.getElementById('regForm').classList.add('hidden');
-                    document.getElementById('successCard').style.display = 'block';
-                    document.getElementById('regName').innerText = formData.get('name');
-                    document.getElementById('cardName').innerText = formData.get('name');
-                    document.getElementById('cardEvent').innerText = formData.get('event_type');
-                    document.getElementById('cardBatch').innerText = formData.get('batch_no') + " তম";
-                    document.getElementById('cardToken').innerText = result.token;
-                    
-                    document.getElementById('registration').scrollIntoView({behavior: 'smooth'});
-                } else {
-                    throw new Error(result.message);
+                // --- কিউআর কোড জেনারেশন অংশ (নতুন যুক্ত করা হয়েছে) ---
+                const qrContainer = document.getElementById('qrcode');
+                if (qrContainer) {
+                    qrContainer.innerHTML = ""; // আগের কিউআর মুছে ফেলা
+                    new QRCode(qrContainer, {
+                        text: result.token,
+                        width: 80,
+                        height: 80,
+                        colorDark : "#000000",
+                        colorLight : "#ffffff",
+                        correctLevel : QRCode.CorrectLevel.H
+                    });
                 }
-            } catch (error) {
-                // For demo purposes, if API fails it shows success with dummy token
-                errorBox.innerText = "দুঃখিত! কানেকশন ত্রুটি হয়েছে। আবার চেষ্টা করুন।";
-                errorBox.style.display = 'block';
-            } finally {
-                btn.disabled = false;
-                btn.innerText = "রেজিস্ট্রেশন নিশ্চিত করুন";
+                // --- কিউআর কোড শেষ ---
+                
+                document.getElementById('registration').scrollIntoView({behavior: 'smooth'});
+            } else {
+                throw new Error(result.message);
             }
-        });
-    </script>
+        } catch (error) {
+            errorBox.innerText = "দুঃখিত! কানেকশন ত্রুটি হয়েছে। আবার চেষ্টা করুন।";
+            errorBox.style.display = 'block';
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "রেজিস্ট্রেশন নিশ্চিত করুন";
+        }
+    });
+</script>
 </body>
 </html>
