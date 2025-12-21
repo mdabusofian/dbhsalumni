@@ -5,113 +5,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>এন্ট্রি ভেরিফিকেশন | এডমিন প্যানেল</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap');
         body { font-family: 'Hind Siliguri', sans-serif; background-color: #0f172a; color: #f8fafc; }
-        .status-card { display: none; transition: all 0.3s ease; }
-        .verified-bg { background: linear-gradient(135deg, #065f46 0%, #064e3b 100%); border: 2px solid #10b981; }
-        .failed-bg { background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%); border: 2px solid #ef4444; }
+        #reader { width: 100%; border-radius: 15px; overflow: hidden; border: 2px solid #334155 !important; }
+        .status-card { display: none; }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
 
     <header class="bg-slate-900 border-b border-slate-800 p-6 text-center shadow-lg">
-        <h1 class="text-2xl font-bold text-blue-400"><i class="fas fa-user-check mr-2"></i> গেইট এন্ট্রি চেকপয়েন্ট</h1>
-        <p class="text-slate-400 text-sm">দৌলতপুর বহুমুখী উচ্চ বিদ্যালয় প্রাক্তন শিক্ষার্থী পরিষদ</p>
+        <h1 class="text-2xl font-bold text-blue-400"><i class="fas fa-qrcode mr-2"></i> গেইট এন্ট্রি চেকপয়েন্ট</h1>
+        <p class="text-slate-400 text-sm">স্ক্যান করুন অথবা আইডি ইনপুট দিন</p>
     </header>
 
-    <main class="flex-grow flex flex-col items-center justify-start px-6 pt-12">
-        <div class="max-w-md w-full bg-slate-800 p-8 rounded-3xl shadow-2xl border border-slate-700">
-            <label class="block text-sm font-semibold mb-3 text-slate-300">সদস্যের টোকেন আইডি দিন</label>
+    <main class="flex-grow flex flex-col items-center justify-start px-6 py-10">
+        
+        <div class="max-w-md w-full mb-8">
+            <div id="reader"></div>
+            <p class="text-center text-slate-500 text-xs mt-2">ক্যামেরা মেম্বারের কার্ডের QR কোডের ওপর ধরুন</p>
+        </div>
+
+        <div class="max-w-md w-full bg-slate-800 p-6 rounded-3xl shadow-xl border border-slate-700">
             <div class="flex flex-col gap-4">
                 <input type="text" id="verifyToken" 
-                       class="w-full p-5 rounded-2xl bg-slate-950 border border-slate-700 text-white text-2xl text-center font-bold tracking-widest focus:border-blue-500 focus:outline-none" 
-                       placeholder="DBHSP-XXXX">
+                       class="w-full p-4 rounded-xl bg-slate-950 border border-slate-700 text-white text-xl text-center font-bold tracking-widest focus:border-blue-500 outline-none" 
+                       placeholder="DBHSP-XXXX-XXXX">
                 
-                <button onclick="checkEntry()" id="checkBtn" 
-                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-5 rounded-2xl text-xl transition-all active:scale-95 shadow-lg shadow-blue-900/20">
-                    ভেরিফাই করুন
+                <button onclick="checkData(document.getElementById('verifyToken').value)" id="checkBtn" 
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl text-lg transition-all active:scale-95">
+                    ম্যানুয়াল ভেরিফাই
                 </button>
-                
-                <button onclick="resetScanner()" class="text-slate-500 text-sm hover:text-slate-300">নতুন এন্ট্রি চেক করুন</button>
             </div>
         </div>
 
-        <div id="successResult" class="status-card max-w-md w-full mt-8 p-8 rounded-3xl verified-bg animate-fade">
-            <div class="text-center">
-                <div class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-5xl">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <h2 class="text-3xl font-bold text-white mb-2">এন্ট্রি অনুমোদিত</h2>
-                <div class="bg-black/20 p-6 rounded-2xl text-left space-y-3">
-                    <p class="text-lg"><span class="opacity-70">নাম:</span> <strong id="resName" class="float-right text-emerald-200"></strong></p>
-                    <p class="text-lg"><span class="opacity-70">ব্যাচ:</span> <strong id="resBatch" class="float-right text-emerald-200"></strong></p>
-                    <p class="text-lg border-t border-white/10 pt-2"><span class="opacity-70">ইভেন্ট:</span> <strong id="resEvent" class="float-right text-emerald-200"></strong></p>
-                </div>
-                <p class="mt-6 text-emerald-200 font-bold uppercase tracking-widest">স্বাগতম!</p>
-            </div>
-        </div>
-
-        <div id="failResult" class="status-card max-w-md w-full mt-8 p-8 rounded-3xl failed-bg animate-fade text-center">
-            <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-4xl">
-                <i class="fas fa-times-circle"></i>
-            </div>
-            <h2 class="text-2xl font-bold text-white">ভুল আইডি!</h2>
-            <p class="text-red-100 mt-2">এই আইডি দিয়ে কোনো সদস্য পাওয়া যায়নি। পুনরায় চেক করুন।</p>
-        </div>
-
-        <div id="loader" class="hidden mt-10">
+        <div id="loader" class="hidden mt-8 text-center">
             <i class="fas fa-circle-notch fa-spin text-4xl text-blue-500"></i>
+            <p class="text-slate-400 mt-2">সার্ভার থেকে চেক করা হচ্ছে...</p>
         </div>
-    </main>
 
-    <footer class="p-6 text-center text-slate-500 text-xs">
-        &copy; ২০২৫ এডমিন প্যানেল | ডাটাবেজ কানেক্টেড
-    </footer>
+        <div id="successResult" class="status-card max-w-md w-full mt-8 p-8 rounded-3xl bg-emerald-900 border-2 border-emerald-500 animate-pulse">
+            <div class="text-center">
+                <i class="fas fa-check-circle text-5xl text-emerald-400 mb-4"></i>
+                <h2 class="text-2xl font-bold text-white mb-4">এন্ট্রি অনুমোদিত</h2>
+                <div id="memberDetail" class="bg-black/20 p-4 rounded-xl text-left space-y-2 text-sm text-emerald-100">
+                    </div>
+                <button onclick="resetScanner()" class="mt-6 bg-white/20 px-6 py-2 rounded-full text-sm">পরবর্তী স্ক্যান</button>
+            </div>
+        </div>
+
+        <div id="failResult" class="status-card max-w-md w-full mt-8 p-8 rounded-3xl bg-red-900 border-2 border-red-500 text-center">
+            <i class="fas fa-times-circle text-5xl text-red-400 mb-4"></i>
+            <h2 class="text-xl font-bold text-white">অবৈধ আইডি!</h2>
+            <p class="text-red-100 mt-2">পুনরায় সঠিক আইডি দিয়ে চেষ্টা করুন।</p>
+            <button onclick="resetScanner()" class="mt-6 bg-white/20 px-6 py-2 rounded-full text-sm">আবার চেষ্টা করুন</button>
+        </div>
+
+    </main>
 
     <script>
         // আপনার গুগল স্ক্রিপ্ট লিঙ্কটি এখানে দিন
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwg4wBbtvWiF0Zd9zzQfzQtd7aSZvgCNaCZ6GjMd5d8pnHfvfD6AS11mi1p77C6LFrF/exec'; 
 
-        async function checkEntry() {
-            const token = document.getElementById('verifyToken').value.trim();
+        // ১. কিউআর স্ক্যানার সেটআপ
+        function onScanSuccess(decodedText, decodedResult) {
+            checkData(decodedText);
+            // স্ক্যান হয়ে গেলে সাউন্ড বা ভাইব্রেশন দিতে পারেন (ঐচ্ছিক)
+        }
+
+        let html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+        html5QrcodeScanner.render(onScanSuccess);
+
+        // ২. ডাটা চেক করার মেইন ফাংশন
+        async function checkData(token) {
+            if (!token) return alert("টোকেন আইডি দিন!");
+
             const success = document.getElementById('successResult');
             const fail = document.getElementById('failResult');
             const loader = document.getElementById('loader');
-            const btn = document.getElementById('checkBtn');
+            const infoBox = document.getElementById('memberDetail');
 
-            if (!token) return alert("টোকেন আইডি লিখুন!");
-
-            // রিসেট UI
+            // UI রিসেট
             success.style.display = 'none';
             fail.style.display = 'none';
             loader.classList.remove('hidden');
-            btn.disabled = true;
 
             try {
-                // গুগল শিট থেকে ডাটা চেক করা
-                const response = await fetch(`${scriptURL}?action=search&token=${token}`);
+                const response = await fetch(`${scriptURL}?action=search&token=${token.trim()}`);
                 const result = await response.json();
 
                 loader.classList.add('hidden');
 
                 if (result.result === 'success') {
                     success.style.display = 'block';
-                    document.getElementById('resName').innerText = result.data.name;
-                    document.getElementById('resBatch').innerText = result.data.batch_no + " তম";
-                    document.getElementById('resEvent').innerText = result.data.event_type;
-                    
-                    // সফল হলে ইনপুট ফিল্ড ক্লিয়ার করা
-                    document.getElementById('verifyToken').value = "";
+                    infoBox.innerHTML = `
+                        <p><strong>নাম:</strong> ${result.data.name}</p>
+                        <p><strong>ব্যাচ:</strong> ${result.data.batch_no} তম</p>
+                        <p><strong>পাসের সাল:</strong> ${result.data.pass_year}</p>
+                        <p><strong>মোবাইল:</strong> ${result.data.mobile}</p>
+                        <p><strong>টোকেন:</strong> ${result.data.token}</p>
+                    `;
                 } else {
                     fail.style.display = 'block';
                 }
             } catch (error) {
                 loader.classList.add('hidden');
                 alert("সার্ভার কানেকশন এরর!");
-            } finally {
-                btn.disabled = false;
             }
         }
 
@@ -119,7 +120,7 @@
             document.getElementById('successResult').style.display = 'none';
             document.getElementById('failResult').style.display = 'none';
             document.getElementById('verifyToken').value = "";
-            document.getElementById('verifyToken').focus();
+            // স্ক্যানারটি রিস্টার্ট করার প্রয়োজন হলে পেজ রিলোড বা ম্যানুয়াল রিসেট লজিক
         }
     </script>
 </body>
