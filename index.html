@@ -181,17 +181,7 @@
                 <h2 class="text-4xl font-bold mb-4">অনলাইন <span class="text-blue-500">রেজিস্ট্রেশন</span></h2>
                 <p class="text-slate-400">তথ্য প্রদান করে আপনার রেজিষ্ট্রেশনটি নিশ্চিত করুন</p>
             </div>
-            
-        <div class="mb-12 p-6 bg-blue-600/10 border border-blue-500/30 rounded-2xl no-print">
-    <h3 class="text-xl font-bold mb-4 text-center text-blue-400">ইতিমধ্যে রেজিস্টার্ড? কার্ড ডাউনলোড করুন</h3>
-    <div class="flex flex-col md:flex-row gap-3">
-        <input type="text" id="searchToken" class="form-input w-full p-4 rounded-xl" placeholder="আপনার টোকেন আইডি লিখুন (উদা: DBHSP-XXXX)">
-        <button onclick="reDownloadCard()" id="searchBtn" class="bg-emerald-600 hover:bg-emerald-700 px-8 py-4 rounded-xl font-bold transition whitespace-nowrap">
-            কার্ড খুঁজুন
-        </button>
-    </div>
 
-            
             <div id="errorAlert" style="display:none;" class="p-4 mb-8 bg-red-500/10 border border-red-500/50 text-red-400 rounded-xl text-center no-print"></div>
 
             <form id="regForm" class="grid grid-cols-1 md:grid-cols-2 gap-8 no-print">
@@ -354,48 +344,6 @@
             const fee = fees[event] || 0;
             document.getElementById('fee_amount').innerText = fee;
         }
-
-        async function reDownloadCard() {
-    const tokenId = document.getElementById('searchToken').value.trim();
-    const btn = document.getElementById('searchBtn');
-    const errorBox = document.getElementById('searchError');
-
-    if (!tokenId) {
-        alert("অনুগ্রহ করে একটি টোকেন আইডি দিন।");
-        return;
-    }
-
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> খোঁজা হচ্ছে...';
-    errorBox.classList.add('hidden');
-
-    try {
-        const response = await fetch(`${scriptURL}?action=search&token=${tokenId}`);
-        const result = await response.json();
-
-        if (result.result === 'success') {
-            document.getElementById('regForm').classList.add('hidden');
-            document.getElementById('successCard').style.display = 'block';
-            
-            document.getElementById('regName').innerText = result.data.name;
-            document.getElementById('cardName').innerText = result.data.name;
-            document.getElementById('cardEvent').innerText = result.data.event_type;
-            document.getElementById('cardBatch').innerText = result.data.batch_no + " তম";
-            document.getElementById('cardToken').innerText = result.data.token;
-            
-            document.getElementById('successCard').scrollIntoView({ behavior: 'smooth' });
-        } else {
-            errorBox.innerText = "দুঃখিত! এই আইডি দিয়ে কোনো তথ্য পাওয়া যায়নি।";
-            errorBox.classList.remove('hidden');
-        }
-    } catch (error) {
-        errorBox.innerText = "সার্ভার সমস্যা! আবার চেষ্টা করুন।";
-        errorBox.classList.remove('hidden');
-    } finally {
-        btn.disabled = false;
-        btn.innerText = "কার্ড খুঁজুন";
-    }
-}
 
         // Image Preview Handler
         function previewImage(event) {
