@@ -3,97 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>এন্ট্রি ভেরিফিকেশন | এডমিন প্যানেল</title>
+    <title>এন্ট্রি কন্ট্রোল প্যানেল</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/html5-qrcode"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap');
-        body { font-family: 'Hind Siliguri', sans-serif; background-color: #0f172a; color: #f8fafc; }
-        #reader { width: 100%; border-radius: 15px; overflow: hidden; border: 2px solid #334155 !important; }
-        .status-card { display: none; }
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Orbitron:wght@500;700&display=swap');
+        
+        body { 
+            font-family: 'Hind Siliguri', sans-serif; 
+            background: #020617; 
+            background-image: radial-gradient(circle at top right, #1e293b, #020617);
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+        .security-font { font-family: 'Orbitron', sans-serif; }
+        .glass-card { 
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(51, 65, 85, 0.5);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .status-card { display: none; transform: translateY(20px); transition: all 0.4s ease; }
+        .success-glow { box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); border: 1px solid #10b981; }
+        .fail-glow { box-shadow: 0 0 20px rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; }
     </style>
 </head>
-<body class="flex flex-col min-h-screen">
+<body class="flex flex-col items-center p-6 md:p-12">
 
-    <header class="bg-slate-900 border-b border-slate-800 p-6 text-center shadow-lg">
-        <h1 class="text-2xl font-bold text-blue-400"><i class="fas fa-qrcode mr-2"></i> গেইট এন্ট্রি চেকপয়েন্ট</h1>
-        <p class="text-slate-400 text-sm">স্ক্যান করুন অথবা আইডি ইনপুট দিন</p>
+    <header class="text-center mb-10">
+        <div class="inline-block p-3 rounded-2xl bg-blue-500/10 mb-4">
+            <i class="fas fa-shield-halved text-4xl text-blue-500"></i>
+        </div>
+        <h1 class="text-3xl font-bold tracking-tight text-white uppercase security-font">Gate Security</h1>
+        <p class="text-slate-400 mt-2">দৌলতপুর বহুমুখী উচ্চ বিদ্যালয় প্রাক্তন শিক্ষার্থী পরিষদ</p>
     </header>
 
-    <main class="flex-grow flex flex-col items-center justify-start px-6 py-10">
-        
-        <div class="max-w-md w-full mb-8">
-            <div id="reader"></div>
-            <p class="text-center text-slate-500 text-xs mt-2">ক্যামেরা মেম্বারের কার্ডের QR কোডের ওপর ধরুন</p>
-        </div>
-
-        <div class="max-w-md w-full bg-slate-800 p-6 rounded-3xl shadow-xl border border-slate-700">
-            <div class="flex flex-col gap-4">
+    <div class="max-w-md w-full glass-card p-8 rounded-[2.5rem]">
+        <div class="mb-6">
+            <label class="block text-xs font-bold uppercase tracking-[0.2em] text-blue-400 mb-3 ml-1">Member ID</label>
+            <div class="relative">
                 <input type="text" id="verifyToken" 
-                       class="w-full p-4 rounded-xl bg-slate-950 border border-slate-700 text-white text-xl text-center font-bold tracking-widest focus:border-blue-500 outline-none" 
-                       placeholder="DBHSP-XXXX-XXXX">
-                
-                <button onclick="checkData(document.getElementById('verifyToken').value)" id="checkBtn" 
-                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl text-lg transition-all active:scale-95">
-                    ম্যানুয়াল ভেরিফাই
-                </button>
+                       class="security-font w-full p-5 rounded-2xl bg-slate-950 border border-slate-800 text-blue-400 text-2xl text-center focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all" 
+                       value="DBHSP-">
             </div>
         </div>
+        
+        <button onclick="checkData()" id="checkBtn" 
+                class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-5 rounded-2xl text-lg transition-all active:scale-95 flex items-center justify-center gap-3">
+            <i class="fas fa-search"></i> ভেরিফাই করুন
+        </button>
+    </div>
 
-        <div id="loader" class="hidden mt-8 text-center">
-            <i class="fas fa-circle-notch fa-spin text-4xl text-blue-500"></i>
-            <p class="text-slate-400 mt-2">সার্ভার থেকে চেক করা হচ্ছে...</p>
-        </div>
+    <div id="loader" class="hidden mt-12 text-center">
+        <div class="inline-block h-10 w-10 animate-spin rounded-full border-4 border-solid border-blue-500 border-r-transparent align-[-0.125em]"></div>
+        <p class="text-slate-400 mt-4 animate-pulse">ডাটাবেজ চেক করা হচ্ছে...</p>
+    </div>
 
-        <div id="successResult" class="status-card max-w-md w-full mt-8 p-8 rounded-3xl bg-emerald-900 border-2 border-emerald-500 animate-pulse">
-            <div class="text-center">
-                <i class="fas fa-check-circle text-5xl text-emerald-400 mb-4"></i>
-                <h2 class="text-2xl font-bold text-white mb-4">এন্ট্রি অনুমোদিত</h2>
-                <div id="memberDetail" class="bg-black/20 p-4 rounded-xl text-left space-y-2 text-sm text-emerald-100">
-                    </div>
-                <button onclick="resetScanner()" class="mt-6 bg-white/20 px-6 py-2 rounded-full text-sm">পরবর্তী স্ক্যান</button>
+    <div id="successResult" class="status-card max-w-md w-full mt-10 p-8 rounded-[2.5rem] bg-emerald-950/30 success-glow backdrop-blur-md">
+        <div class="text-center">
+            <div class="w-20 h-20 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-check text-3xl text-white"></i>
             </div>
+            <h2 class="text-2xl font-bold text-emerald-400 mb-6">এন্ট্রি অনুমোদিত</h2>
+            
+            <div id="memberDetail" class="text-left space-y-4 bg-black/30 p-6 rounded-2xl border border-emerald-500/20">
+                </div>
+            
+            <button onclick="resetPage()" class="mt-8 text-slate-400 hover:text-white transition-colors text-sm font-bold uppercase tracking-widest">
+                <i class="fas fa-arrow-left mr-2"></i> পরবর্তী এন্ট্রি
+            </button>
         </div>
+    </div>
 
-        <div id="failResult" class="status-card max-w-md w-full mt-8 p-8 rounded-3xl bg-red-900 border-2 border-red-500 text-center">
-            <i class="fas fa-times-circle text-5xl text-red-400 mb-4"></i>
-            <h2 class="text-xl font-bold text-white">অবৈধ আইডি!</h2>
-            <p class="text-red-100 mt-2">পুনরায় সঠিক আইডি দিয়ে চেষ্টা করুন।</p>
-            <button onclick="resetScanner()" class="mt-6 bg-white/20 px-6 py-2 rounded-full text-sm">আবার চেষ্টা করুন</button>
+    <div id="failResult" class="status-card max-w-md w-full mt-10 p-8 rounded-[2.5rem] bg-red-950/30 fail-glow text-center backdrop-blur-md">
+        <div class="w-20 h-20 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-times text-3xl text-white"></i>
         </div>
-
-    </main>
+        <h2 class="text-2xl font-bold text-red-500">অবৈধ আইডি!</h2>
+        <p class="text-slate-400 mt-2">সদস্যের তথ্য খুঁজে পাওয়া যায়নি।</p>
+        <button onclick="resetPage()" class="mt-8 bg-red-500/20 text-red-400 px-8 py-3 rounded-full border border-red-500/50 font-bold">আবার চেষ্টা করুন</button>
+    </div>
 
     <script>
-        // আপনার গুগল স্ক্রিপ্ট লিঙ্কটি এখানে দিন
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwg4wBbtvWiF0Zd9zzQfzQtd7aSZvgCNaCZ6GjMd5d8pnHfvfD6AS11mi1p77C6LFrF/exec'; 
 
-        // ১. কিউআর স্ক্যানার সেটআপ
-        function onScanSuccess(decodedText, decodedResult) {
-            checkData(decodedText);
-            // স্ক্যান হয়ে গেলে সাউন্ড বা ভাইব্রেশন দিতে পারেন (ঐচ্ছিক)
-        }
-
-        let html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
-        html5QrcodeScanner.render(onScanSuccess);
-
-        // ২. ডাটা চেক করার মেইন ফাংশন
-        async function checkData(token) {
-            if (!token) return alert("টোকেন আইডি দিন!");
+        async function checkData() {
+            const token = document.getElementById('verifyToken').value.trim();
+            if (token === "DBHSP-" || !token) return alert("অনুগ্রহ করে আইডি নম্বরটি সম্পূর্ণ করুন!");
 
             const success = document.getElementById('successResult');
             const fail = document.getElementById('failResult');
             const loader = document.getElementById('loader');
             const infoBox = document.getElementById('memberDetail');
+            const btn = document.getElementById('checkBtn');
 
-            // UI রিসেট
+            // Reset UI
             success.style.display = 'none';
             fail.style.display = 'none';
             loader.classList.remove('hidden');
+            btn.disabled = true;
 
             try {
-                const response = await fetch(`${scriptURL}?action=search&token=${token.trim()}`);
+                const response = await fetch(`${scriptURL}?action=search&token=${token}`);
                 const result = await response.json();
 
                 loader.classList.add('hidden');
@@ -101,26 +112,27 @@
                 if (result.result === 'success') {
                     success.style.display = 'block';
                     infoBox.innerHTML = `
-                        <p><strong>নাম:</strong> ${result.data.name}</p>
-                        <p><strong>ব্যাচ:</strong> ${result.data.batch_no} তম</p>
-                        <p><strong>পাসের সাল:</strong> ${result.data.pass_year}</p>
-                        <p><strong>মোবাইল:</strong> ${result.data.mobile}</p>
-                        <p><strong>টোকেন:</strong> ${result.data.token}</p>
+                        <div class="flex justify-between border-b border-white/5 pb-2"><span class="text-slate-400">নাম:</span> <span class="font-bold text-white">${result.data.name}</span></div>
+                        <div class="flex justify-between border-b border-white/5 pb-2"><span class="text-slate-400">ব্যাচ:</span> <span class="font-bold text-white">${result.data.batch_no} তম</span></div>
+                        <div class="flex justify-between border-b border-white/5 pb-2"><span class="text-slate-400">সাল:</span> <span class="font-bold text-white">${result.data.pass_year}</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">মোবাইল:</span> <span class="font-bold text-white">${result.data.mobile}</span></div>
                     `;
                 } else {
                     fail.style.display = 'block';
                 }
             } catch (error) {
                 loader.classList.add('hidden');
-                alert("সার্ভার কানেকশন এরর!");
+                alert("সার্ভার ত্রুটি! আপনার ইন্টারনেট চেক করুন।");
+            } finally {
+                btn.disabled = false;
             }
         }
 
-        function resetScanner() {
+        function resetPage() {
             document.getElementById('successResult').style.display = 'none';
             document.getElementById('failResult').style.display = 'none';
-            document.getElementById('verifyToken').value = "";
-            // স্ক্যানারটি রিস্টার্ট করার প্রয়োজন হলে পেজ রিলোড বা ম্যানুয়াল রিসেট লজিক
+            document.getElementById('verifyToken').value = "DBHSP-";
+            document.getElementById('verifyToken').focus();
         }
     </script>
 </body>
