@@ -3,26 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>অ্যাডমিন ড্যাশবোর্ড | পরিসংখ্যান</title>
+    <title>অ্যাডমিন ড্যাশবোর্ড | লগইন</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap');
         body { font-family: 'Hind Siliguri', sans-serif; background-color: #f1f5f9; }
+        .hidden-content { display: none; }
     </style>
 </head>
 <body class="p-4 md:p-10">
 
-    <div class="max-w-6xl mx-auto">
-        <header class="flex justify-between items-center mb-10">
+    <div id="loginArea" class="max-w-md mx-auto mt-20 bg-white p-8 rounded-3xl shadow-xl border border-slate-200">
+        <div class="text-center mb-6">
+            <div class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-lock text-2xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-800">অ্যাডমিন লগইন</h2>
+            <p class="text-slate-500 text-sm">ড্যাশবোর্ড দেখতে পাসওয়ার্ড দিন</p>
+        </div>
+        <input type="password" id="adminPass" class="w-full p-4 bg-slate-100 rounded-xl border-2 border-transparent focus:border-indigo-500 outline-none text-center mb-4" placeholder="পাসওয়ার্ড লিখুন">
+        <button onclick="checkLogin()" class="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition">প্রবেশ করুন</button>
+    </div>
+
+    <div id="dashboardContent" class="max-w-6xl mx-auto hidden-content">
+        <header class="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
             <div>
                 <h1 class="text-3xl font-bold text-slate-800">ইভেন্ট পরিসংখ্যান</h1>
                 <p class="text-slate-500">মেম্বার এবং কালেকশন রিপোর্ট</p>
             </div>
-            <button onclick="loadDashboardData()" class="bg-indigo-600 text-white px-6 py-2 rounded-xl hover:bg-indigo-700 transition">
-                <i class="fas fa-sync-alt mr-2"></i> আপডেট করুন
-            </button>
+            <div class="flex gap-3">
+                <button onclick="loadDashboardData()" class="bg-indigo-600 text-white px-6 py-2 rounded-xl hover:bg-indigo-700 transition">
+                    <i class="fas fa-sync-alt mr-2"></i> আপডেট
+                </button>
+                <button onclick="logout()" class="bg-red-100 text-red-600 px-6 py-2 rounded-xl hover:bg-red-200 transition font-bold">
+                    <i class="fas fa-sign-out-alt mr-2"></i> লগআউট
+                </button>
+            </div>
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 text-center">
@@ -35,20 +53,20 @@
                 <h2 id="totalCash" class="text-4xl font-black text-emerald-600">৳ ০</h2>
             </div>
             <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
-                <p class="text-slate-500 uppercase text-xs font-bold mb-1">উপস্থিত মেম্বার</p>
+                <p class="text-slate-500 uppercase text-xs font-bold mb-1">উপস্থিত মেম্বার (Gate)</p>
                 <h2 id="totalPresent" class="text-4xl font-black text-orange-600">০</h2>
             </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
             <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-200">
-                <h3 class="text-xl font-bold mb-6 text-slate-700">ব্যাচ ভিত্তিক মেম্বার (Bar Chart)</h3>
+                <h3 class="text-xl font-bold mb-6 text-slate-700">ব্যাচ ভিত্তিক মেম্বার</h3>
                 <canvas id="batchChart"></canvas>
             </div>
 
-            <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-200">
-                <h3 class="text-xl font-bold mb-6 text-slate-700">জেন্ডার ভিত্তিক মেম্বার (Pie Chart)</h3>
-                <div class="max-w-[300px] mx-auto">
+            <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-200 text-center">
+                <h3 class="text-xl font-bold mb-6 text-slate-700">জেন্ডার পরিসংখ্যান</h3>
+                <div class="max-w-[280px] mx-auto">
                     <canvas id="genderChart"></canvas>
                 </div>
             </div>
@@ -56,9 +74,37 @@
     </div>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbwg4wBbtvWiF0Zd9zzQfzQtd7aSZvgCNaCZ6GjMd5d8pnHfvfD6AS11mi1p77C6LFrF/exec'; // এখানে আপনার গুগল স্ক্রিপ্ট লিঙ্ক দিন
-
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwg4wBbtvWiF0Zd9zzQfzQtd7aSZvgCNaCZ6GjMd5d8pnHfvfD6AS11mi1p77C6LFrF/exec';
+        const MASTER_PASS = "ADMIN123"; // আপনার পাসওয়ার্ড এখানে সেট করুন
         let batchChart, genderChart;
+
+        // পেজ লোড হলে চেক করবে লগইন আছে কি না
+        window.onload = function() {
+            if (sessionStorage.getItem('dashboardAccess') === 'granted') {
+                showDashboard();
+            }
+        };
+
+        function checkLogin() {
+            const passInput = document.getElementById('adminPass').value;
+            if (passInput === MASTER_PASS) {
+                sessionStorage.setItem('dashboardAccess', 'granted');
+                showDashboard();
+            } else {
+                alert("ভুল পাসওয়ার্ড! আবার চেষ্টা করুন।");
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('loginArea').classList.add('hidden-content');
+            document.getElementById('dashboardContent').classList.remove('hidden-content');
+            loadDashboardData();
+        }
+
+        function logout() {
+            sessionStorage.removeItem('dashboardAccess');
+            location.reload();
+        }
 
         async function loadDashboardData() {
             try {
@@ -66,8 +112,9 @@
                 const stats = await response.json();
 
                 document.getElementById('totalReg').innerText = stats.totalRegistered;
-                // ফি যদি শিটে থাকে তবে এখানে দেখাবে
-                // document.getElementById('totalCash').innerText = '৳ ' + stats.totalCollection;
+                document.getElementById('totalPresent').innerText = stats.presentCount || 0;
+                // ফি কালেকশন হিসাব (উদাহরণ: ১০০০ টাকা প্রতি মেম্বার)
+                document.getElementById('totalCash').innerText = '৳ ' + (stats.totalRegistered * 1000);
 
                 updateCharts(stats);
             } catch (error) {
@@ -76,7 +123,6 @@
         }
 
         function updateCharts(stats) {
-            // ব্যাচ চার্ট ডাটা
             const batchLabels = Object.keys(stats.batchData);
             const batchValues = Object.values(stats.batchData);
 
@@ -86,18 +132,18 @@
                 data: {
                     labels: batchLabels,
                     datasets: [{
-                        label: 'মেম্বার সংখ্যা',
+                        label: 'মেম্বার',
                         data: batchValues,
                         backgroundColor: '#6366f1',
-                        borderRadius: 10
+                        borderRadius: 8
                     }]
-                }
+                },
+                options: { responsive: true }
             });
 
-            // জেন্ডার চার্ট ডাটা
             if (genderChart) genderChart.destroy();
             genderChart = new Chart(document.getElementById('genderChart'), {
-                type: 'pie',
+                type: 'doughnut',
                 data: {
                     labels: ['পুরুষ', 'মহিলা'],
                     datasets: [{
@@ -107,9 +153,6 @@
                 }
             });
         }
-
-        // পেজ লোড হলে ডাটা আসবে
-        window.onload = loadDashboardData;
     </script>
 </body>
 </html>
