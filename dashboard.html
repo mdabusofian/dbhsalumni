@@ -153,6 +153,37 @@
                 }
             });
         }
+
+
+        // ১. পেজ লোড হওয়ার সাথে সাথে চেক করবে
+window.onload = function() {
+    const isLoggedIn = sessionStorage.getItem('isAdminLoggedIn');
+    if (!isLoggedIn) {
+        showLoginPrompt();
+    } else {
+        // যদি লগইন থাকে তবে ডাটা লোড হবে
+        if (typeof loadStats === "function") loadStats(); 
+        updateClock();
+    }
+};
+
+// ২. পাসওয়ার্ড চাওয়ার ফাংশন
+function showLoginPrompt() {
+    const pass = prompt("অ্যাডমিন পাসওয়ার্ড দিন:");
+    if (pass === "ADMIN123") { // স্ক্রিপ্টের পাসওয়ার্ডের সাথে মিল থাকতে হবে
+        sessionStorage.setItem('isAdminLoggedIn', 'true');
+        location.reload(); // পেজ রিফ্রেশ করে ডাটা দেখাবে
+    } else {
+        alert("ভুল পাসওয়ার্ড! আপনি এই পেজটি দেখতে পারবেন না।");
+        document.body.innerHTML = "<h1 style='text-align:center; margin-top:50px;'>অ্যাক্সেস ডিনাইড (Access Denied)</h1>";
+    }
+}
+
+// ৩. লগআউট করার জন্য (ঐচ্ছিক)
+function logout() {
+    sessionStorage.removeItem('isAdminLoggedIn');
+    location.reload();
+}
     </script>
 </body>
 </html>
