@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অ্যাডমিন ড্যাশবোর্ড | পরিসংখ্যান</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap');
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: #f1f5f9; }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <div class="max-w-6xl mx-auto">
+        <header class="flex justify-between items-center mb-10">
+            <div>
+                <h1 class="text-3xl font-bold text-slate-800">ইভেন্ট পরিসংখ্যান</h1>
+                <p class="text-slate-500">মেম্বার এবং কালেকশন রিপোর্ট</p>
+            </div>
+            <button onclick="loadDashboardData()" class="bg-indigo-600 text-white px-6 py-2 rounded-xl hover:bg-indigo-700 transition">
+                <i class="fas fa-sync-alt mr-2"></i> আপডেট করুন
+            </button>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 text-center">
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                <p class="text-slate-500 uppercase text-xs font-bold mb-1">মোট রেজিস্টার্ড</p>
+                <h2 id="totalReg" class="text-4xl font-black text-indigo-600">০</h2>
+            </div>
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                <p class="text-slate-500 uppercase text-xs font-bold mb-1">মোট ফি কালেকশন</p>
+                <h2 id="totalCash" class="text-4xl font-black text-emerald-600">৳ ০</h2>
+            </div>
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                <p class="text-slate-500 uppercase text-xs font-bold mb-1">উপস্থিত মেম্বার</p>
+                <h2 id="totalPresent" class="text-4xl font-black text-orange-600">০</h2>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-200">
+                <h3 class="text-xl font-bold mb-6 text-slate-700">ব্যাচ ভিত্তিক মেম্বার (Bar Chart)</h3>
+                <canvas id="batchChart"></canvas>
+            </div>
+
+            <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-200">
+                <h3 class="text-xl font-bold mb-6 text-slate-700">জেন্ডার ভিত্তিক মেম্বার (Pie Chart)</h3>
+                <div class="max-w-[300px] mx-auto">
+                    <canvas id="genderChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwg4wBbtvWiF0Zd9zzQfzQtd7aSZvgCNaCZ6GjMd5d8pnHfvfD6AS11mi1p77C6LFrF/exec'; // এখানে আপনার গুগল স্ক্রিপ্ট লিঙ্ক দিন
+
+        let batchChart, genderChart;
+
+        async function loadDashboardData() {
+            try {
+                const response = await fetch(`${scriptURL}?action=dashboard`);
+                const stats = await response.json();
+
+                document.getElementById('totalReg').innerText = stats.totalRegistered;
+                // ফি যদি শিটে থাকে তবে এখানে দেখাবে
+                // document.getElementById('totalCash').innerText = '৳ ' + stats.totalCollection;
+
+                updateCharts(stats);
+            } catch (error) {
+                console.error("ডাটা লোড করতে সমস্যা হয়েছে।");
+            }
+        }
+
+        function updateCharts(stats) {
+            // ব্যাচ চার্ট ডাটা
+            const batchLabels = Object.keys(stats.batchData);
+            const batchValues = Object.values(stats.batchData);
+
+            if (batchChart) batchChart.destroy();
+            batchChart = new Chart(document.getElementById('batchChart'), {
+                type: 'bar',
+                data: {
+                    labels: batchLabels,
+                    datasets: [{
+                        label: 'মেম্বার সংখ্যা',
+                        data: batchValues,
+                        backgroundColor: '#6366f1',
+                        borderRadius: 10
+                    }]
+                }
+            });
+
+            // জেন্ডার চার্ট ডাটা
+            if (genderChart) genderChart.destroy();
+            genderChart = new Chart(document.getElementById('genderChart'), {
+                type: 'pie',
+                data: {
+                    labels: ['পুরুষ', 'মহিলা'],
+                    datasets: [{
+                        data: [stats.genderData["পুরুষ"], stats.genderData["মহিলা"]],
+                        backgroundColor: ['#3b82f6', '#f43f5e']
+                    }]
+                }
+            });
+        }
+
+        // পেজ লোড হলে ডাটা আসবে
+        window.onload = loadDashboardData;
+    </script>
+</body>
+</html>
