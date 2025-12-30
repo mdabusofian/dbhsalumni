@@ -3,187 +3,469 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>অ্যাডমিন ড্যাশবোর্ড | লগইন</title>
+    <title>প্রো মাস্টার অ্যাডমিন প্যানেল</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap');
-        body { font-family: 'Hind Siliguri', sans-serif; background-color: #f1f5f9; }
-        .hidden-content { display: none; }
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: #f8fafc; }
+        .sidebar-active { background-color: #4f46e5; color: white; box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4); }
+        .hidden-section { display: none; }
+        .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
+        .modal { background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); }
+        .loader { border-top-color: #4f46e5; animation: spinner 1.5s linear infinite; }
+        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        #login-overlay { position: fixed; inset: 0; z-index: 100; background: #f1f5f9; display: flex; align-items: center; justify-content: center; }
+        
+        /* ID Card Style */
+        .id-card { width: 300px; background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
+        .id-card-header { background: #4f46e5; color: white; padding: 15px; text-align: center; font-weight: bold; }
+        
+        /* Bottom Mobile Menu */
+        @media (max-width: 1023px) {
+            .mobile-bottom-nav {
+                position: fixed; bottom: 0; left: 0; right: 0;
+                background: white; display: flex; justify-content: space-around;
+                padding: 10px; border-top: 1px solid #e2e8f0; z-index: 50;
+            }
+            .mobile-bottom-nav button { flex-direction: column; font-size: 10px; gap: 2px; }
+            .mobile-bottom-nav i { font-size: 18px; }
+            main { padding-bottom: 80px; }
+        }
     </style>
 </head>
-<body class="p-4 md:p-10">
+<body class="min-h-screen overflow-x-hidden">
 
-    <div id="loginArea" class="max-w-md mx-auto mt-20 bg-white p-8 rounded-3xl shadow-xl border border-slate-200">
-        <div class="text-center mb-6">
-            <div class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i class="fas fa-lock text-2xl"></i>
-            </div>
-            <h2 class="text-2xl font-bold text-slate-800">অ্যাডমিন লগইন</h2>
-            <p class="text-slate-500 text-sm">ড্যাশবোর্ড দেখতে পাসওয়ার্ড দিন</p>
-        </div>
-        <input type="password" id="adminPass" class="w-full p-4 bg-slate-100 rounded-xl border-2 border-transparent focus:border-indigo-500 outline-none text-center mb-4" placeholder="পাসওয়ার্ড লিখুন">
-        <button onclick="checkLogin()" class="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition">প্রবেশ করুন</button>
-    </div>
-
-    <div id="dashboardContent" class="max-w-6xl mx-auto hidden-content">
-        <header class="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
-            <div>
-                <h1 class="text-3xl font-bold text-slate-800">ইভেন্ট পরিসংখ্যান</h1>
-                <p class="text-slate-500">মেম্বার এবং কালেকশন রিপোর্ট</p>
-            </div>
-            <div class="flex gap-3">
-                <button onclick="loadDashboardData()" class="bg-indigo-600 text-white px-6 py-2 rounded-xl hover:bg-indigo-700 transition">
-                    <i class="fas fa-sync-alt mr-2"></i> আপডেট
-                </button>
-                <button onclick="logout()" class="bg-red-100 text-red-600 px-6 py-2 rounded-xl hover:bg-red-200 transition font-bold">
-                    <i class="fas fa-sign-out-alt mr-2"></i> লগআউট
-                </button>
-            </div>
-        </header>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 text-center">
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
-                <p class="text-slate-500 uppercase text-xs font-bold mb-1">মোট রেজিস্টার্ড</p>
-                <h2 id="totalReg" class="text-4xl font-black text-indigo-600">০</h2>
-            </div>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
-                <p class="text-slate-500 uppercase text-xs font-bold mb-1">মোট ফি কালেকশন</p>
-                <h2 id="totalCash" class="text-4xl font-black text-emerald-600">৳ ০</h2>
-            </div>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
-                <p class="text-slate-500 uppercase text-xs font-bold mb-1">উপস্থিত মেম্বার (Gate)</p>
-                <h2 id="totalPresent" class="text-4xl font-black text-orange-600">০</h2>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-            <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-200">
-                <h3 class="text-xl font-bold mb-6 text-slate-700">ব্যাচ ভিত্তিক মেম্বার</h3>
-                <canvas id="batchChart"></canvas>
-            </div>
-
-            <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-200 text-center">
-                <h3 class="text-xl font-bold mb-6 text-slate-700">জেন্ডার পরিসংখ্যান</h3>
-                <div class="max-w-[280px] mx-auto">
-                    <canvas id="genderChart"></canvas>
+    <div id="login-overlay">
+        <div class="bg-white p-10 rounded-[2.5rem] shadow-2xl w-full max-w-md border border-slate-100 mx-4">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-indigo-100 text-indigo-600 rounded-3xl flex items-center justify-center mx-auto mb-4 text-3xl">
+                    <i class="fas fa-user-lock"></i>
                 </div>
+                <h2 class="text-3xl font-black text-slate-800">অ্যাডমিন লগইন</h2>
+                <p class="text-slate-500 mt-2 font-medium">প্যানেলে প্রবেশ করতে তথ্য দিন</p>
+            </div>
+            <div class="space-y-5">
+                <div>
+                    <label class="text-xs font-bold text-slate-500 uppercase ml-2">ইউজারনেম</label>
+                    <input type="text" id="username" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-indigo-500 transition-all" placeholder="admin">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-500 uppercase ml-2">পাসওয়ার্ড</label>
+                    <input type="password" id="password" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-indigo-500 transition-all" placeholder="••••••••">
+                </div>
+                <button onclick="handleLogin()" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold text-lg shadow-lg shadow-indigo-200 hover:bg-indigo-700 active:scale-95 transition-all">
+                    প্রবেশ করুন
+                </button>
+                <p id="loginError" class="text-red-500 text-sm text-center font-bold hidden">ভুল ইউজারনেম বা পাসওয়ার্ড!</p>
             </div>
         </div>
     </div>
+
+    <div id="admin-content" class="hidden">
+        <div class="lg:hidden mobile-bottom-nav">
+            <button onclick="showSection('summary', this)" class="nav-btn flex items-center text-indigo-600">
+                <i class="fas fa-chart-line"></i> ড্যাশবোর্ড
+            </button>
+            <button onclick="showSection('reg-list', this)" class="nav-btn flex items-center text-slate-500">
+                <i class="fas fa-users"></i> তালিকা
+            </button>
+            <button onclick="showSection('verify', this)" class="nav-btn flex items-center text-slate-500">
+                <i class="fas fa-qrcode"></i> ভেরিফাই
+            </button>
+            <button onclick="logout()" class="flex items-center text-red-500">
+                <i class="fas fa-sign-out-alt"></i> লগআউট
+            </button>
+        </div>
+
+        <div class="flex">
+            <aside id="sidebar" class="hidden lg:flex w-72 bg-white border-r border-slate-200 flex-col h-screen sticky top-0 p-6">
+                <div class="mb-10 px-2">
+                    <h1 class="text-2xl font-black text-indigo-600 tracking-tight">অ্যাডমিন প্যানেল</h1>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">ইভেন্ট ম্যানেজমেন্ট সিস্টেম</p>
+                </div>
+                <nav class="space-y-2 flex-grow">
+                    <button onclick="showSection('summary', this)" class="nav-btn sidebar-active w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold transition-all">
+                        <i class="fas fa-chart-line w-5"></i> ড্যাশবোর্ড সামারি
+                    </button>
+                    <button onclick="showSection('reg-list', this)" class="nav-btn w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition-all">
+                        <i class="fas fa-users w-5"></i> রেজিস্ট্রেশন তালিকা
+                    </button>
+                    <button onclick="showSection('verify', this)" class="nav-btn w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition-all">
+                        <i class="fas fa-qrcode w-5"></i> এন্ট্রি ভেরিফাই
+                    </button>
+                    <button onclick="showSection('entry-list', this)" class="nav-btn w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition-all">
+                        <i class="fas fa-user-check w-5"></i> উপস্থিতির তালিকা
+                    </button>
+                    <button onclick="showSection('analytics', this)" class="nav-btn w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition-all">
+                        <i class="fas fa-project-diagram w-5"></i> বিস্তারিত গ্রাফ
+                    </button>
+                </nav>
+                <div class="mt-auto pt-6 border-t border-slate-100">
+                    <button onclick="logout()" class="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold text-red-500 hover:bg-red-50 transition-all">
+                        <i class="fas fa-sign-out-alt w-5"></i> লগআউট
+                    </button>
+                </div>
+            </aside>
+
+            <main class="flex-grow min-h-screen p-4 md:p-10 lg:p-12 overflow-y-auto w-full">
+                <section id="summary-section">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-8">একনজরে ইভেন্ট সামারি</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                        <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
+                            <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-4"><i class="fas fa-users"></i></div>
+                            <p class="text-slate-400 text-xs font-bold uppercase">মোট রেজিস্ট্রেশন</p>
+                            <h3 id="statTotal" class="text-3xl font-black text-slate-700">0</h3>
+                        </div>
+                        <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
+                            <div class="w-12 h-12 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center mb-4"><i class="fas fa-door-open"></i></div>
+                            <p class="text-slate-400 text-xs font-bold uppercase">মোট উপস্থিতি</p>
+                            <h3 id="statPresent" class="text-3xl font-black text-green-600">0</h3>
+                        </div>
+                        <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
+                            <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-4"><i class="fas fa-user-clock"></i></div>
+                            <p class="text-slate-400 text-xs font-bold uppercase">অনুপস্থিত</p>
+                            <h3 id="statAbsent" class="text-3xl font-black text-orange-600">0</h3>
+                        </div>
+                        <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
+                            <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mb-4"><i class="fas fa-taka-sign"></i></div>
+                            <p class="text-slate-400 text-xs font-bold uppercase">মোট কালেকশন</p>
+                            <h3 id="statCash" class="text-3xl font-black text-indigo-600">৳ 0</h3>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">সাম্প্রতিক রেজিস্ট্রেশনকৃত সদস্য</h3>
+                    <div class="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
+                                <tr>
+                                    <th class="px-8 py-4">নাম</th>
+                                    <th class="px-8 py-4">ব্যাচ/সাল</th>
+                                    <th class="px-8 py-4">মোবাইল</th>
+                                    <th class="px-8 py-4">স্ট্যাটাস</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentTableBody" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="reg-list-section" class="hidden-section">
+                    <div class="flex flex-col lg:flex-row justify-between items-center mb-8 gap-4">
+                        <h2 class="text-2xl font-bold">শিক্ষার্থীদের তালিকা</h2>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="exportToExcel()" class="bg-emerald-600 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 shadow-lg shadow-emerald-200">
+                                <i class="fas fa-file-excel"></i> এক্সেল
+                            </button>
+                            <select id="batchFilterReg" onchange="filterTables()" class="bg-white border border-slate-200 px-4 py-2 rounded-xl font-bold outline-none shadow-sm text-sm">
+                                <option value="">সকল ব্যাচ (পাসের সাল)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-x-auto">
+                        <table id="mainTable" class="w-full text-left border-collapse">
+                            <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] font-black tracking-widest">
+                                <tr>
+                                    <th class="px-8 py-5">নাম</th>
+                                    <th class="px-8 py-5">ব্যাচ/সাল</th>
+                                    <th class="px-8 py-5">মোবাইল</th>
+                                    <th class="px-8 py-5">স্ট্যাটাস</th>
+                                    <th class="px-8 py-5 text-center">কার্ড প্রিভিউ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="regTableBody" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="verify-section" class="hidden-section max-w-2xl mx-auto mt-10">
+                    <div class="bg-white p-10 rounded-[3rem] shadow-2xl border border-indigo-50 text-center relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-2 bg-indigo-600"></div>
+                        <div class="mb-6">
+                             <div class="w-20 h-20 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                                <i class="fas fa-user-shield"></i>
+                             </div>
+                             <h2 class="text-2xl font-bold text-slate-800">অ্যাডমিন ভেরিফিকেশন</h2>
+                             <p class="text-slate-500 text-sm">টোকেন বা আইডি নম্বর ইনপুট দিন</p>
+                        </div>
+                        <input type="text" id="verifyInput" class="w-full p-6 bg-slate-50 rounded-3xl border-2 border-slate-100 text-3xl font-black text-center text-indigo-600 mb-6 uppercase transition-all" value="DBHSP-">
+                        <button onclick="verifyMember()" class="w-full bg-indigo-600 text-white py-6 rounded-3xl font-bold text-xl hover:bg-indigo-700 transition shadow-xl shadow-indigo-100">
+                            <i class="fas fa-search mr-2"></i> তথ্য চেক করুন
+                        </button>
+                        <div id="verifyResult" class="mt-8 transition-all duration-300"></div>
+                    </div>
+                </section>
+
+                <section id="entry-list-section" class="hidden-section">
+                    <div class="flex justify-between items-center mb-8">
+                        <h2 class="text-2xl font-bold">উপস্থিত শিক্ষার্থীদের তালিকা</h2>
+                        <p class="bg-green-100 text-green-600 px-4 py-2 rounded-full font-bold text-sm">মোট এন্ট্রি: <span id="entryCount">0</span></p>
+                    </div>
+                    <div class="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
+                                <tr>
+                                    <th class="px-8 py-5">নাম</th>
+                                    <th class="px-8 py-5">ব্যাচ/সাল</th>
+                                    <th class="px-8 py-5">স্ট্যাটাস</th>
+                                </tr>
+                            </thead>
+                            <tbody id="entryTableBody" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="analytics-section" class="hidden-section">
+                    <h2 class="text-2xl font-bold mb-8 text-slate-800">অ্যানালিটিক্স ও রিপোর্ট</h2>
+                    <div class="grid lg:grid-cols-2 gap-10">
+                        <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
+                            <h4 class="font-bold text-slate-500 mb-6 uppercase text-xs tracking-widest">রেজিস্ট্রেশন ডাটা</h4>
+                            <canvas id="batchCompareChart"></canvas>
+                        </div>
+                        <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
+                            <h4 class="font-bold text-slate-500 mb-6 uppercase text-xs tracking-widest">জেন্ডার ডিস্ট্রিবিউশন</h4>
+                            <div class="max-w-[300px] mx-auto"><canvas id="genderPieChart"></canvas></div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <div id="idCardModal" class="modal fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2rem] p-8 max-w-sm w-full relative">
+            <button onclick="closeIdCard()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-600"><i class="fas fa-times text-xl"></i></button>
+            <div id="idCardContent" class="flex flex-col items-center">
+                <div class="id-card">
+                    <div class="id-card-header">STUDENT ID CARD</div>
+                    <div class="p-6 text-center space-y-2">
+                        <h4 id="cardName" class="text-xl font-black text-slate-800"></h4>
+                        <div class="text-sm space-y-1">
+                            <p class="text-slate-500">মোবাইল: <span id="cardMobile" class="text-slate-800 font-bold"></span></p>
+                            <p class="text-slate-500">ব্যাচ: <span id="cardBatch" class="text-slate-800 font-bold"></span></p>
+                            <p class="text-slate-500">পাসের সাল: <span id="cardYear" class="text-slate-800 font-bold"></span></p>
+                        </div>
+                        <div class="pt-4 flex justify-center">
+                            <div id="cardQRCode"></div>
+                        </div>
+                        <p id="cardToken" class="mt-4 text-[10px] font-bold text-indigo-600 tracking-widest uppercase"></p>
+                    </div>
+                </div>
+                <button onclick="window.print()" class="mt-6 w-full bg-slate-800 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2">
+                    <i class="fas fa-print"></i> প্রিন্ট করুন
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="beep" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
 
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwg4wBbtvWiF0Zd9zzQfzQtd7aSZvgCNaCZ6GjMd5d8pnHfvfD6AS11mi1p77C6LFrF/exec';
-        const MASTER_PASS = "ADMIN123"; // আপনার পাসওয়ার্ড এখানে সেট করুন
-        let batchChart, genderChart;
+        let allData = [];
 
-        // পেজ লোড হলে চেক করবে লগইন আছে কি না
-        window.onload = function() {
-            if (sessionStorage.getItem('dashboardAccess') === 'granted') {
-                showDashboard();
-            }
-        };
-
-        function checkLogin() {
-            const passInput = document.getElementById('adminPass').value;
-            if (passInput === MASTER_PASS) {
-                sessionStorage.setItem('dashboardAccess', 'granted');
-                showDashboard();
-            } else {
-                alert("ভুল পাসওয়ার্ড! আবার চেষ্টা করুন।");
+        function checkAuth() {
+            if (localStorage.getItem('isAdminLoggedIn') === 'true') {
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('admin-content').classList.remove('hidden');
+                loadDashboardData();
             }
         }
 
-        function showDashboard() {
-            document.getElementById('loginArea').classList.add('hidden-content');
-            document.getElementById('dashboardContent').classList.remove('hidden-content');
-            loadDashboardData();
+        function handleLogin() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            if (user === 'admin' && pass === 'ADMIN123') {
+                localStorage.setItem('isAdminLoggedIn', 'true');
+                location.reload(); 
+            } else {
+                document.getElementById('loginError').classList.remove('hidden');
+            }
         }
 
         function logout() {
-            sessionStorage.removeItem('dashboardAccess');
+            localStorage.removeItem('isAdminLoggedIn');
             location.reload();
         }
 
         async function loadDashboardData() {
             try {
-                const response = await fetch(`${scriptURL}?action=dashboard`);
-                const stats = await response.json();
-
-                document.getElementById('totalReg').innerText = stats.totalRegistered;
-                document.getElementById('totalPresent').innerText = stats.presentCount || 0;
-                // ফি কালেকশন হিসাব (উদাহরণ: ১০০০ টাকা প্রতি মেম্বার)
-                document.getElementById('totalCash').innerText = '৳ ' + (stats.totalRegistered * 1000);
-
+                const resStats = await fetch(`${scriptURL}?action=dashboard`);
+                const stats = await resStats.json();
+                
+                document.getElementById('statTotal').innerText = stats.totalRegistered;
+                document.getElementById('statPresent').innerText = stats.presentCount;
+                document.getElementById('statAbsent').innerText = stats.totalRegistered - stats.presentCount;
+                document.getElementById('statCash').innerText = "৳ " + (stats.totalRegistered * 500);
+                document.getElementById('entryCount').innerText = stats.presentCount;
                 updateCharts(stats);
+
+                const filter = document.getElementById('batchFilterReg');
+                filter.innerHTML = '<option value="">সকল ব্যাচ (পাসের সাল)</option>';
+                Object.keys(stats.batchData).sort().forEach(batch => {
+                    filter.innerHTML += `<option value="${batch}">ব্যাচ ${batch}</option>`;
+                });
+
+                const resAll = await fetch(`${scriptURL}?action=get_all_registrations`);
+                allData = await resAll.json();
+                renderTables(allData);
+
             } catch (error) {
-                console.error("ডাটা লোড করতে সমস্যা হয়েছে।");
+                console.error("Data Load Error:", error);
             }
         }
 
-        function updateCharts(stats) {
-            const batchLabels = Object.keys(stats.batchData);
-            const batchValues = Object.values(stats.batchData);
+        function renderTables(data) {
+            const regBody = document.getElementById('regTableBody');
+            const recentBody = document.getElementById('recentTableBody');
+            const entryBody = document.getElementById('entryTableBody');
 
-            if (batchChart) batchChart.destroy();
-            batchChart = new Chart(document.getElementById('batchChart'), {
-                type: 'bar',
-                data: {
-                    labels: batchLabels,
-                    datasets: [{
-                        label: 'মেম্বার',
-                        data: batchValues,
-                        backgroundColor: '#6366f1',
-                        borderRadius: 8
-                    }]
-                },
-                options: { responsive: true }
+            regBody.innerHTML = '';
+            recentBody.innerHTML = '';
+            entryBody.innerHTML = '';
+
+            const recentMembers = [...data].reverse().slice(0, 10);
+            recentMembers.forEach(m => {
+                recentBody.innerHTML += `
+                    <tr class="hover:bg-slate-50">
+                        <td class="px-8 py-4 font-bold text-slate-700">${m.name}</td>
+                        <td class="px-8 py-4 text-slate-500">${m.batch}</td>
+                        <td class="px-8 py-4 text-slate-500">${m.mobile || m.phone || 'N/A'}</td>
+                        <td class="px-8 py-4"><span class="px-2 py-1 rounded-full text-[10px] font-bold ${m.status==='Present'?'bg-green-100 text-green-600':'bg-slate-100 text-slate-400'}">${m.status}</span></td>
+                    </tr>`;
             });
 
-            if (genderChart) genderChart.destroy();
-            genderChart = new Chart(document.getElementById('genderChart'), {
-                type: 'doughnut',
-                data: {
-                    labels: ['পুরুষ', 'মহিলা'],
-                    datasets: [{
-                        data: [stats.genderData["পুরুষ"], stats.genderData["মহিলা"]],
-                        backgroundColor: ['#3b82f6', '#f43f5e']
-                    }]
+            data.forEach(m => {
+                const mobileNo = m.mobile || m.phone || 'N/A';
+                const rowHtml = `
+                    <tr class="hover:bg-slate-50 transition-all">
+                        <td class="px-8 py-5 font-bold text-slate-700">${m.name}</td>
+                        <td class="px-8 py-5 text-slate-500">${m.batch}</td>
+                        <td class="px-8 py-5 text-slate-500">${mobileNo}</td>
+                        <td class="px-8 py-5">
+                            <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase ${m.status === 'Present' ? 'bg-green-100 text-green-600' : 'bg-orange-100 text-orange-600'}">
+                                ${m.status}
+                            </span>
+                        </td>
+                        <td class="px-8 py-5 text-center">
+                            <button onclick='showIdCard(${JSON.stringify(m).replace(/'/g, "&apos;")})' class="bg-indigo-50 text-indigo-600 w-10 h-10 rounded-xl hover:bg-indigo-600 hover:text-white transition-all">
+                                <i class="fas fa-id-card"></i>
+                            </button>
+                        </td>
+                    </tr>`;
+                regBody.innerHTML += rowHtml;
+
+                if(m.status === 'Present') {
+                    entryBody.innerHTML += `
+                        <tr class="hover:bg-green-50">
+                            <td class="px-8 py-5 font-bold">${m.name}</td>
+                            <td class="px-8 py-5 text-slate-500">${m.batch}</td>
+                            <td class="px-8 py-5 text-green-600 font-bold"><i class="fas fa-check-circle mr-2"></i>প্রবেশ করেছেন</td>
+                        </tr>`;
                 }
             });
         }
 
+        function showIdCard(member) {
+            document.getElementById('cardName').innerText = member.name;
+            document.getElementById('cardMobile').innerText = member.mobile || member.phone || 'N/A';
+            document.getElementById('cardBatch').innerText = member.batch;
+            document.getElementById('cardYear').innerText = member.batch; // অথবা পাসের সালের আলাদা ফিল্ড থাকলে সেটি
+            document.getElementById('cardToken').innerText = "ID: " + member.token;
+            
+            // Clear and Generate QR
+            document.getElementById('cardQRCode').innerHTML = "";
+            new QRCode(document.getElementById("cardQRCode"), {
+                text: member.token,
+                width: 100,
+                height: 100
+            });
 
-        // ১. পেজ লোড হওয়ার সাথে সাথে চেক করবে
-window.onload = function() {
-    const isLoggedIn = sessionStorage.getItem('isAdminLoggedIn');
-    if (!isLoggedIn) {
-        showLoginPrompt();
-    } else {
-        // যদি লগইন থাকে তবে ডাটা লোড হবে
-        if (typeof loadStats === "function") loadStats(); 
-        updateClock();
-    }
-};
+            document.getElementById('idCardModal').classList.remove('hidden');
+        }
 
-// ২. পাসওয়ার্ড চাওয়ার ফাংশন
-function showLoginPrompt() {
-    const pass = prompt("অ্যাডমিন পাসওয়ার্ড দিন:");
-    if (pass === "ADMIN123") { // স্ক্রিপ্টের পাসওয়ার্ডের সাথে মিল থাকতে হবে
-        sessionStorage.setItem('isAdminLoggedIn', 'true');
-        location.reload(); // পেজ রিফ্রেশ করে ডাটা দেখাবে
-    } else {
-        alert("ভুল পাসওয়ার্ড! আপনি এই পেজটি দেখতে পারবেন না।");
-        document.body.innerHTML = "<h1 style='text-align:center; margin-top:50px;'>অ্যাক্সেস ডিনাইড (Access Denied)</h1>";
-    }
-}
+        function closeIdCard() {
+            document.getElementById('idCardModal').classList.add('hidden');
+        }
 
-// ৩. লগআউট করার জন্য (ঐচ্ছিক)
-function logout() {
-    sessionStorage.removeItem('isAdminLoggedIn');
-    location.reload();
-}
+        function filterTables() {
+            const batchValue = document.getElementById('batchFilterReg').value;
+            const filtered = batchValue ? allData.filter(m => m.batch == batchValue) : allData;
+            renderTables(filtered);
+        }
+
+        async function verifyMember() {
+            const token = document.getElementById('verifyInput').value.trim();
+            const resultDiv = document.getElementById('verifyResult');
+            if(!token || token === "DBHSP-") return alert("সঠিক টোকেন দিন");
+            resultDiv.innerHTML = '<div class="loader mx-auto h-10 w-10 border-4 rounded-full"></div>';
+            try {
+                const response = await fetch(`${scriptURL}?action=search&token=${token}`);
+                const res = await response.json();
+                if (res.result === 'success') {
+                    const isPresent = res.data.status === "Present";
+                    resultDiv.innerHTML = `
+                        <div class="p-8 bg-white rounded-[2rem] border-2 ${isPresent ? 'border-orange-200 bg-orange-50' : 'border-green-200 bg-green-50'}">
+                            <h4 class="text-2xl font-black text-slate-800 uppercase">${res.data.name}</h4>
+                            <p class="text-slate-600 font-bold mb-4">ব্যাচ: ${res.data.batch}</p>
+                            ${isPresent ? `<p class="text-orange-600 font-bold text-lg">আগেই প্রবেশ করেছেন!</p>` : 
+                            `<button onclick="confirmEntry(${res.data.row})" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold shadow-lg">এন্ট্রি নিশ্চিত করুন</button>`}
+                        </div>`;
+                    document.getElementById('beep').play();
+                } else {
+                    resultDiv.innerHTML = `<div class="p-6 bg-red-50 text-red-600 font-bold rounded-2xl">সদস্য পাওয়া যায়নি!</div>`;
+                }
+            } catch (e) { resultDiv.innerHTML = "ত্রুটি!"; }
+        }
+
+        async function confirmEntry(row) {
+            await fetch(`${scriptURL}?action=mark_entry&row=${row}`);
+            alert("উপস্থিতি সফল!");
+            document.getElementById('verifyInput').value = "DBHSP-";
+            document.getElementById('verifyResult').innerHTML = "";
+            loadDashboardData();
+        }
+
+        function updateCharts(stats) {
+            const ctxB = document.getElementById('batchCompareChart').getContext('2d');
+            if (window.bChart) window.bChart.destroy();
+            window.bChart = new Chart(ctxB, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(stats.batchData),
+                    datasets: [{ label: 'রেজিস্ট্রেশন', data: Object.values(stats.batchData), backgroundColor: '#4f46e5', borderRadius: 8 }]
+                }
+            });
+
+            const ctxG = document.getElementById('genderPieChart').getContext('2d');
+            if (window.gChart) window.gChart.destroy();
+            window.gChart = new Chart(ctxG, {
+                type: 'doughnut',
+                data: {
+                    labels: ['পুরুষ', 'মহিলা'],
+                    datasets: [{ data: [stats.genderData["পুরুষ"] || 0, stats.genderData["মহিলা"] || 0], backgroundColor: ['#4f46e5', '#ec4899'] }]
+                }
+            });
+        }
+
+        function showSection(id, btn) {
+            document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden-section'));
+            document.getElementById(id + '-section').classList.remove('hidden-section');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('sidebar-active', 'text-indigo-600'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.add('text-slate-500'));
+            btn.classList.add('sidebar-active', 'text-indigo-600');
+            btn.classList.remove('text-slate-500');
+        }
+
+        function exportToExcel() {
+            const wb = XLSX.utils.table_to_book(document.getElementById('mainTable'));
+            XLSX.writeFile(wb, "Student_List.xlsx");
+        }
+
+        window.onload = checkAuth;
     </script>
 </body>
 </html>
