@@ -9,7 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
         
         * {
             margin: 0;
@@ -19,547 +19,662 @@
 
         body { 
             font-family: 'Hind Siliguri', 'Inter', sans-serif; 
-            background: linear-gradient(145deg, #f5f7fc 0%, #eef2f6 100%);
-            color: #1e293b; 
-            min-height: 100vh;
-        }
-
-        /* Clean Card Style */
-        .clean-card {
-            background: #ffffff;
-            border-radius: 40px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-            border: 1px solid rgba(0, 0, 0, 0.02);
-        }
-
-        /* Form Elements */
-        .form-input { 
-            background: #f8fafc; 
-            border: 2px solid #e9edf2; 
+            background: linear-gradient(145deg, #f0f4fa 0%, #e9eef5 100%);
             color: #0f172a; 
-            border-radius: 24px;
-            padding: 16px 20px;
-            font-size: 16px;
-            transition: all 0.2s ease;
-            width: 100%;
-            font-weight: 500;
-            font-family: 'Hind Siliguri', sans-serif;
+            min-height: 100vh;
+            padding: 20px 12px;
+        }
+
+        /* লাক্সারি কার্ড স্টাইল */
+        .luxury-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 48px;
+            box-shadow: 
+                0 40px 70px -25px rgba(0, 20, 40, 0.25),
+                0 0 0 1px rgba(255, 255, 255, 0.9) inset,
+                0 0 0 1px rgba(37, 99, 235, 0.08);
+        }
+
+        /* ফর্ম হেডার */
+        .form-header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding: 0 8px;
         }
         
-        .form-input:focus { 
-            border-color: #2563eb; 
-            background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-            outline: none; 
+        .form-header h1 {
+            font-size: 2.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0f172a, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .form-header p {
+            color: #64748b;
+            font-size: 1rem;
+            font-weight: 400;
         }
 
-        select.form-input {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 20px center;
-            background-size: 20px;
+        /* প্রিমিয়াম ইনপুট গ্রুপ */
+        .input-group {
+            margin-bottom: 24px;
+            position: relative;
         }
 
-        .form-label {
+        .input-group label {
             display: block;
             font-size: 0.95rem;
             font-weight: 600;
-            margin-bottom: 8px;
-            color: #334155;
+            margin-bottom: 10px;
+            color: #1e293b;
+            letter-spacing: -0.2px;
+            padding-left: 8px;
         }
 
-        /* Radio Group - Clean */
-        .radio-group {
-            display: flex;
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #2563eb;
+            font-size: 1.2rem;
+            opacity: 0.7;
+            transition: all 0.2s;
+            z-index: 1;
+        }
+
+        .premium-field {
+            width: 100%;
+            background: #ffffff;
+            border: 2px solid #e6edf5;
+            border-radius: 30px;
+            padding: 18px 24px 18px 52px;
+            font-size: 16px;
+            font-family: 'Hind Siliguri', sans-serif;
+            color: #0f172a;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.02);
+        }
+
+        .premium-field:focus {
+            border-color: #2563eb;
+            box-shadow: 0 8px 25px -10px rgba(37, 99, 235, 0.3), 0 0 0 4px rgba(37, 99, 235, 0.1);
+            outline: none;
+            padding-left: 56px;
+        }
+
+        .premium-field:focus + i {
+            opacity: 1;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .premium-field::placeholder {
+            color: #b9c7da;
+            font-weight: 400;
+        }
+
+        /* সিলেক্ট ফিল্ড */
+        select.premium-field {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%232563eb' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 20px center;
+            background-size: 18px;
+            background-color: #ffffff;
+        }
+
+        /* গ্রিড লেআউট */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
-            background: #f8fafc;
-            padding: 8px;
-            border-radius: 28px;
-            border: 2px solid #e9edf2;
+            margin-bottom: 24px;
+        }
+
+        /* রেডিও গ্রুপ - প্রিমিয়াম */
+        .radio-premium {
+            display: flex;
+            gap: 15px;
+            background: #f8fafd;
+            padding: 6px;
+            border-radius: 40px;
+            border: 2px solid #e6edf5;
         }
         
-        .radio-option {
+        .radio-premium-item {
             flex: 1;
             position: relative;
         }
         
-        .radio-option input[type="radio"] {
+        .radio-premium-item input[type="radio"] {
             position: absolute;
             opacity: 0;
+            width: 0;
+            height: 0;
         }
         
-        .radio-option label {
+        .radio-premium-item label {
             display: block;
             text-align: center;
-            padding: 12px 20px;
+            padding: 16px 10px;
             background: transparent;
-            border-radius: 24px;
+            border-radius: 34px;
             font-weight: 600;
             color: #64748b;
             cursor: pointer;
             transition: all 0.2s;
             font-size: 1rem;
+            letter-spacing: -0.2px;
         }
         
-        .radio-option input[type="radio"]:checked + label {
+        .radio-premium-item input[type="radio"]:checked + label {
             background: #2563eb;
             color: white;
-            box-shadow: 0 8px 15px -6px #2563eb;
+            box-shadow: 0 10px 20px -8px #2563eb;
         }
 
-        /* Fee Box - Clean */
-        .fee-box {
-            background: #0f172a;
-            border-radius: 32px;
-            padding: 24px;
-            color: white;
-            text-align: center;
-        }
-        
-        .fee-label {
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.7;
-            margin-bottom: 8px;
-        }
-        
-        .fee-amount {
-            font-size: 3.5rem;
-            font-weight: 800;
-            line-height: 1;
-        }
-        
-        .fee-amount small {
-            font-size: 1.2rem;
-            font-weight: 500;
-            opacity: 0.7;
-        }
-
-        /* Button */
-        .btn-primary {
-            background: #2563eb;
-            color: white;
+        /* ফি বক্স - লাক্সারি */
+        .fee-luxury {
+            background: linear-gradient(145deg, #0b1424, #1a2639);
             border-radius: 40px;
-            padding: 18px 32px;
+            padding: 30px 24px;
+            text-align: center;
+            margin: 30px 0 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.3);
+        }
+
+        .fee-luxury::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.2), transparent 70%);
+            border-radius: 50%;
+        }
+
+        .fee-luxury::after {
+            content: '';
+            position: absolute;
+            bottom: -50%;
+            left: -20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.15), transparent 70%);
+            border-radius: 50%;
+        }
+
+        .fee-label-luxury {
+            font-size: 1rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .fee-amount-luxury {
+            font-size: 4.2rem;
+            font-weight: 800;
+            color: white;
+            line-height: 1;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        }
+
+        .fee-amount-luxury small {
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: #94a3b8;
+        }
+
+        /* বাটন - লাক্সারি */
+        .btn-luxury {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border-radius: 50px;
+            padding: 22px 28px;
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             width: 100%;
             border: none;
             cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 15px 25px -8px rgba(37, 99, 235, 0.4);
-        }
-        
-        .btn-primary:hover {
-            background: #1d4ed8;
-            transform: translateY(-2px);
-            box-shadow: 0 20px 30px -8px rgba(37, 99, 235, 0.5);
+            transition: all 0.3s;
+            box-shadow: 0 20px 35px -10px #2563eb80;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            margin-top: 8px;
         }
 
-        .btn-secondary {
-            background: white;
-            border: 2px solid #e2e8f0;
-            color: #475569;
-            border-radius: 40px;
-            padding: 14px 24px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        
-        .btn-secondary:hover {
-            border-color: #2563eb;
-            color: #2563eb;
-            background: #f8fafc;
+        .btn-luxury::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
         }
 
-        /* Event Card - Clean Premium */
-        .event-card {
-            background: #ffffff;
-            border-radius: 48px;
-            padding: 32px;
-            box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            max-width: 450px;
-            margin: 0 auto;
+        .btn-luxury:hover::before {
+            left: 100%;
         }
-        
-        .card-header {
+
+        .btn-luxury:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 25px 40px -10px #2563eb;
+        }
+
+        .btn-luxury i {
+            margin-right: 12px;
+            font-size: 1.4rem;
+        }
+
+        /* ইভেন্ট সেকশন - লাক্সারি */
+        .event-luxury {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 44px;
+            padding: 32px 28px;
+            margin-top: 25px;
+            box-shadow: 
+                0 30px 50px -25px rgba(0, 20, 40, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+        }
+
+        .event-header-luxury {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f1f5f9;
         }
-        
-        .school-badge {
-            background: #0f172a;
+
+        .event-badge-luxury {
+            background: #2563eb;
             color: white;
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-weight: 700;
+            padding: 8px 22px;
+            border-radius: 40px;
             font-size: 0.9rem;
+            font-weight: 600;
             letter-spacing: 0.5px;
+            box-shadow: 0 5px 12px -4px #2563eb;
         }
-        
-        .card-title {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-        
-        .card-title h2 {
-            font-size: 1.6rem;
+
+        .event-title-luxury {
+            font-size: 2rem;
             font-weight: 800;
             color: #0f172a;
+            margin-bottom: 25px;
+            letter-spacing: -0.5px;
+        }
+
+        .info-block {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 18px 20px;
+            background: #f8fafd;
+            border-radius: 32px;
+            margin-bottom: 15px;
+            border: 1px solid #e6edf5;
+            transition: all 0.2s;
+        }
+
+        .info-block:hover {
+            border-color: #2563eb40;
+            background: #ffffff;
+            transform: translateX(5px);
+        }
+
+        .info-icon-block {
+            width: 54px;
+            height: 54px;
+            background: #ffffff;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px -5px rgba(37, 99, 235, 0.2);
+            flex-shrink: 0;
+        }
+
+        .info-content-block {
+            flex: 1;
+        }
+
+        .info-label-block {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             margin-bottom: 4px;
         }
-        
-        .card-title p {
+
+        .info-value-block {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.3;
+        }
+
+        .countdown-luxury {
+            background: #0f172a;
+            border-radius: 40px;
+            padding: 28px 20px;
+            margin-top: 25px;
+            text-align: center;
+            color: white;
+        }
+
+        .countdown-title-luxury {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .countdown-digits-luxury {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .countdown-digit-block {
+            text-align: center;
+        }
+
+        .digit-large {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            line-height: 1;
+            text-shadow: 0 2px 15px #2563eb80;
+        }
+
+        .digit-label-small {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-top: 5px;
+        }
+
+        .contact-luxury {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            background: #eef2ff;
+            color: #2563eb;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #2563eb20;
+        }
+
+        /* সাকসেস কার্ড */
+        .success-card-luxury {
+            background: #ffffff;
+            border-radius: 48px;
+            padding: 35px 28px;
+            box-shadow: 0 40px 70px -25px rgba(0, 20, 40, 0.3);
+        }
+
+        .event-card-luxury {
+            background: #ffffff;
+            border-radius: 44px;
+            padding: 32px 28px;
+            box-shadow: 0 25px 45px -20px rgba(0, 0, 0, 0.2);
+            border: 1px solid #edf2f7;
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .card-header-luxury {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .school-badge-luxury {
+            background: #0f172a;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .card-title-luxury {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .card-title-luxury h2 {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 5px;
+        }
+
+        .card-title-luxury p {
             color: #2563eb;
             font-weight: 600;
             font-size: 0.9rem;
         }
-        
-        .card-body {
+
+        .card-body-luxury {
             display: flex;
-            gap: 20px;
-            margin-bottom: 24px;
+            gap: 25px;
+            margin-bottom: 28px;
         }
-        
-        .photo-area {
+
+        .photo-area-luxury {
             width: 100px;
             height: 120px;
             background: #f1f5f9;
-            border-radius: 24px;
+            border-radius: 28px;
             overflow: hidden;
             border: 3px solid white;
-            box-shadow: 0 8px 15px -6px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 20px -8px rgba(0,0,0,0.1);
             flex-shrink: 0;
         }
-        
-        .photo-area img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .info-area {
+
+        .info-area-luxury {
             flex: 1;
         }
-        
-        .info-area h3 {
+
+        .info-area-luxury h3 {
             font-size: 1.4rem;
             font-weight: 800;
             color: #0f172a;
             margin-bottom: 12px;
-            line-height: 1.2;
         }
-        
-        .info-row {
+
+        .info-row-luxury {
             display: flex;
             margin-bottom: 8px;
-            font-size: 0.95rem;
         }
-        
-        .info-label {
-            width: 65px;
-            color: #64748b;
+
+        .info-label-luxury {
+            width: 70px;
+            color: #94a3b8;
             font-weight: 500;
         }
-        
-        .info-value {
+
+        .info-value-luxury {
             font-weight: 700;
             color: #0f172a;
         }
-        
-        .token-section {
-            background: #f1f5f9;
-            border-radius: 24px;
-            padding: 16px;
+
+        .token-section-luxury {
+            background: #f8fafd;
+            border-radius: 32px;
+            padding: 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin: 20px 0;
+            margin: 25px 0;
         }
-        
-        .token-id {
-            font-size: 1.3rem;
+
+        .token-id-luxury {
+            font-size: 1.4rem;
             font-weight: 800;
             color: #2563eb;
-            letter-spacing: 1px;
         }
-        
-        .qr-box {
+
+        .qr-box-luxury {
             background: white;
             padding: 8px;
-            border-radius: 16px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-        
-        #qrcode {
-            width: 80px;
-            height: 80px;
-        }
-        
-        .card-footer {
-            text-align: center;
-            color: #94a3b8;
-            font-size: 0.8rem;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px dashed #e2e8f0;
-        }
-
-        /* Event Details Section - Mobile Optimized */
-        .event-details-card {
-            background: linear-gradient(145deg, #ffffff, #f8fafc);
-            border-radius: 32px;
-            padding: 20px;
-            margin-bottom: 28px;
-            border: 1px solid rgba(37, 99, 235, 0.1);
-            box-shadow: 0 10px 25px -12px rgba(37, 99, 235, 0.15);
-        }
-
-        .event-badge {
-            background: #2563eb;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 40px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .info-chip {
-            background: white;
             border-radius: 18px;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid #e2e8f0;
-            width: 100%;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.02);
         }
 
-        .chip-icon {
-            width: 36px;
-            height: 36px;
-            background: #eef2ff;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #2563eb;
-            font-size: 1rem;
-            flex-shrink: 0;
+        #qrcode {
+            width: 75px;
+            height: 75px;
         }
 
-        .countdown-box {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border-radius: 24px;
-            padding: 16px;
-            text-align: center;
-            color: white;
-            margin-top: 16px;
-        }
-
-        .countdown-numbers {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 8px;
-            flex-wrap: wrap;
-        }
-
-        .countdown-item {
-            text-align: center;
-            min-width: 60px;
-        }
-
-        .countdown-value {
-            font-size: 1.6rem;
-            font-weight: 800;
-            line-height: 1;
-            background: rgba(255,255,255,0.1);
-            padding: 6px 8px;
-            border-radius: 12px;
-        }
-
-        .countdown-label {
-            font-size: 0.7rem;
-            opacity: 0.7;
-            margin-top: 2px;
-        }
-
-        /* Mobile Optimizations */
+        /* মোবাইল অপটিমাইজেশন */
         @media (max-width: 640px) {
             body {
-                padding: 8px !important;
+                padding: 16px 10px;
             }
             
-            .clean-card {
-                border-radius: 28px;
-                padding: 20px 16px !important;
+            .form-header h1 {
+                font-size: 2rem;
             }
             
-            .event-details-card {
-                padding: 16px;
-                margin-bottom: 20px;
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
             }
             
-            .event-badge {
-                font-size: 0.7rem;
-                padding: 4px 10px;
+            .premium-field {
+                padding: 16px 20px 16px 48px;
+                font-size: 15px;
             }
             
-            .info-chip {
-                padding: 10px;
-            }
-            
-            .chip-icon {
-                width: 32px;
-                height: 32px;
-                font-size: 0.9rem;
-            }
-            
-            .info-chip p {
-                font-size: 0.75rem;
-            }
-            
-            .info-chip .font-bold {
-                font-size: 0.85rem;
-            }
-            
-            .countdown-value {
-                font-size: 1.4rem;
-                min-width: 45px;
-                padding: 4px 6px;
-            }
-            
-            .countdown-item {
-                min-width: 45px;
-            }
-            
-            .card-body {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                gap: 15px;
-            }
-            
-            .info-row {
-                justify-content: center;
-            }
-            
-            .token-section {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-                padding: 15px;
-            }
-            
-            .radio-group {
-                flex-direction: column;
-                gap: 8px;
-                padding: 6px;
-            }
-            
-            .radio-option label {
-                padding: 10px 16px;
-                font-size: 0.95rem;
-            }
-            
-            .fee-amount {
-                font-size: 2.5rem;
-            }
-            
-            .fee-box {
-                padding: 18px;
-            }
-            
-            .btn-primary {
-                padding: 16px 24px;
+            .input-wrapper i {
+                left: 18px;
                 font-size: 1.1rem;
             }
             
-            .btn-secondary {
-                padding: 12px 16px;
-                font-size: 0.9rem;
+            .fee-amount-luxury {
+                font-size: 3.5rem;
             }
             
-            .form-input {
-                padding: 14px 18px;
+            .btn-luxury {
+                padding: 18px 24px;
+                font-size: 1.2rem;
             }
             
-            .grid-cols-2 {
+            .event-header-luxury {
+                flex-direction: column;
+                align-items: flex-start;
                 gap: 12px;
             }
             
-            h1.text-3xl {
-                font-size: 1.8rem;
+            .info-block {
+                padding: 15px;
             }
             
-            .card-header {
+            .info-icon-block {
+                width: 48px;
+                height: 48px;
+                font-size: 1.3rem;
+            }
+            
+            .countdown-digits-luxury {
+                gap: 15px;
+            }
+            
+            .digit-large {
+                font-size: 2rem;
+            }
+            
+            .contact-luxury {
                 flex-direction: column;
-                gap: 10px;
-                align-items: flex-start;
             }
             
-            .school-badge {
-                align-self: flex-start;
-            }
-        }
-
-        /* Small phones */
-        @media (max-width: 380px) {
-            .countdown-numbers {
-                gap: 8px;
+            .contact-item {
+                width: 100%;
+                justify-content: center;
             }
             
-            .countdown-value {
-                font-size: 1.2rem;
-                min-width: 40px;
-            }
-            
-            .countdown-item {
-                min-width: 40px;
-            }
-            
-            .info-chip {
+            .card-body-luxury {
                 flex-direction: column;
+                align-items: center;
                 text-align: center;
             }
             
-            .chip-icon {
-                margin-bottom: 4px;
+            .info-row-luxury {
+                justify-content: center;
+            }
+            
+            .token-section-luxury {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .radio-premium-item label {
+                padding: 14px 8px;
+                font-size: 0.95rem;
             }
         }
 
-        /* Animation */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* অ্যানিমেশন */
+        @keyframes slideUpLuxury {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
-        .fade-up {
-            animation: fadeUp 0.4s ease-out;
+        .animate-luxury {
+            animation: slideUpLuxury 0.5s ease-out;
         }
 
-        /* Loading */
-        .spinner {
+        /* লোডিং স্পিনার */
+        .spinner-luxury {
             width: 24px;
             height: 24px;
             border: 3px solid rgba(255,255,255,0.3);
             border-radius: 50%;
             border-top-color: white;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s linear infinite;
             display: inline-block;
         }
         
@@ -568,370 +683,329 @@
         }
     </style>
 </head>
-<body class="flex items-start justify-center p-3 md:p-4 min-h-screen">
+<body>
 
-    <!-- Simple Navigation - Mobile Optimized -->
-    <nav class="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md border-b border-gray-200 z-50 no-print">
-        <div class="max-w-7xl mx-auto px-3 md:px-4">
-            <div class="flex items-center justify-between h-14 md:h-16">
-                <a href="index.html" class="flex items-center space-x-1.5 md:space-x-2 group">
-                    <div class="w-8 h-8 md:w-9 md:h-9 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
-                        <span class="text-white font-bold text-xs md:text-sm">DB</span>
-                    </div>
-                    <span class="font-bold text-gray-900 text-sm md:text-base">DBHS Alumni</span>
-                </a>
-                <a href="index.html" class="text-gray-500 hover:text-blue-600 text-xs md:text-sm flex items-center gap-1.5 bg-gray-100 px-3 py-1.5 md:px-4 md:py-2 rounded-full">
-                    <i class="fas fa-home text-xs"></i>
-                    <span class="hidden xs:inline">হোম</span>
-                </a>
-            </div>
+    <!-- মিনিমাল নেভিগেশন -->
+    <nav class="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-md border-b border-gray-100 z-50 no-print" style="max-width: 600px; margin: 0 auto; left: 50%; transform: translateX(-50%);">
+        <div class="px-5 py-3 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2">
+                <div class="w-9 h-9 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center shadow-md">
+                    <span class="text-white font-bold text-sm">DB</span>
+                </div>
+                <span class="font-semibold text-gray-900">DBHS Alumni</span>
+            </a>
+            <a href="index.html" class="text-gray-400 hover:text-blue-600 text-sm bg-gray-50 px-5 py-2 rounded-full">
+                হোম
+            </a>
         </div>
     </nav>
 
-    <!-- Main Container - Mobile Optimized -->
-    <div class="w-full max-w-2xl mx-auto mt-16 md:mt-20 mb-4 md:mb-8 px-0">
+    <!-- মেইন কন্টেইনার - বর্ধিত প্যাডিং সহ -->
+    <div class="max-w-2xl mx-auto" style="margin-top: 85px; margin-bottom: 30px; padding: 0 16px;">
         
-        <!-- Registration Card -->
-        <div id="registrationCard" class="clean-card p-5 md:p-8 fade-up">
+        <!-- ===== প্রিমিয়াম রেজিস্ট্রেশন ফর্ম ===== -->
+        <div id="registrationCard" class="luxury-card p-8 md:p-10 animate-luxury">
             
-            <!-- ইভেন্ট ডিটেইলস সেকশন - মোবাইল অপটিমাইজড -->
-            <div class="event-details-card">
-                <!-- হেডার -->
-                <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
-                    <div class="flex items-center gap-2">
-                        <div class="event-badge">
-                            <i class="fas fa-calendar-alt text-xs"></i>
-                            <span>আসন্ন ইভেন্ট</span>
-                        </div>
-                    </div>
-                    <span class="bg-green-100 text-green-700 text-xs px-3 py-1.5 rounded-full font-medium whitespace-nowrap">
-                        <i class="fas fa-clock mr-1"></i>১৫ দিন পর
-                    </span>
-                </div>
-                
-                <!-- ইভেন্ট টাইটেল -->
-                <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">
-                    পুনর্মিলনী ২০২৫
-                </h3>
-                
-                <!-- মূল তথ্য গ্রিড - মোবাইলে স্ট্যাক -->
-                <div class="space-y-2 mb-3">
-                    <div class="info-chip">
-                        <div class="chip-icon">
-                            <i class="fas fa-calendar-day"></i>
-                        </div>
-                        <div class="flex-1">
-                            <p class="text-xs text-gray-500">তারিখ</p>
-                            <p class="font-bold text-sm md:text-base text-gray-800">১৫ ডিসেম্বর ২০২৫</p>
-                            <p class="text-xs text-gray-500">শুক্রবার</p>
-                        </div>
-                    </div>
-                    
-                    <div class="info-chip">
-                        <div class="chip-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div class="flex-1">
-                            <p class="text-xs text-gray-500">সময়</p>
-                            <p class="font-bold text-sm md:text-base text-gray-800">সকাল ১০:০০ - রাত ৮:০০</p>
-                        </div>
-                    </div>
-                    
-                    <div class="info-chip">
-                        <div class="chip-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div class="flex-1">
-                            <p class="text-xs text-gray-500">স্থান</p>
-                            <p class="font-bold text-sm md:text-base text-gray-800">স্কুল মাঠ, দৌলতপুর</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- গুরুত্বপূর্ণ তথ্য - মোবাইলে স্ট্যাক -->
-                <div class="space-y-2 mb-3">
-                    <div class="bg-white rounded-2xl p-3 border border-gray-100">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-ticket-alt text-purple-600 text-sm"></i>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-500">রেজিস্ট্রেশন শেষ তারিখ</p>
-                                <p class="font-bold text-sm">১০ ডিসেম্বর ২০২৫</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-white rounded-2xl p-3 border border-gray-100">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-phone-alt text-red-600 text-sm"></i>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-500">জরুরি যোগাযোগ</p>
-                                <p class="font-bold text-sm">০১৭০০-০০০০০০</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- কাউন্টডাউন - মোবাইল ফ্রেন্ডলি -->
-                <div class="countdown-box">
-                    <p class="text-xs md:text-sm opacity-90 flex items-center justify-center gap-2">
-                        <i class="fas fa-hourglass-half"></i>
-                        ইভেন্ট শুরু হতে বাকি
-                    </p>
-                    <div class="countdown-numbers">
-                        <div class="countdown-item">
-                            <div class="countdown-value">১৫</div>
-                            <div class="countdown-label">দিন</div>
-                        </div>
-                        <div class="countdown-item">
-                            <div class="countdown-value">০৮</div>
-                            <div class="countdown-label">ঘন্টা</div>
-                        </div>
-                        <div class="countdown-item">
-                            <div class="countdown-value">৩০</div>
-                            <div class="countdown-label">মিনিট</div>
-                        </div>
-                    </div>
-                </div>
+            <div class="form-header">
+                <h1>মেম্বারশিপ রেজিস্ট্রেশন</h1>
+                <p>আপনার তথ্য দিয়ে সদস্যপদ নিশ্চিত করুন</p>
             </div>
 
-            <!-- Header -->
-            <div class="text-center mb-6 md:mb-8">
-                <h1 class="text-2xl md:text-4xl font-bold text-gray-900 mb-1 md:mb-2">
-                    রেজিস্ট্রেশন ফর্ম
-                </h1>
-                <p class="text-gray-500 text-xs md:text-sm">
-                    নিচের ফর্মটি পূরণ করে আপনার সদস্যপদ নিশ্চিত করুন
-                </p>
-            </div>
-
-            <!-- Error Alert - Mobile Optimized -->
+            <!-- এরর এলার্ট -->
             <div id="errorAlert" style="display:none;" 
-                 class="mb-4 p-3 bg-red-50 border border-red-200 rounded-2xl">
-                <div class="flex items-center gap-2">
-                    <i class="fas fa-exclamation-circle text-red-500 text-sm"></i>
-                    <p class="text-red-600 text-xs" id="errorMessage"></p>
-                </div>
+                 class="mb-6 p-5 bg-red-50 border border-red-100 rounded-3xl">
+                <p class="text-red-500 text-sm font-medium" id="errorMessage"></p>
             </div>
 
-            <!-- Form - Mobile Optimized -->
-            <form id="regForm" class="space-y-4 md:space-y-5">
+            <!-- ফর্ম -->
+            <form id="regForm">
                 
-                <!-- Full Name -->
-                <div>
-                    <label class="form-label text-sm md:text-base">
-                        <i class="fas fa-user text-blue-600 mr-1 text-xs md:text-sm"></i>
-                        পূর্ণ নাম
-                    </label>
-                    <input type="text" id="name" name="name" 
-                           class="form-input text-sm md:text-base" 
-                           placeholder="আপনার নাম লিখুন" 
-                           required>
-                </div>
-
-                <!-- Batch and Year - Mobile Stack -->
-                <div class="grid grid-cols-2 gap-3 md:gap-4">
-                    <div>
-                        <label class="form-label text-sm md:text-base">
-                            <i class="fas fa-layer-group text-blue-600 mr-1 text-xs md:text-sm"></i>
-                            ব্যাচ
-                        </label>
-                        <select id="batch_no" name="batch_no" class="form-input text-sm md:text-base" required>
-                            <option value="">ব্যাচ</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="form-label text-sm md:text-base">
-                            <i class="fas fa-calendar-alt text-blue-600 mr-1 text-xs md:text-sm"></i>
-                            সাল
-                        </label>
-                        <select id="pass_year" name="pass_year" class="form-input text-sm md:text-base" required>
-                            <option value="">সাল</option>
-                        </select>
+                <!-- পূর্ণ নাম -->
+                <div class="input-group">
+                    <label><i class="fas fa-user-circle mr-2 text-blue-600"></i>পূর্ণ নাম</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="name" name="name" 
+                               class="premium-field" 
+                               placeholder="আপনার নাম লিখুন" 
+                               required>
                     </div>
                 </div>
 
-                <!-- Gender -->
-                <div>
-                    <label class="form-label text-sm md:text-base">
-                        <i class="fas fa-venus-mars text-blue-600 mr-1 text-xs md:text-sm"></i>
-                        লিঙ্গ
-                    </label>
-                    <div class="radio-group">
-                        <div class="radio-option">
+                <!-- ব্যাচ ও সাল গ্রিড -->
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label><i class="fas fa-layer-group mr-2 text-blue-600"></i>এসএসসি ব্যাচ</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-hashtag"></i>
+                            <select id="batch_no" name="batch_no" class="premium-field" required>
+                                <option value="">ব্যাচ নির্বাচন</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label><i class="fas fa-calendar-alt mr-2 text-blue-600"></i>পাসের সাল</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-calendar"></i>
+                            <select id="pass_year" name="pass_year" class="premium-field" required>
+                                <option value="">সাল নির্বাচন</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- লিঙ্গ -->
+                <div class="input-group">
+                    <label><i class="fas fa-venus-mars mr-2 text-blue-600"></i>লিঙ্গ</label>
+                    <div class="radio-premium">
+                        <div class="radio-premium-item">
                             <input type="radio" name="gender" id="male" value="পুরুষ" required>
-                            <label for="male" class="text-sm md:text-base">পুরুষ</label>
+                            <label for="male">পুরুষ</label>
                         </div>
-                        <div class="radio-option">
+                        <div class="radio-premium-item">
                             <input type="radio" name="gender" id="female" value="মহিলা">
-                            <label for="female" class="text-sm md:text-base">মহিলা</label>
+                            <label for="female">মহিলা</label>
                         </div>
                     </div>
                 </div>
 
-                <!-- Mobile Number -->
-                <div>
-                    <label class="form-label text-sm md:text-base">
-                        <i class="fas fa-phone-alt text-blue-600 mr-1 text-xs md:text-sm"></i>
-                        মোবাইল নম্বর
-                    </label>
-                    <input type="tel" id="mobile" name="mobile" 
-                           class="form-input text-sm md:text-base" 
-                           placeholder="017XXXXXXXX" 
-                           pattern="01[3-9][0-9]{8}" 
-                           required>
-                </div>
-
-                <!-- Event Selection -->
-                <div>
-                    <label class="form-label text-sm md:text-base">
-                        <i class="fas fa-calendar-check text-blue-600 mr-1 text-xs md:text-sm"></i>
-                        ইভেন্ট নির্বাচন
-                    </label>
-                    <select id="event_type" name="event_type" class="form-input text-sm md:text-base" onchange="updateFee()" required>
-                        <option value="">ইভেন্ট</option>
-                        <option value="পুনর্মিলনী ২০২৫">🏆 পুনর্মিলনী ২০২৫ (১০০০৳)</option>
-                        <option value="ইফতার মাহফিল">🌙 ইফতার মাহফিল (৩০০৳)</option>
-                        <option value="আজীবন সদস্যপদ">⭐ আজীবন সদস্যপদ (২০০০৳)</option>
-                    </select>
-                </div>
-
-                <!-- Photo Upload -->
-                <div>
-                    <label class="form-label text-sm md:text-base">
-                        <i class="fas fa-camera text-blue-600 mr-1 text-xs md:text-sm"></i>
-                        ছবি (ঐচ্ছিক)
-                    </label>
-                    <input type="file" id="photo" accept="image/*" 
-                           class="form-input text-sm md:text-base py-3" 
-                           onchange="previewImage(event)">
-                    <p class="text-2xs md:text-xs text-gray-400 mt-1">সর্বোচ্চ ২এমবি (JPG/PNG)</p>
-                </div>
-
-                <!-- Fee Box -->
-                <div class="fee-box">
-                    <div class="fee-label text-xs md:text-sm">মোট ফি</div>
-                    <div class="fee-amount text-3xl md:text-4xl lg:text-5xl">
-                        ৳<span id="fee_amount">0</span><small class="text-sm md:text-base">.00</small>
+                <!-- মোবাইল নম্বর -->
+                <div class="input-group">
+                    <label><i class="fas fa-phone-alt mr-2 text-blue-600"></i>মোবাইল নম্বর</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-mobile-alt"></i>
+                        <input type="tel" id="mobile" name="mobile" 
+                               class="premium-field" 
+                               placeholder="017XXXXXXXX" 
+                               pattern="01[3-9][0-9]{8}" 
+                               required>
                     </div>
                 </div>
 
-                <!-- Payment Method -->
-                <div>
-                    <label class="form-label text-sm md:text-base">
-                        <i class="fas fa-credit-card text-blue-600 mr-1 text-xs md:text-sm"></i>
-                        পেমেন্ট পদ্ধতি
-                    </label>
-                    <select id="payment_method" name="payment_method" class="form-input text-sm md:text-base" required>
-                        <option value="Online">📱 অনলাইন পেমেন্ট</option>
-                        <option value="Cash">💵 নগদ পেমেন্ট</option>
-                    </select>
+                <!-- ইভেন্ট নির্বাচন -->
+                <div class="input-group">
+                    <label><i class="fas fa-calendar-check mr-2 text-blue-600"></i>ইভেন্ট নির্বাচন</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-ticket-alt"></i>
+                        <select id="event_type" name="event_type" class="premium-field" onchange="updateFee()" required>
+                            <option value="">ইভেন্ট নির্বাচন করুন</option>
+                            <option value="পুনর্মিলনী ২০২৫">🏆 পুনর্মিলনী ২০২৫ (১০০০৳)</option>
+                            <option value="ইফতার মাহফিল">🌙 ইফতার মাহফিল (৩০০৳)</option>
+                            <option value="আজীবন সদস্যপদ">⭐ আজীবন সদস্যপদ (২০০০৳)</option>
+                        </select>
+                    </div>
                 </div>
 
-                <!-- Submit Button -->
-                <button type="submit" id="submitBtn" class="btn-primary text-base md:text-lg py-4 md:py-5">
-                    <i class="fas fa-check-circle mr-2 text-sm md:text-base"></i>
+                <!-- ছবি আপলোড -->
+                <div class="input-group">
+                    <label><i class="fas fa-camera mr-2 text-blue-600"></i>ছবি (ঐচ্ছিক)</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-image"></i>
+                        <input type="file" id="photo" accept="image/*" 
+                               class="premium-field pt-4 pb-4" 
+                               onchange="previewImage(event)">
+                    </div>
+                    <p class="text-xs text-gray-400 mt-2 ml-3">সর্বোচ্চ ২এমবি (JPG, PNG)</p>
+                </div>
+
+                <!-- ফি বক্স - লাক্সারি -->
+                <div class="fee-luxury">
+                    <div class="fee-label-luxury">মোট প্রদেয় ফি</div>
+                    <div class="fee-amount-luxury">
+                        ৳<span id="fee_amount">0</span><small>.00</small>
+                    </div>
+                </div>
+
+                <!-- পেমেন্ট পদ্ধতি -->
+                <div class="input-group">
+                    <label><i class="fas fa-credit-card mr-2 text-blue-600"></i>পেমেন্ট পদ্ধতি</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <select id="payment_method" name="payment_method" class="premium-field" required>
+                            <option value="Online">📱 অনলাইন পেমেন্ট (বিকাশ/নগদ)</option>
+                            <option value="Cash">💵 নগদ পেমেন্ট (অফিসে)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- সাবমিট বাটন -->
+                <button type="submit" id="submitBtn" class="btn-luxury">
+                    <i class="fas fa-check-circle"></i>
                     রেজিস্ট্রেশন সম্পন্ন করুন
                 </button>
 
-                <!-- Terms -->
-                <p class="text-center text-2xs md:text-xs text-gray-400 mt-3 md:mt-4">
-                    <i class="fas fa-shield-alt text-blue-600 mr-1 text-xs"></i>
-                    রেজিস্ট্রেশন করে আপনি শর্তাবলী মেনে নিচ্ছেন
+                <!-- টার্মস -->
+                <p class="text-center text-xs text-gray-400 mt-8">
+                    <i class="fas fa-shield-alt text-blue-600 mr-1"></i>
+                    রেজিস্ট্রেশন করে আপনি আমাদের শর্তাবলী মেনে নিচ্ছেন
                 </p>
             </form>
         </div>
 
-        <!-- Success Card (Hidden) - Mobile Optimized -->
-        <div id="successCard" style="display:none;" class="fade-up">
-            <div class="clean-card p-5 md:p-8">
-                
-                <!-- Success Message -->
-                <div class="text-center mb-4 md:mb-6 no-print">
-                    <div class="w-16 h-16 md:w-20 md:h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
-                        <i class="fas fa-check-circle text-3xl md:text-4xl text-green-500"></i>
+        <!-- ===== ইভেন্ট ইনফরমেশন সেকশন (নিচে) ===== -->
+        <div class="event-luxury animate-luxury" style="margin-top: 28px;">
+            
+            <div class="event-header-luxury">
+                <span class="event-badge-luxury"><i class="fas fa-calendar-alt mr-2"></i>আসন্ন ইভেন্ট</span>
+                <span class="text-sm text-gray-400">১৫ ডিসেম্বর ২০২৫</span>
+            </div>
+            
+            <h2 class="event-title-luxury">পুনর্মিলনী ২০২৫</h2>
+            
+            <!-- তারিখ -->
+            <div class="info-block">
+                <div class="info-icon-block">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="info-content-block">
+                    <div class="info-label-block">তারিখ</div>
+                    <div class="info-value-block">১৫ ডিসেম্বর ২০২৫, শুক্রবার</div>
+                </div>
+            </div>
+            
+            <!-- সময় -->
+            <div class="info-block">
+                <div class="info-icon-block">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="info-content-block">
+                    <div class="info-label-block">সময়</div>
+                    <div class="info-value-block">সকাল ১০:০০ - রাত ০৮:০০ টা</div>
+                </div>
+            </div>
+            
+            <!-- স্থান -->
+            <div class="info-block">
+                <div class="info-icon-block">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="info-content-block">
+                    <div class="info-label-block">স্থান</div>
+                    <div class="info-value-block">দৌলতপুর বহুমুখী উচ্চ বিদ্যালয় মাঠ, কুষ্টিয়া</div>
+                </div>
+            </div>
+            
+            <!-- কাউন্টডাউন -->
+            <div class="countdown-luxury">
+                <div class="countdown-title-luxury">
+                    <i class="fas fa-hourglass-half mr-2"></i>
+                    ইভেন্ট শুরু হতে বাকি
+                </div>
+                <div class="countdown-digits-luxury">
+                    <div class="countdown-digit-block">
+                        <div class="digit-large">১৫</div>
+                        <div class="digit-label-small">দিন</div>
                     </div>
-                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-1">অভিনন্দন!</h2>
-                    <p class="text-gray-500 text-sm md:text-base">আপনার রেজিস্ট্রেশন সম্পন্ন হয়েছে</p>
+                    <div class="countdown-digit-block">
+                        <div class="digit-large">০৮</div>
+                        <div class="digit-label-small">ঘন্টা</div>
+                    </div>
+                    <div class="countdown-digit-block">
+                        <div class="digit-large">৩০</div>
+                        <div class="digit-label-small">মিনিট</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- যোগাযোগ তথ্য -->
+            <div class="contact-luxury">
+                <span class="contact-item">
+                    <i class="fas fa-ticket-alt"></i>
+                    রেজি শেষ: ১০ ডিসেম্বর
+                </span>
+                <span class="contact-item">
+                    <i class="fas fa-phone-alt"></i>
+                    ০১৭০০-০০০০০০
+                </span>
+            </div>
+        </div>
+
+        <!-- সাকসেস কার্ড (হিডেন) -->
+        <div id="successCard" style="display:none;" class="animate-luxury">
+            <div class="success-card-luxury">
+                
+                <!-- সাকসেস মেসেজ -->
+                <div class="text-center mb-6 no-print">
+                    <div class="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-check-circle text-4xl text-green-500"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-1">অভিনন্দন!</h2>
+                    <p class="text-gray-400">আপনার রেজিস্ট্রেশন সম্পন্ন হয়েছে</p>
                 </div>
 
-                <!-- Event Card - Mobile Optimized -->
-                <div id="idCard" class="event-card p-5 md:p-8">
-                    <div class="card-header">
-                        <div class="school-badge text-xs md:text-sm">DBHS</div>
-                        <div class="text-xs md:text-sm font-bold text-gray-700">প্রাক্তন শিক্ষার্থী পরিষদ</div>
+                <!-- ইভেন্ট কার্ড -->
+                <div id="idCard" class="event-card-luxury">
+                    <div class="card-header-luxury">
+                        <div class="school-badge-luxury">DBHS</div>
+                        <div class="text-xs font-medium text-gray-500">প্রাক্তন শিক্ষার্থী পরিষদ</div>
                     </div>
                     
-                    <div class="card-title">
-                        <h2 class="text-xl md:text-2xl">ইভেন্ট পাস</h2>
-                        <p class="text-xs md:text-sm">দৌলতপুর বহুমুখী উচ্চ বিদ্যালয়</p>
+                    <div class="card-title-luxury">
+                        <h2>ইভেন্ট পাস</h2>
+                        <p>দৌলতপুর বহুমুখী উচ্চ বিদ্যালয়</p>
                     </div>
                     
-                    <div class="card-body">
-                        <div class="photo-area w-20 h-24 md:w-24 md:h-28">
+                    <div class="card-body-luxury">
+                        <div class="photo-area-luxury">
                             <img id="cardPhoto" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile">
                         </div>
                         
-                        <div class="info-area">
-                            <h3 id="cardName" class="text-lg md:text-xl">রাফি হাসান</h3>
+                        <div class="info-area-luxury">
+                            <h3 id="cardName">রাফি হাসান</h3>
                             
-                            <div class="info-row text-xs md:text-sm">
-                                <span class="info-label">ব্যাচ</span>
-                                <span class="info-value" id="cardBatch">২৫ তম</span>
+                            <div class="info-row-luxury">
+                                <span class="info-label-luxury">ব্যাচ</span>
+                                <span class="info-value-luxury" id="cardBatch">২৫ তম</span>
                             </div>
                             
-                            <div class="info-row text-xs md:text-sm">
-                                <span class="info-label">ইভেন্ট</span>
-                                <span class="info-value" id="cardEvent">পুনর্মিলনী ২০২৫</span>
+                            <div class="info-row-luxury">
+                                <span class="info-label-luxury">ইভেন্ট</span>
+                                <span class="info-value-luxury" id="cardEvent">পুনর্মিলনী ২০২৫</span>
                             </div>
                             
-                            <div class="info-row text-xs md:text-sm">
-                                <span class="info-label">পেমেন্ট</span>
-                                <span class="info-value" id="cardPayment">অনলাইন</span>
+                            <div class="info-row-luxury">
+                                <span class="info-label-luxury">পেমেন্ট</span>
+                                <span class="info-value-luxury" id="cardPayment">অনলাইন</span>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="token-section">
+                    <div class="token-section-luxury">
                         <div>
-                            <div class="text-2xs md:text-xs text-gray-500 mb-1">টোকেন আইডি</div>
-                            <div class="token-id text-base md:text-xl" id="cardToken">DBHS7X9K2M</div>
+                            <div class="text-xs text-gray-400 mb-1">টোকেন আইডি</div>
+                            <div class="token-id-luxury" id="cardToken">DBHS7X9K2M</div>
                         </div>
-                        <div class="qr-box">
-                            <div id="qrcode" class="w-16 h-16 md:w-20 md:h-20"></div>
+                        <div class="qr-box-luxury">
+                            <div id="qrcode"></div>
                         </div>
                     </div>
                     
-                    <div class="card-footer text-2xs md:text-xs">
-                        <i class="fas fa-map-marker-alt mr-1"></i>
+                    <div class="card-footer-minimal text-center text-xs text-gray-400 mt-5 pt-4 border-t border-gray-100">
                         দৌলতপুর, কুষ্টিয়া | ১৫ ডিসেম্বর ২০২৫
                     </div>
                 </div>
 
-                <!-- Action Buttons - Mobile Optimized -->
-                <div class="grid grid-cols-3 gap-2 md:gap-3 mt-4 md:mt-6 no-print">
-                    <button onclick="downloadCardAsImage()" class="btn-secondary text-xs md:text-sm py-3 md:py-4">
-                        <i class="fas fa-download text-sm md:text-base"></i>
-                        <span class="hidden xs:inline">ইমেজ</span>
+                <!-- অ্যাকশন বাটন -->
+                <div class="flex gap-3 mt-6 no-print">
+                    <button onclick="downloadCardAsImage()" class="btn-outline-minimal flex-1 py-4">
+                        <i class="fas fa-download"></i>
+                        ডাউনলোড
                     </button>
-                    <button onclick="window.print()" class="btn-secondary text-xs md:text-sm py-3 md:py-4">
-                        <i class="fas fa-print text-sm md:text-base"></i>
-                        <span class="hidden xs:inline">প্রিন্ট</span>
+                    <button onclick="window.print()" class="btn-outline-minimal flex-1 py-4">
+                        <i class="fas fa-print"></i>
+                        প্রিন্ট
                     </button>
-                    <a href="index.html" class="btn-secondary text-xs md:text-sm py-3 md:py-4">
-                        <i class="fas fa-home text-sm md:text-base"></i>
-                        <span class="hidden xs:inline">হোম</span>
+                    <a href="index.html" class="btn-outline-minimal flex-1 py-4">
+                        <i class="fas fa-home"></i>
+                        হোম
                     </a>
                 </div>
 
-                <!-- New Registration -->
-                <div class="text-center mt-3 md:mt-4 no-print">
-                    <button onclick="resetForm()" class="text-blue-600 hover:text-blue-700 text-xs md:text-sm font-medium inline-flex items-center gap-1.5 bg-blue-50 px-4 py-2 md:px-6 md:py-3 rounded-full">
-                        <i class="fas fa-redo-alt"></i>
-                        নতুন রেজিস্ট্রেশন
+                <!-- নতুন রেজিস্ট্রেশন -->
+                <div class="text-center mt-5 no-print">
+                    <button onclick="resetForm()" class="text-blue-600 text-sm bg-blue-50 px-8 py-3 rounded-full hover:bg-blue-100 transition">
+                        নতুন রেজিস্ট্রেশন করুন
                     </button>
                 </div>
             </div>
@@ -939,10 +1013,10 @@
     </div>
 
     <script>
-        // Google Apps Script URL
+        // গুগল অ্যাপস স্ক্রিপ্ট ইউআরএল
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwg4wBbtvWiF0Zd9zzQfzQtd7aSZvgCNaCZ6GjMd5d8pnHfvfD6AS11mi1p77C6LFrF/exec';
         
-        // Fee calculation
+        // ফি ক্যালকুলেশন
         const fees = {
             "পুনর্মিলনী ২০২৫": 1000,
             "ইফতার মাহফিল": 300,
@@ -955,7 +1029,7 @@
             document.getElementById('fee_amount').innerText = fee;
         }
 
-        // Image preview
+        // ইমেজ প্রিভিউ
         function previewImage(event) {
             const reader = new FileReader();
             reader.onload = function(){
@@ -964,7 +1038,7 @@
             reader.readAsDataURL(event.target.files[0]);
         }
 
-        // Populate dropdowns
+        // ড্রপডাউন পপুলেট
         document.addEventListener('DOMContentLoaded', () => {
             const batch = document.getElementById('batch_no');
             const year = document.getElementById('pass_year');
@@ -978,7 +1052,7 @@
             }
         });
 
-        // Download card as image
+        // ইমেজ ডাউনলোড
         function downloadCardAsImage() {
             const card = document.getElementById('idCard');
             const btn = event.target.closest('button');
@@ -999,14 +1073,14 @@
                 
                 btn.innerHTML = originalText;
                 btn.disabled = false;
-            }).catch(error => {
+            }).catch(() => {
                 alert('ডাউনলোড করতে সমস্যা হয়েছে');
                 btn.innerHTML = originalText;
                 btn.disabled = false;
             });
         }
 
-        // Form submission
+        // ফর্ম সাবমিশন
         document.getElementById('regForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -1014,17 +1088,16 @@
             const errorBox = document.getElementById('errorAlert');
             const errorMessage = document.getElementById('errorMessage');
             
-            // Validate mobile
+            // মোবাইল ভ্যালিডেশন
             const mobile = document.getElementById('mobile').value;
             if (!/^01[3-9]\d{8}$/.test(mobile)) {
                 errorMessage.innerText = "সঠিক মোবাইল নম্বর দিন";
                 errorBox.style.display = 'block';
-                window.scrollTo({ top: 200, behavior: 'smooth' });
                 return;
             }
             
             btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> প্রসেসিং...';
+            btn.innerHTML = '<span class="spinner-luxury mr-2"></span> প্রসেসিং...';
             errorBox.style.display = 'none';
 
             const formData = new FormData(e.target);
@@ -1041,9 +1114,9 @@
                 
                 if (result.result === 'success') {
                     document.getElementById('registrationCard').style.display = 'none';
+                    document.querySelector('.event-luxury').style.display = 'none';
                     document.getElementById('successCard').style.display = 'block';
                     
-                    // Fill card data
                     document.getElementById('cardName').innerText = formData.get('name') || 'প্রাক্তন শিক্ষার্থী';
                     document.getElementById('cardEvent').innerText = formData.get('event_type') || 'ইভেন্ট';
                     document.getElementById('cardBatch').innerText = formData.get('batch_no') ? formData.get('batch_no') + ' তম' : '—';
@@ -1052,13 +1125,12 @@
                     const token = result.token || 'DBHS' + Math.random().toString(36).substr(2, 8).toUpperCase();
                     document.getElementById('cardToken').innerText = token;
 
-                    // Generate QR
                     const qrContainer = document.getElementById('qrcode');
                     qrContainer.innerHTML = "";
                     new QRCode(qrContainer, {
                         text: token,
-                        width: 80,
-                        height: 80,
+                        width: 75,
+                        height: 75,
                         colorDark: "#2563eb",
                         colorLight: "#ffffff"
                     });
@@ -1072,13 +1144,14 @@
                 errorBox.style.display = 'block';
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-check-circle mr-2"></i> রেজিস্ট্রেশন সম্পন্ন করুন';
+                btn.innerHTML = '<i class="fas fa-check-circle mr-2"></i>রেজিস্ট্রেশন সম্পন্ন করুন';
             }
         });
 
-        // Reset form
+        // রিসেট ফর্ম
         function resetForm() {
             document.getElementById('registrationCard').style.display = 'block';
+            document.querySelector('.event-luxury').style.display = 'block';
             document.getElementById('successCard').style.display = 'none';
             document.getElementById('regForm').reset();
             document.getElementById('fee_amount').innerText = '0';
