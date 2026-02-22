@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>প্রাক্তন শিক্ষার্থী পরিষদ | দৌলতপুর বহুমুখী উচ্চ বিদ্যালয়</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
+        
+        body { 
+            font-family: 'Hind Siliguri', sans-serif; 
+            background-color: #f8fafc; 
+            color: #1e293b; 
+            overflow-x: hidden; 
+        }
+        
+        /* Lipighor-inspired clean design */
+        .glass-nav { 
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(10px); 
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05); 
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.02);
+        }
+        
+        .hero-section { 
+            background: linear-gradient(135deg, #f1f5f9 0%, #ffffff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .card-modern { 
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 28px; 
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+            backdrop-filter: blur(5px);
+        }
+        
+        .card-modern:hover { 
+            transform: translateY(-5px); 
+            border-color: rgba(37, 99, 235, 0.2); 
+            box-shadow: 0 20px 30px -10px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-input { 
+            background: #ffffff !important; 
+            border: 1px solid #e2e8f0 !important; 
+            color: #1e293b !important; 
+            border-radius: 16px !important;
+            transition: all 0.3s; 
+            font-size: 16px !important; /* Prevents zoom on mobile */
+        }
+        
+        .form-input:focus { 
+            border-color: #2563eb !important; 
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1) !important;
+            outline: none; 
+        }
+
+        .btn-primary { 
+            background: #2563eb; 
+            color: white;
+            transition: all 0.3s ease; 
+            border-radius: 40px;
+        }
+        
+        .btn-primary:hover { 
+            background: #1d4ed8; 
+            transform: scale(1.01); 
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid #e2e8f0;
+            color: #475569;
+            transition: all 0.3s ease;
+            border-radius: 40px;
+        }
+        
+        .btn-outline:hover {
+            border-color: #2563eb;
+            color: #2563eb;
+            background: rgba(37, 99, 235, 0.02);
+        }
+
+        /* ID Card Styling - Clean Light Theme */
+        #idCard { 
+            background: #ffffff; 
+            color: #1e293b; 
+            width: 100%;
+            max-width: 380px;
+            margin: 0 auto;
+            border-radius: 24px; 
+            overflow: hidden; 
+            position: relative; 
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .id-header-light { 
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            padding: 16px; 
+            text-align: center;
+            color: white;
+        }
+
+        .token-badge-light {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 13px;
+            display: inline-block;
+        }
+
+        /* Gallery Styling */
+        .gallery-card { 
+            background: #ffffff; 
+            border-radius: 24px; 
+            overflow: hidden; 
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-card:hover {
+            box-shadow: 0 20px 30px -10px rgba(37, 99, 235, 0.1);
+        }
+        
+        .gallery-img { 
+            width: 100%; 
+            height: 220px; 
+            object-fit: cover; 
+            transition: 0.5s ease; 
+        }
+        
+        .gallery-img:hover { 
+            transform: scale(1.03); 
+        }
+
+        @media print {
+            body * { visibility: hidden; }
+            #successCard, #successCard * { visibility: visible; }
+            #idCard { 
+                visibility: visible; 
+                position: absolute; 
+                left: 50%; 
+                top: 50px; 
+                transform: translateX(-50%);
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .no-print { display: none !important; }
+        }
+        
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(15px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        
+        .animate-fade { 
+            animation: fadeIn 0.5s ease-out forwards; 
+        }
+
+        /* Mobile Menu */
+        #mobileMenu { 
+            display: none; 
+            position: absolute;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+        
+        #mobileMenu.active { 
+            display: block; 
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+        
+        .section-title span {
+            color: #2563eb;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title span::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #2563eb, transparent);
+            border-radius: 2px;
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 1.75rem;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem !important;
+                line-height: 1.3 !important;
+            }
+            
+            .card-modern {
+                padding: 1.5rem !important;
+            }
+            
+            .btn-primary, .btn-outline {
+                width: 100%;
+                text-align: center;
+                padding: 1rem !important;
+            }
+        }
+
+        /* Floating Animation */
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Clean Navigation -->
+    <nav class="glass-nav fixed w-full z-50 px-4 md:px-6 py-3 no-print">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-blue-600 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-graduation-cap text-white text-sm"></i>
+                </div>
+                <div class="text-xl font-bold text-gray-900">
+                    DBHS <span class="font-light text-blue-600">Alumni</span>
+                </div>
+            </div>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#home" class="text-gray-600 hover:text-blue-600 transition text-sm font-medium">হোম</a>
+                <a href="#events" class="text-gray-600 hover:text-blue-600 transition text-sm font-medium">ইভেন্ট</a>
+                <a href="#gallery" class="text-gray-600 hover:text-blue-600 transition text-sm font-medium">গ্যালারি</a>
+                <a href="#registration" class="btn-primary px-6 py-2.5 text-sm font-semibold">রেজিস্ট্রেশন</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600 transition text-sm font-medium">এন্ট্রি ভেরিফাই</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600 transition text-sm font-medium">লগইন</a>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-2xl text-gray-700" onclick="document.getElementById('mobileMenu').classList.toggle('active')">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="md:hidden">
+            <div class="flex flex-col space-y-4">
+                <a href="#home" class="text-gray-700 hover:text-blue-600 py-2 text-lg">হোম</a>
+                <a href="#events" class="text-gray-700 hover:text-blue-600 py-2 text-lg">ইভেন্ট</a>
+                <a href="#gallery" class="text-gray-700 hover:text-blue-600 py-2 text-lg">গ্যালারি</a>
+                <a href="#registration" class="btn-primary px-6 py-3 text-center text-lg font-semibold">রেজিস্ট্রেশন</a>
+                <a href="#" class="text-gray-700 hover:text-blue-600 py-2 text-lg">এন্ট্রি ভেরিফাই</a>
+                <a href="#" class="text-gray-700 hover:text-blue-600 py-2 text-lg">লগইন</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Clean Hero Section - No Registration -->
+    <section id="home" class="hero-section min-h-screen flex items-center justify-center pt-20 px-4 no-print">
+        <div class="max-w-5xl mx-auto text-center">
+            <div class="inline-block px-4 py-2 bg-blue-50 rounded-full mb-6">
+                <span class="text-blue-600 text-sm font-medium">স্বাগতম প্রাক্তন শিক্ষার্থী পরিবার</span>
+            </div>
+            
+            <h1 class="hero-title text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-gray-900 leading-tight">
+                স্মৃতিরা যেখানে 
+                <span class="text-blue-600 relative inline-block">
+                    অম্লান
+                    <svg class="absolute -bottom-2 left-0 w-full" height="8" viewBox="0 0 100 8" fill="none">
+                        <path d="M0 4 Q 20 0, 40 4 T 80 4 T 120 4" stroke="#2563eb" stroke-width="2" stroke-linecap="round" fill="transparent"/>
+                    </svg>
+                </span>
+                <br>বন্ধন যেখানে আজীবন
+            </h1>
+            
+            <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+                দৌলতপুর বহুমুখী উচ্চ বিদ্যালয়ের প্রাক্তন শিক্ষার্থীদের মিলনমেলা। 
+                আপনার পুরনো বন্ধুদের খুঁজে পান এক প্ল্যাটফর্মে।
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="#registration" class="btn-primary px-8 py-4 text-lg font-semibold w-full sm:w-auto">
+                    রেজিস্ট্রেশন করুন
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+                <a href="#events" class="btn-outline px-8 py-4 text-lg font-semibold w-full sm:w-auto">
+                    ইভেন্ট দেখুন
+                </a>
+            </div>
+            
+            <!-- Stats Section -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mt-16 max-w-3xl mx-auto">
+                <div class="text-center">
+                    <div class="text-3xl md:text-4xl font-bold text-blue-600">৫০০+</div>
+                    <div class="text-sm text-gray-500 mt-1">সদস্য</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl md:text-4xl font-bold text-blue-600">১৫+</div>
+                    <div class="text-sm text-gray-500 mt-1">ইভেন্ট</div>
+                </div>
+                <div class="text-center col-span-2 md:col-span-1">
+                    <div class="text-3xl md:text-4xl font-bold text-blue-600">১৯৯৫</div>
+                    <div class="text-sm text-gray-500 mt-1">প্রতিষ্ঠা</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clean Events Section -->
+    <section id="events" class="py-20 md:py-24 px-4 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="section-title">
+                আমাদের বিশেষ <span>ইভেন্টসমূহ</span>
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+                <!-- Event 1 -->
+                <div class="card-modern p-6 md:p-8 text-center group">
+                    <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:bg-blue-100 transition">
+                        <i class="fas fa-users text-2xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-3 text-gray-900">পুনর্মিলনী ২০২৫</h3>
+                    <p class="text-gray-500 mb-5 text-sm md:text-base">পুরনো বন্ধুদের সাথে আড্ডা ও সাংস্কৃতিক অনুষ্ঠানের মহা-আয়োজন।</p>
+                    <div class="flex items-center justify-center gap-3">
+                        <span class="text-blue-600 font-bold text-xl">১০০০</span>
+                        <span class="text-gray-400">BDT</span>
+                    </div>
+                </div>
+
+                <!-- Event 2 -->
+                <div class="card-modern p-6 md:p-8 text-center group">
+                    <div class="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:bg-emerald-100 transition">
+                        <i class="fas fa-moon text-2xl text-emerald-600"></i>
+                    </div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-3 text-gray-900">ইফতার মাহফিল</h3>
+                    <p class="text-gray-500 mb-5 text-sm md:text-base">পবিত্র রমজানে শিক্ষক ও প্রাক্তন ছাত্রদের মিলনমেলা।</p>
+                    <div class="flex items-center justify-center gap-3">
+                        <span class="text-emerald-600 font-bold text-xl">৩০০</span>
+                        <span class="text-gray-400">BDT</span>
+                    </div>
+                </div>
+
+                <!-- Event 3 -->
+                <div class="card-modern p-6 md:p-8 text-center group">
+                    <div class="w-16 h-16 bg-purple-50 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:bg-purple-100 transition">
+                        <i class="fas fa-id-badge text-2xl text-purple-600"></i>
+                    </div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-3 text-gray-900">আজীবন সদস্যপদ</h3>
+                    <p class="text-gray-500 mb-5 text-sm md:text-base">পরিষদের আজীবন সদস্য হয়ে সব কার্যক্রমে যুক্ত থাকুন।</p>
+                    <div class="flex items-center justify-center gap-3">
+                        <span class="text-purple-600 font-bold text-xl">২০০০</span>
+                        <span class="text-gray-400">BDT</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clean Gallery Section -->
+    <section id="gallery" class="py-20 md:py-24 px-4 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="section-title">
+                স্মৃতির <span>অ্যালবাম</span>
+            </h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Gallery Item 1 -->
+                <div class="gallery-card">
+                    <div class="overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=500&q=80" 
+                             class="gallery-img" alt="স্মৃতি ১">
+                    </div>
+                    <div class="p-5">
+                        <p class="text-gray-600 font-medium">বার্ষিক পুনর্মিলনী ২০২৪</p>
+                        <p class="text-gray-400 text-sm mt-1">১৫ ডিসেম্বর, ২০২৪</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 2 -->
+                <div class="gallery-card">
+                    <div class="overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=500&q=80" 
+                             class="gallery-img" alt="স্মৃতি ২">
+                    </div>
+                    <div class="p-5">
+                        <p class="text-gray-600 font-medium">সাংস্কৃতিক অনুষ্ঠান</p>
+                        <p class="text-gray-400 text-sm mt-1">২১ ফেব্রুয়ারি, ২০২৪</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 3 -->
+                <div class="gallery-card">
+                    <div class="relative h-[220px] bg-gray-100">
+                        <iframe class="w-full h-full" 
+                                src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=0&modestbranding=1&rel=0" 
+                                title="Video" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="p-5">
+                        <p class="text-gray-600 font-medium">পুনর্মিলনী ২০২৪ - ভিডিও</p>
+                        <p class="text-gray-400 text-sm mt-1">৩ মিনিটের স্মৃতিচারণ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Section (Now Separate) -->
+    <section id="registration" class="py-20 md:py-24 px-4 bg-white">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12 no-print">
+                <div class="inline-block px-4 py-2 bg-blue-50 rounded-full mb-4">
+                    <span class="text-blue-600 text-sm font-medium">রেজিস্ট্রেশন ফর্ম</span>
+                </div>
+                <h2 class="section-title mb-3">
+                    অনলাইন <span>রেজিস্ট্রেশন</span>
+                </h2>
+                <p class="text-gray-500">তথ্য প্রদান করে আপনার রেজিষ্ট্রেশনটি নিশ্চিত করুন</p>
+            </div>
+
+            <!-- Error Alert -->
+            <div id="errorAlert" style="display:none;" 
+                 class="p-4 mb-6 bg-red-50 border border-red-200 text-red-600 rounded-2xl text-center no-print">
+            </div>
+
+            <!-- Registration Form -->
+            <form id="regForm" class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100 no-print">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Left Column -->
+                    <div class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 text-gray-700">শিক্ষার্থীর পূর্ণ নাম</label>
+                            <input type="text" id="name" name="name" 
+                                   class="form-input w-full p-4" 
+                                   placeholder="আপনার নাম লিখুন" 
+                                   required>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2 text-gray-700">এসএসসি ব্যাচ</label>
+                                <select id="batch_no" name="batch_no" class="form-input w-full p-4" required>
+                                    <option value="">ব্যাচ</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2 text-gray-700">পাসের সাল</label>
+                                <select id="pass_year" name="pass_year" class="form-input w-full p-4" required>
+                                    <option value="">সাল</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 text-gray-700">লিঙ্গ</label>
+                            <div class="flex gap-6">
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="gender" value="পুরুষ" class="w-5 h-5 text-blue-600" required>
+                                    <span class="ml-2 text-gray-600">পুরুষ</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="gender" value="মহিলা" class="w-5 h-5 text-blue-600">
+                                    <span class="ml-2 text-gray-600">মহিলা</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 text-gray-700">মোবাইল নম্বর</label>
+                            <input type="tel" id="mobile" name="mobile" 
+                                   class="form-input w-full p-4" 
+                                   placeholder="017XXXXXXXX" 
+                                   required>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 text-gray-700">প্রোগ্রাম নির্বাচন</label>
+                            <select id="event_type" name="event_type" class="form-input w-full p-4" onchange="updateFee()" required>
+                                <option value="">নির্বাচন করুন</option>
+                                <option value="পুনর্মিলনী ২০২৫">পুনর্মিলনী ২০২৫</option>
+                                <option value="ইফতার মাহফিল">ইফতার মাহফিল</option>
+                                <option value="আজীবন সদস্যপদ">আজীবন সদস্যপদ</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 text-gray-700">আপনার ছবি (ঐচ্ছিক)</label>
+                            <input type="file" id="photo" accept="image/*" 
+                                   class="form-input w-full p-3 text-sm" 
+                                   onchange="previewImage(event)">
+                        </div>
+                        
+                        <div class="bg-gray-50 p-6 rounded-2xl">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600 font-medium">মোট ফি:</span>
+                                <span class="text-3xl font-bold text-blue-600">৳<span id="fee_amount">0</span></span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 text-gray-700">পেমেন্ট মেথড</label>
+                            <select id="payment_method" name="payment_method" class="form-input w-full p-4" required>
+                                <option value="Online">অনলাইন পেমেন্ট (বিকাশ/নগদ)</option>
+                                <option value="Cash">ক্যাশ পেমেন্ট</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" id="submitBtn" 
+                                class="btn-primary w-full py-5 font-bold text-lg shadow-lg">
+                            রেজিস্ট্রেশন নিশ্চিত করুন
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Success Card (Hidden by default) -->
+            <div id="successCard" style="display:none;" class="mt-8 animate-fade">
+                <div class="text-center mb-6 no-print">
+                    <div class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-check-circle text-3xl text-emerald-500"></i>
+                    </div>
+                    <h3 class="text-2xl md:text-3xl font-bold mb-2 text-gray-900">
+                        অভিনন্দন, <span id="regName" class="text-blue-600"></span>!
+                    </h3>
+                    <p class="text-gray-500">আপনার ইভেন্ট পাস তৈরি হয়েছে</p>
+                </div>
+                
+                <!-- ID Card -->
+                <div id="idCard">
+                    <div class="id-header-light">
+                        <h4 class="font-bold text-sm tracking-wider">EVENT ACCESS PASS</h4>
+                        <p class="text-xs opacity-90 mt-1">দৌলতপুর বহুমুখী উচ্চ বিদ্যালয়</p>
+                    </div>
+
+                    <div class="p-5 flex gap-4">
+                        <div class="w-20 h-24 bg-gray-50 rounded-xl overflow-hidden flex-shrink-0 border border-gray-100">
+                            <img id="cardPhoto" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        
+                        <div class="flex-1">
+                            <h5 id="cardName" class="text-blue-700 text-lg font-bold leading-tight"></h5>
+                            <div class="mt-2 space-y-1">
+                                <p class="text-xs"><span class="font-medium text-gray-500">ব্যাচ:</span> 
+                                    <span id="cardBatch" class="text-gray-700 font-medium"></span>
+                                </p>
+                                <p class="text-xs"><span class="font-medium text-gray-500">ইভেন্ট:</span> 
+                                    <span id="cardEvent" class="text-gray-700 font-medium"></span>
+                                </p>
+                                <div class="mt-3">
+                                    <p class="text-xs font-medium text-gray-400 mb-1">টোকেন আইডি</p>
+                                    <span id="cardToken" class="token-badge-light"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- QR Code -->
+                    <div id="qrcode" class="p-4 flex justify-center border-t border-gray-100"></div>
+                </div>
+
+                <!-- Print Button -->
+                <div class="mt-8 flex justify-center no-print">
+                    <button onclick="window.print()" 
+                            class="btn-outline px-8 py-3 font-semibold inline-flex items-center gap-2">
+                        <i class="fas fa-print"></i> 
+                        কার্ড প্রিন্ট/সেভ করুন
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clean Footer -->
+    <footer class="bg-white border-t border-gray-100 py-16 px-4 no-print">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+                <!-- About -->
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 bg-blue-600 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-graduation-cap text-white text-sm"></i>
+                        </div>
+                        <span class="text-xl font-bold text-gray-900">DBHS Alumni</span>
+                    </div>
+                    <p class="text-gray-500 mb-4 max-w-md">
+                        দৌলতপুর বহুমুখী উচ্চ বিদ্যালয়ের প্রাক্তন শিক্ষার্থীদের একটি প্ল্যাটফর্ম। 
+                        স্মৃতি ও বন্ধনকে ধরে রাখতে আমাদের এই ক্ষুদ্র প্রয়াস।
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-green-50 hover:text-green-600 transition">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-bold text-gray-900 mb-4">গুরুত্বপূর্ণ লিংক</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-500 hover:text-blue-600 text-sm">হোম</a></li>
+                        <li><a href="#events" class="text-gray-500 hover:text-blue-600 text-sm">ইভেন্ট</a></li>
+                        <li><a href="#gallery" class="text-gray-500 hover:text-blue-600 text-sm">গ্যালারি</a></li>
+                        <li><a href="#registration" class="text-gray-500 hover:text-blue-600 text-sm">রেজিস্ট্রেশন</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-bold text-gray-900 mb-4">যোগাযোগ</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-center gap-2 text-gray-500 text-sm">
+                            <i class="fas fa-phone-alt text-blue-600 w-4"></i>
+                            ০১৭০০-০০০০০০
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-500 text-sm">
+                            <i class="fas fa-phone-alt text-blue-600 w-4"></i>
+                            ০১৬০০-০০০০০০
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-500 text-sm">
+                            <i class="fas fa-envelope text-blue-600 w-4"></i>
+                            alumni@school.com
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-500 text-sm">
+                            <i class="fas fa-map-marker-alt text-blue-600 w-4"></i>
+                            দৌলতপুর, কুষ্টিয়া
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="border-t border-gray-100 mt-12 pt-8 text-center">
+                <p class="text-gray-400 text-sm">
+                    © ২০২৫ দৌলতপুর বহুমুখী উচ্চ বিদ্যালয় প্রাক্তন শিক্ষার্থী পরিষদ
+                </p>
+                <p class="text-gray-400 text-xs mt-2">
+                    তৈরী করেছেন <span class="text-blue-600 font-medium">মোঃ আবু সুফিয়ান</span>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Fee calculation
+        const fees = {
+            "পুনর্মিলনী ২০২৫": 1000,
+            "ইফতার মাহফিল": 300,
+            "আজীবন সদস্যপদ": 2000
+        };
+
+        function updateFee() {
+            const event = document.getElementById('event_type').value;
+            const fee = fees[event] || 0;
+            document.getElementById('fee_amount').innerText = fee;
+        }
+
+        // Image preview
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function(){
+                document.getElementById('cardPhoto').src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        // Populate dropdowns
+        document.addEventListener('DOMContentLoaded', () => {
+            const batch = document.getElementById('batch_no');
+            const year = document.getElementById('pass_year');
+            
+            // Batch numbers
+            for(let i = 1; i <= 60; i++) {
+                batch.innerHTML += `<option value="${i}">${i} তম</option>`;
+            }
+            
+            // Pass years
+            for(let i = 2024; i >= 1970; i--) {
+                year.innerHTML += `<option value="${i}">${i}</option>`;
+            }
+        });
+
+        // Form submission
+        document.getElementById('regForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const errorBox = document.getElementById('errorAlert');
+            
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> প্রসেসিং...';
+            errorBox.style.display = 'none';
+
+            const formData = new FormData(e.target);
+            formData.append('fee', document.getElementById('fee_amount').innerText);
+
+            // Simulate successful registration (replace with actual API call)
+            setTimeout(() => {
+                // Show success card
+                document.getElementById('regForm').style.display = 'none';
+                document.getElementById('successCard').style.display = 'block';
+                
+                // Fill card data
+                document.getElementById('regName').innerText = formData.get('name');
+                document.getElementById('cardName').innerText = formData.get('name');
+                document.getElementById('cardEvent').innerText = formData.get('event_type');
+                document.getElementById('cardBatch').innerText = formData.get('batch_no') + " তম";
+                
+                // Generate token
+                const token = 'DBHS' + Math.random().toString(36).substr(2, 8).toUpperCase();
+                document.getElementById('cardToken').innerText = token;
+
+                // Generate QR code
+                const qrContainer = document.getElementById('qrcode');
+                qrContainer.innerHTML = "";
+                new QRCode(qrContainer, {
+                    text: token,
+                    width: 100,
+                    height: 100,
+                    colorDark: "#2563eb",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+
+                btn.disabled = false;
+                btn.innerText = "রেজিস্ট্রেশন নিশ্চিত করুন";
+                
+                // Scroll to card
+                document.getElementById('successCard').scrollIntoView({behavior: 'smooth'});
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
