@@ -9,7 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
         
         * {
             margin: 0;
@@ -19,515 +19,605 @@
 
         body { 
             font-family: 'Hind Siliguri', 'Inter', sans-serif; 
-            background: #f5f7fa;
-            color: #0f172a; 
+            background: linear-gradient(145deg, #f6f9fc 0%, #f1f5f9 100%);
+            color: #0b1e33; 
             min-height: 100vh;
+            padding: 12px;
         }
 
-        /* মোবাইল ফার্স্ট কার্ড */
-        .mobile-card {
-            background: #ffffff;
-            border-radius: 32px;
-            box-shadow: 0 15px 30px -12px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(0, 0, 0, 0.02);
+        /* প্রিমিয়াম মোবাইল কার্ড */
+        .premium-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 36px;
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 32, 64, 0.25),
+                0 0 0 1px rgba(59, 130, 246, 0.1) inset;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
         }
 
-        /* হেডার - কমপ্যাক্ট */
-        .form-header-compact {
+        .premium-card:hover {
+            box-shadow: 0 30px 60px -12px rgba(37, 99, 235, 0.3);
+        }
+
+        /* প্রিমিয়াম হেডার */
+        .premium-header {
+            position: relative;
+            padding-bottom: 16px;
             margin-bottom: 20px;
         }
-        
-        .form-header-compact h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #0f172a;
-            line-height: 1.2;
-            margin-bottom: 4px;
-        }
-        
-        .form-header-compact p {
-            color: #64748b;
-            font-size: 0.85rem;
+
+        .premium-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            border-radius: 3px;
         }
 
-        /* ইনপুট গ্রুপ - কমপ্যাক্ট */
-        .input-group-compact {
-            margin-bottom: 16px;
+        .premium-header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
         }
 
-        .input-group-compact label {
+        .premium-header p {
+            color: #5b6e8c;
+            font-size: 0.9rem;
+        }
+
+        /* প্রিমিয়াম ইনপুট ফিল্ড */
+        .premium-input-group {
+            margin-bottom: 18px;
+        }
+
+        .premium-label {
             display: block;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
             margin-bottom: 6px;
             color: #334155;
-            padding-left: 4px;
+            letter-spacing: 0.3px;
+            padding-left: 8px;
         }
 
-        .input-wrapper-compact {
-            position: relative;
-        }
-
-        .input-wrapper-compact i {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #2563eb;
-            font-size: 1rem;
-            opacity: 0.7;
-        }
-
-        .field-compact {
+        .premium-field {
             width: 100%;
-            background: #f8fafc;
-            border: 1.5px solid #e9edf2;
-            border-radius: 24px;
-            padding: 14px 16px 14px 45px;
-            font-size: 15px;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 28px;
+            padding: 16px 20px 16px 52px;
+            font-size: 0.95rem;
             font-family: 'Hind Siliguri', sans-serif;
             color: #0f172a;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px -8px rgba(0,0,0,0.1);
+        }
+
+        .premium-field:focus {
+            border-color: #3b82f6;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+            outline: none;
+            padding-left: 52px;
+        }
+
+        .premium-field::placeholder {
+            color: #a0b3c9;
+            font-weight: 300;
+        }
+
+        .premium-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #3b82f6;
+            font-size: 1.1rem;
+            z-index: 10;
+            background: #f0f9ff;
+            width: 28px;
+            height: 28px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all 0.2s;
         }
 
-        .field-compact:focus {
-            border-color: #2563eb;
-            background: #ffffff;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-            outline: none;
-            padding-left: 48px;
+        .premium-field:focus + .premium-icon {
+            background: #3b82f6;
+            color: white;
         }
 
-        .field-compact::placeholder {
-            color: #b9c7da;
-            font-size: 14px;
-        }
-
-        select.field-compact {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%232563eb' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+        /* প্রিমিয়াম সিলেক্ট */
+        select.premium-field {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%233b82f6' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 16px center;
-            background-size: 16px;
-            background-color: #f8fafc;
+            background-position: right 18px center;
+            background-size: 18px;
+            appearance: none;
+            padding-right: 45px;
         }
 
-        /* রেডিও গ্রুপ - কমপ্যাক্ট */
-        .radio-compact {
+        /* প্রিমিয়াম রেডিও */
+        .premium-radio-group {
+            background: #ffffff;
+            border-radius: 40px;
+            padding: 5px;
+            border: 1.5px solid #e2e8f0;
             display: flex;
-            gap: 10px;
-            background: #f8fafc;
-            padding: 4px;
-            border-radius: 30px;
-            border: 1.5px solid #e9edf2;
+            gap: 5px;
         }
-        
-        .radio-item-compact {
+
+        .premium-radio-option {
             flex: 1;
             position: relative;
         }
-        
-        .radio-item-compact input[type="radio"] {
+
+        .premium-radio-option input[type="radio"] {
             position: absolute;
             opacity: 0;
         }
-        
-        .radio-item-compact label {
+
+        .premium-radio-option label {
             display: block;
             text-align: center;
             padding: 12px 8px;
             background: transparent;
-            border-radius: 26px;
-            font-weight: 500;
-            color: #64748b;
+            border-radius: 30px;
+            font-weight: 600;
+            color: #5b6e8c;
             cursor: pointer;
             transition: all 0.2s;
             font-size: 0.9rem;
         }
-        
-        .radio-item-compact input[type="radio"]:checked + label {
-            background: #2563eb;
+
+        .premium-radio-option input[type="radio"]:checked + label {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
             color: white;
-            box-shadow: 0 4px 10px -4px #2563eb;
+            box-shadow: 0 8px 16px -8px #3b82f6;
         }
 
-        /* ফি বক্স - কমপ্যাক্ট */
-        .fee-compact {
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            border-radius: 28px;
-            padding: 18px 16px;
-            text-align: center;
-            margin: 20px 0 16px;
-            box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.2);
+        /* প্রিমিয়াম ফি বক্স */
+        .premium-fee-box {
+            background: linear-gradient(135deg, #0f2b4d, #1e3a6b);
+            border-radius: 32px;
+            padding: 20px 16px;
+            margin: 20px 0 18px;
+            box-shadow: 0 20px 30px -12px rgba(0, 64, 128, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .fee-label-compact {
-            font-size: 0.8rem;
-            color: #94a3b8;
+        .premium-fee-label {
+            font-size: 0.75rem;
+            color: #a0c0e0;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 4px;
+            letter-spacing: 1.5px;
+            margin-bottom: 6px;
         }
 
-        .fee-amount-compact {
-            font-size: 2.4rem;
-            font-weight: 700;
+        .premium-fee-amount {
+            font-size: 3rem;
+            font-weight: 800;
             color: white;
             line-height: 1;
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
         }
 
-        .fee-amount-compact small {
+        .premium-fee-amount small {
             font-size: 1rem;
-            font-weight: 400;
-            color: #94a3b8;
+            font-weight: 500;
+            color: #90b0d0;
         }
 
-        /* বাটন - কমপ্যাক্ট */
-        .btn-compact {
-            background: #2563eb;
+        /* পেমেন্ট তথ্য বক্স */
+        .payment-info-box {
+            background: linear-gradient(135deg, #f8fafc, #ffffff);
+            border-radius: 28px;
+            padding: 18px;
+            margin: 15px 0 18px;
+            border: 1px solid #bfdbfe;
+        }
+
+        .payment-info-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .payment-info-title i {
+            color: #3b82f6;
+        }
+
+        .payment-details {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .payment-method-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .payment-method-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .payment-method-text {
+            flex: 1;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .payment-method-number {
+            font-size: 0.8rem;
+            color: #3b82f6;
+            font-weight: 700;
+            background: #eff6ff;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        /* ট্রানজেকশন ফিল্ড */
+        .transaction-field {
+            padding: 16px 20px 16px 52px;
+        }
+
+        /* প্রিমিয়াম বাটন */
+        .premium-button {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
             color: white;
             border-radius: 40px;
-            padding: 16px 20px;
+            padding: 18px 20px;
             font-weight: 600;
             font-size: 1.1rem;
             width: 100%;
             border: none;
             cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 8px 16px -6px #2563eb80;
-            margin-top: 4px;
+            transition: all 0.3s;
+            box-shadow: 0 15px 25px -10px #2563eb;
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn-compact i {
+        .premium-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .premium-button:hover::before {
+            left: 100%;
+        }
+
+        .premium-button i {
             margin-right: 8px;
             font-size: 1.1rem;
         }
 
-        /* ইভেন্ট সেকশন - কমপ্যাক্ট */
-        .event-compact {
+        /* প্রিমিয়াম ইভেন্ট কার্ড */
+        .premium-event-card {
             background: #ffffff;
-            border-radius: 28px;
-            padding: 20px 18px;
-            margin-top: 16px;
-            box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.05);
+            border-radius: 32px;
+            padding: 22px 18px;
+            margin-top: 20px;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
             border: 1px solid #edf2f7;
         }
 
-        .event-header-compact {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-        }
-
-        .event-badge-compact {
-            background: #2563eb;
+        .premium-event-badge {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
             color: white;
-            padding: 6px 16px;
-            border-radius: 30px;
+            padding: 8px 20px;
+            border-radius: 40px;
             font-size: 0.8rem;
             font-weight: 600;
+            display: inline-block;
         }
 
-        .event-title-compact {
-            font-size: 1.5rem;
+        .premium-event-title {
+            font-size: 1.8rem;
             font-weight: 700;
             color: #0f172a;
-            margin-bottom: 16px;
+            margin: 12px 0 8px;
         }
 
-        .info-block-compact {
+        /* প্রিমিয়াম ইনফো ব্লক */
+        .premium-info-row {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 14px;
+            gap: 14px;
             background: #f8fafc;
             border-radius: 24px;
+            padding: 14px 16px;
             margin-bottom: 10px;
+            border: 1px solid #edf2f7;
+            transition: all 0.2s;
         }
 
-        .info-icon-compact {
-            width: 40px;
-            height: 40px;
+        .premium-info-row:hover {
             background: #ffffff;
-            border-radius: 18px;
+            border-color: #3b82f6;
+            box-shadow: 0 5px 15px -8px #3b82f6;
+        }
+
+        .premium-info-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #dbeafe, #ffffff);
+            border-radius: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #2563eb;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 8px -4px rgba(0,0,0,0.05);
+            color: #3b82f6;
+            font-size: 1.2rem;
             flex-shrink: 0;
+            border: 1px solid #bfdbfe;
         }
 
-        .info-content-compact {
-            flex: 1;
+        /* প্রিমিয়াম কাউন্টডাউন */
+        .premium-countdown {
+            background: linear-gradient(135deg, #f0f4ff, #ffffff);
+            border-radius: 28px;
+            padding: 20px;
+            margin-top: 18px;
+            border: 1px solid #bfdbfe;
         }
 
-        .info-label-compact {
-            font-size: 0.7rem;
-            color: #94a3b8;
-            margin-bottom: 2px;
-        }
-
-        .info-value-compact {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #0f172a;
-        }
-
-        .countdown-compact {
-            background: #f8fafc;
-            border-radius: 24px;
-            padding: 16px;
-            margin-top: 16px;
-            text-align: center;
-            border: 1px solid #e9edf2;
-        }
-
-        .countdown-title-compact {
+        .premium-countdown-title {
             font-size: 0.8rem;
-            color: #64748b;
-            margin-bottom: 12px;
+            color: #3b82f6;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
         }
 
-        .countdown-digits-compact {
+        .premium-countdown-digits {
             display: flex;
             justify-content: center;
-            gap: 16px;
+            gap: 20px;
         }
 
-        .digit-block-compact {
+        .premium-digit {
             text-align: center;
+            background: white;
+            padding: 12px 8px;
+            border-radius: 20px;
+            min-width: 70px;
+            box-shadow: 0 5px 15px -8px #3b82f6;
         }
 
-        .digit-number-compact {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: #2563eb;
+        .premium-digit-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #0f172a;
             line-height: 1;
         }
 
-        .digit-label-compact {
+        .premium-digit-label {
             font-size: 0.7rem;
-            color: #94a3b8;
+            color: #64748b;
         }
 
-        .contact-compact {
+        /* প্রিমিয়াম কন্টাক্ট */
+        .premium-contact {
             display: flex;
-            gap: 10px;
-            margin-top: 16px;
+            gap: 8px;
             flex-wrap: wrap;
+            margin-top: 16px;
         }
 
-        .contact-item-compact {
-            background: #eef2ff;
+        .premium-contact-item {
+            background: linear-gradient(135deg, #f0f4ff, #ffffff);
             color: #2563eb;
-            padding: 8px 16px;
-            border-radius: 30px;
+            padding: 10px 18px;
+            border-radius: 40px;
             font-size: 0.85rem;
             font-weight: 500;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            border: 1px solid #bfdbfe;
+            flex: 1 1 auto;
+            justify-content: center;
         }
 
-        /* সাকসেস কার্ড - কমপ্যাক্ট */
-        .success-card-compact {
+        /* প্রিমিয়াম সাকসেস কার্ড */
+        .premium-success-card {
             background: #ffffff;
-            border-radius: 32px;
-            padding: 24px 18px;
+            border-radius: 40px;
+            padding: 28px 20px;
         }
 
-        .event-card-compact {
-            background: #ffffff;
-            border-radius: 32px;
+        .premium-id-card {
+            background: linear-gradient(145deg, #ffffff, #fafcff);
+            border-radius: 36px;
             padding: 24px 18px;
-            box-shadow: 0 15px 25px -15px rgba(0,0,0,0.1);
-            border: 1px solid #edf2f7;
+            box-shadow: 0 30px 50px -20px rgba(0, 32, 64, 0.3);
+            border: 1px solid #e2e8f0;
         }
 
-        .photo-area-compact {
-            width: 80px;
-            height: 100px;
+        .premium-photo {
+            width: 90px;
+            height: 110px;
             background: #f1f5f9;
-            border-radius: 20px;
+            border-radius: 24px;
             overflow: hidden;
-            border: 2px solid white;
-            box-shadow: 0 5px 10px -5px rgba(0,0,0,0.1);
-            flex-shrink: 0;
+            border: 3px solid #ffffff;
+            box-shadow: 0 10px 20px -10px rgba(0,0,0,0.1);
         }
 
-        .info-area-compact h3 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .info-row-compact {
-            display: flex;
-            margin-bottom: 5px;
-            font-size: 0.85rem;
-        }
-
-        .info-label-compact-card {
-            width: 60px;
-            color: #94a3b8;
-        }
-
-        .token-section-compact {
-            background: #f8fafc;
+        .premium-token-box {
+            background: linear-gradient(135deg, #f8fafc, #ffffff);
             border-radius: 24px;
             padding: 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin: 16px 0;
+            margin: 18px 0;
+            border: 1px solid #e2e8f0;
         }
 
-        .token-id-compact {
+        .premium-token {
             font-size: 1.2rem;
             font-weight: 700;
-            color: #2563eb;
-        }
-
-        .qr-box-compact {
-            background: white;
-            padding: 5px;
-            border-radius: 12px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         #qrcode {
-            width: 65px;
-            height: 65px;
+            width: 75px;
+            height: 75px;
+            background: white;
+            padding: 6px;
+            border-radius: 16px;
+            box-shadow: 0 5px 15px -8px #2563eb;
+        }
+
+        /* ট্রানজেকশন ফিল্ডস */
+        .transaction-fields {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .hidden-fields {
+            display: none;
         }
 
         /* মোবাইল স্পেসিফিক */
         @media (max-width: 380px) {
-            .field-compact {
-                padding: 12px 14px 12px 42px;
-                font-size: 14px;
-            }
-            
-            .fee-amount-compact {
-                font-size: 2.2rem;
-            }
-            
-            .event-title-compact {
-                font-size: 1.3rem;
-            }
-            
-            .digit-number-compact {
-                font-size: 1.4rem;
-            }
-            
-            .countdown-digits-compact {
-                gap: 10px;
-            }
-            
-            .contact-item-compact {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .card-body-luxury {
-                flex-direction: column;
-                align-items: center;
-            }
+            .premium-header h1 { font-size: 1.8rem; }
+            .premium-field { padding: 14px 16px 14px 46px; }
+            .premium-fee-amount { font-size: 2.5rem; }
+            .premium-event-title { font-size: 1.5rem; }
+            .premium-digit { min-width: 60px; }
+            .premium-digit-number { font-size: 1.6rem; }
+            .premium-contact-item { width: 100%; }
         }
 
-        /* অ্যানিমেশন */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
-        .fade-in {
-            animation: fadeIn 0.3s ease-out;
+
+        .animate-slide-up {
+            animation: slideUp 0.4s ease-out;
         }
 
-        /* লোডিং */
-        .spinner-compact {
+        .spinner {
             width: 20px;
             height: 20px;
             border: 2px solid rgba(255,255,255,0.3);
             border-radius: 50%;
             border-top-color: white;
-            animation: spin 0.8s linear infinite;
+            animation: spin 0.6s linear infinite;
             display: inline-block;
         }
-        
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
     </style>
 </head>
-<body class="p-3">
+<body>
 
-    <!-- মিনিমাল নেভি -->
-    <nav class="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-b border-gray-100 z-50 no-print" style="max-width: 450px; margin: 0 auto; left: 50%; transform: translateX(-50%);">
-        <div class="px-4 py-2 flex items-center justify-between">
-            <a href="index.html" class="flex items-center gap-1.5">
-                <div class="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center">
-                    <span class="text-white font-bold text-xs">DB</span>
-                </div>
-                <span class="font-semibold text-gray-900 text-sm">DBHS Alumni</span>
-            </a>
-            <a href="index.html" class="text-gray-400 text-xs bg-gray-50 px-4 py-1.5 rounded-full">
-                হোম
-            </a>
+    <!-- প্রিমিয়াম নেভি বার -->
+    <nav class="fixed top-0 left-0 right-0 z-50" style="max-width: 450px; margin: 0 auto; left: 50%; transform: translateX(-50%);">
+        <div class="bg-white/90 backdrop-blur-xl mx-3 my-3 px-4 py-2.5 rounded-2xl shadow-lg border border-gray-100">
+            <div class="flex items-center justify-between">
+                <a href="#" class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-md">
+                        <i class="fas fa-graduation-cap text-white text-xs"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-gray-900 text-sm">DBHS ALUMNI</span>
+                        <span class="text-[9px] block text-gray-500">প্রাক্তন শিক্ষার্থী</span>
+                    </div>
+                </a>
+                <a href="#" class="text-xs text-gray-500 bg-gray-50 px-4 py-1.5 rounded-full border border-gray-200">
+                    <i class="fas fa-home mr-1"></i>হোম
+                </a>
+            </div>
         </div>
     </nav>
 
-    <!-- মেইন কন্টেইনার - মোবাইল অপটিমাইজড -->
-    <div class="max-w-md mx-auto" style="margin-top: 60px; margin-bottom: 16px;">
+    <!-- মেইন কন্টেইনার -->
+    <div class="max-w-md mx-auto" style="margin-top: 75px; margin-bottom: 20px;">
         
-        <!-- ===== কমপ্যাক্ট রেজিস্ট্রেশন ফর্ম ===== -->
-        <div id="registrationCard" class="mobile-card p-5 fade-in">
+        <!-- ===== প্রিমিয়াম রেজিস্ট্রেশন কার্ড ===== -->
+        <div id="registrationCard" class="premium-card p-6 animate-slide-up">
             
-            <div class="form-header-compact">
+            <div class="premium-header">
                 <h1>রেজিস্ট্রেশন</h1>
-                <p>সদস্যপদ নিশ্চিত করতে ফর্ম পূরণ করুন</p>
+                <p>সদস্যপদ নিশ্চিত করুন</p>
             </div>
 
-            <!-- এরর এলার্ট -->
-            <div id="errorAlert" style="display:none;" 
-                 class="mb-4 p-3 bg-red-50 border border-red-100 rounded-xl">
+            <div id="errorAlert" style="display:none;" class="mb-4 p-3 bg-red-50 border border-red-200 rounded-2xl">
                 <p class="text-red-500 text-xs" id="errorMessage"></p>
             </div>
 
-            <!-- ফর্ম -->
             <form id="regForm">
                 
                 <!-- পূর্ণ নাম -->
-                <div class="input-group-compact">
-                    <label>পূর্ণ নাম</label>
-                    <div class="input-wrapper-compact">
-                        <i class="fas fa-user"></i>
-                        <input type="text" id="name" name="name" 
-                               class="field-compact" 
-                               placeholder="আপনার নাম" 
-                               required>
+                <div class="premium-input-group">
+                    <label class="premium-label">পূর্ণ নাম</label>
+                    <div class="relative">
+                        <span class="premium-icon"><i class="fas fa-user"></i></span>
+                        <input type="text" id="name" name="name" class="premium-field" placeholder="আপনার নাম" required>
                     </div>
                 </div>
 
-                <!-- ব্যাচ ও সাল - ২ কলাম -->
+                <!-- ব্যাচ ও সাল -->
                 <div class="grid grid-cols-2 gap-3">
-                    <div class="input-group-compact">
-                        <label>ব্যাচ</label>
-                        <div class="input-wrapper-compact">
-                            <i class="fas fa-layer-group"></i>
-                            <select id="batch_no" name="batch_no" class="field-compact" required>
+                    <div class="premium-input-group">
+                        <label class="premium-label">ব্যাচ</label>
+                        <div class="relative">
+                            <span class="premium-icon"><i class="fas fa-layer-group"></i></span>
+                            <select id="batch_no" name="batch_no" class="premium-field" required>
                                 <option value="">ব্যাচ</option>
                             </select>
                         </div>
                     </div>
                     
-                    <div class="input-group-compact">
-                        <label>পাসের সাল</label>
-                        <div class="input-wrapper-compact">
-                            <i class="fas fa-calendar"></i>
-                            <select id="pass_year" name="pass_year" class="field-compact" required>
+                    <div class="premium-input-group">
+                        <label class="premium-label">পাসের সাল</label>
+                        <div class="relative">
+                            <span class="premium-icon"><i class="fas fa-calendar"></i></span>
+                            <select id="pass_year" name="pass_year" class="premium-field" required>
                                 <option value="">সাল</option>
                             </select>
                         </div>
@@ -535,40 +625,36 @@
                 </div>
 
                 <!-- লিঙ্গ -->
-                <div class="input-group-compact">
-                    <label>লিঙ্গ</label>
-                    <div class="radio-compact">
-                        <div class="radio-item-compact">
+                <div class="premium-input-group">
+                    <label class="premium-label">লিঙ্গ</label>
+                    <div class="premium-radio-group">
+                        <div class="premium-radio-option">
                             <input type="radio" name="gender" id="male" value="পুরুষ" required>
                             <label for="male">পুরুষ</label>
                         </div>
-                        <div class="radio-item-compact">
+                        <div class="premium-radio-option">
                             <input type="radio" name="gender" id="female" value="মহিলা">
                             <label for="female">মহিলা</label>
                         </div>
                     </div>
                 </div>
 
-                <!-- মোবাইল নম্বর -->
-                <div class="input-group-compact">
-                    <label>মোবাইল</label>
-                    <div class="input-wrapper-compact">
-                        <i class="fas fa-phone-alt"></i>
-                        <input type="tel" id="mobile" name="mobile" 
-                               class="field-compact" 
-                               placeholder="017XXXXXXXX" 
-                               pattern="01[3-9][0-9]{8}" 
-                               required>
+                <!-- মোবাইল -->
+                <div class="premium-input-group">
+                    <label class="premium-label">মোবাইল</label>
+                    <div class="relative">
+                        <span class="premium-icon"><i class="fas fa-phone-alt"></i></span>
+                        <input type="tel" id="mobile" name="mobile" class="premium-field" placeholder="017XXXXXXXX" required>
                     </div>
                 </div>
 
                 <!-- ইভেন্ট -->
-                <div class="input-group-compact">
-                    <label>ইভেন্ট</label>
-                    <div class="input-wrapper-compact">
-                        <i class="fas fa-ticket-alt"></i>
-                        <select id="event_type" name="event_type" class="field-compact" onchange="updateFee()" required>
-                            <option value="">ইভেন্ট</option>
+                <div class="premium-input-group">
+                    <label class="premium-label">ইভেন্ট</label>
+                    <div class="relative">
+                        <span class="premium-icon"><i class="fas fa-ticket-alt"></i></span>
+                        <select id="event_type" name="event_type" class="premium-field" onchange="updateFee()" required>
+                            <option value="">ইভেন্ট নির্বাচন করুন</option>
                             <option value="পুনর্মিলনী ২০২৫">পুনর্মিলনী ২০২৫ (১০০০৳)</option>
                             <option value="ইফতার মাহফিল">ইফতার মাহফিল (৩০০৳)</option>
                             <option value="আজীবন সদস্যপদ">আজীবন সদস্যপদ (২০০০৳)</option>
@@ -577,178 +663,235 @@
                 </div>
 
                 <!-- ছবি -->
-                <div class="input-group-compact">
-                    <label>ছবি (ঐচ্ছিক)</label>
-                    <div class="input-wrapper-compact">
-                        <i class="fas fa-image"></i>
-                        <input type="file" id="photo" accept="image/*" 
-                               class="field-compact pt-3 pb-3" 
-                               onchange="previewImage(event)">
+                <div class="premium-input-group">
+                    <label class="premium-label">ছবি (ঐচ্ছিক)</label>
+                    <div class="relative">
+                        <span class="premium-icon"><i class="fas fa-image"></i></span>
+                        <input type="file" id="photo" accept="image/*" class="premium-field pt-3 pb-3" onchange="previewImage(event)">
                     </div>
                 </div>
 
                 <!-- ফি বক্স -->
-                <div class="fee-compact">
-                    <div class="fee-label-compact">মোট ফি</div>
-                    <div class="fee-amount-compact">
+                <div class="premium-fee-box">
+                    <div class="premium-fee-label">মোট ফি</div>
+                    <div class="premium-fee-amount">
                         ৳<span id="fee_amount">0</span><small>.00</small>
                     </div>
                 </div>
 
-                <!-- পেমেন্ট -->
-                <div class="input-group-compact">
-                    <label>পেমেন্ট</label>
-                    <div class="input-wrapper-compact">
-                        <i class="fas fa-credit-card"></i>
-                        <select id="payment_method" name="payment_method" class="field-compact" required>
-                            <option value="Online">অনলাইন পেমেন্ট</option>
-                            <option value="Cash">নগদ পেমেন্ট</option>
+                <!-- পেমেন্ট তথ্য বক্স -->
+                <div class="payment-info-box">
+                    <div class="payment-info-title">
+                        <i class="fas fa-university"></i>
+                        <span>যেখানে টাকা পাঠাবেন</span>
+                    </div>
+                    <div class="payment-details">
+                        <div class="payment-method-item">
+                            <div class="payment-method-icon"><i class="fas fa-mobile-alt"></i></div>
+                            <div class="payment-method-text">বিকাশ (Personal)</div>
+                            <div class="payment-method-number">01700-000000</div>
+                        </div>
+                        <div class="payment-method-item">
+                            <div class="payment-method-icon"><i class="fas fa-mobile-alt"></i></div>
+                            <div class="payment-method-text">নগদ</div>
+                            <div class="payment-method-number">01600-000000</div>
+                        </div>
+                        <div class="payment-method-item">
+                            <div class="payment-method-icon"><i class="fas fa-mobile-alt"></i></div>
+                            <div class="payment-method-text">রকেট</div>
+                            <div class="payment-method-number">01800-000000</div>
+                        </div>
+                        <div class="payment-method-item">
+                            <div class="payment-method-icon"><i class="fas fa-university"></i></div>
+                            <div class="payment-method-text">ব্যাংক (DBBL)</div>
+                            <div class="payment-method-number">123.456.789</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- পেমেন্ট মেথড -->
+                <div class="premium-input-group">
+                    <label class="premium-label">পেমেন্ট মাধ্যম</label>
+                    <div class="relative">
+                        <span class="premium-icon"><i class="fas fa-credit-card"></i></span>
+                        <select id="payment_method" name="payment_method" class="premium-field" onchange="toggleTransactionFields()" required>
+                            <option value="">পেমেন্ট মাধ্যম নির্বাচন করুন</option>
+                            <option value="bKash">বিকাশ</option>
+                            <option value="Nagad">নগদ</option>
+                            <option value="Rocket">রকেট</option>
+                            <option value="Bank">ব্যাংক ট্রান্সফার</option>
+                            <option value="Cash">নগদ (অফিসে)</option>
                         </select>
                     </div>
                 </div>
 
+                <!-- ট্রানজেকশন ফিল্ডস (অনলাইন পেমেন্টের জন্য) -->
+                <div id="transactionFields" class="transaction-fields hidden-fields">
+                    <!-- যে নাম্বার থেকে টাকা পাঠানো হয়েছে -->
+                    <div class="premium-input-group">
+                        <label class="premium-label">আপনার মোবাইল নাম্বার (যে নাম্বার থেকে টাকা দিয়েছেন)</label>
+                        <div class="relative">
+                            <span class="premium-icon"><i class="fas fa-phone-alt"></i></span>
+                            <input type="tel" id="sender_number" name="sender_number" class="premium-field transaction-field" placeholder="যে নাম্বার থেকে টাকা দিয়েছেন">
+                        </div>
+                    </div>
+
+                    <!-- ট্রানজেকশন আইডি -->
+                    <div class="premium-input-group">
+                        <label class="premium-label">ট্রানজেকশন আইডি (TrxID)</label>
+                        <div class="relative">
+                            <span class="premium-icon"><i class="fas fa-hashtag"></i></span>
+                            <input type="text" id="transaction_id" name="transaction_id" class="premium-field transaction-field" placeholder="TrxID দিন">
+                        </div>
+                    </div>
+                </div>
+
                 <!-- বাটন -->
-                <button type="submit" id="submitBtn" class="btn-compact">
+                <button type="submit" id="submitBtn" class="premium-button">
                     <i class="fas fa-check-circle"></i>
                     রেজিস্ট্রেশন করুন
                 </button>
             </form>
         </div>
 
-        <!-- ===== ইভেন্ট তথ্য ===== -->
-        <div class="event-compact fade-in">
+        <!-- ===== প্রিমিয়াম ইভেন্ট তথ্য ===== -->
+        <div class="premium-event-card animate-slide-up">
             
-            <div class="event-header-compact">
-                <span class="event-badge-compact"><i class="fas fa-calendar-alt mr-1"></i>আসন্ন</span>
-                <span class="text-xs text-gray-400">১৫ ডিসেম্বর</span>
+            <div class="flex justify-between items-center mb-3">
+                <span class="premium-event-badge">
+                    <i class="fas fa-calendar-alt mr-1"></i>আসন্ন
+                </span>
+                <span class="text-xs text-gray-400 bg-gray-50 px-3 py-1 rounded-full">১৫ ডিসেম্বর</span>
             </div>
             
-            <h2 class="event-title-compact">পুনর্মিলনী ২০২৫</h2>
+            <h2 class="premium-event-title">পুনর্মিলনী ২০২৫</h2>
             
             <!-- তারিখ -->
-            <div class="info-block-compact">
-                <div class="info-icon-compact">
+            <div class="premium-info-row">
+                <div class="premium-info-icon">
                     <i class="fas fa-calendar-alt"></i>
                 </div>
-                <div class="info-content-compact">
-                    <div class="info-label-compact">তারিখ</div>
-                    <div class="info-value-compact">১৫ ডিসেম্বর ২০২৫, শুক্রবার</div>
+                <div>
+                    <div class="text-2xs text-gray-400 mb-0.5">তারিখ</div>
+                    <div class="font-semibold text-gray-800">১৫ ডিসেম্বর ২০২৫, শুক্রবার</div>
                 </div>
             </div>
             
             <!-- সময় -->
-            <div class="info-block-compact">
-                <div class="info-icon-compact">
+            <div class="premium-info-row">
+                <div class="premium-info-icon">
                     <i class="fas fa-clock"></i>
                 </div>
-                <div class="info-content-compact">
-                    <div class="info-label-compact">সময়</div>
-                    <div class="info-value-compact">সকাল ১০:০০ - রাত ০৮:০০</div>
+                <div>
+                    <div class="text-2xs text-gray-400 mb-0.5">সময়</div>
+                    <div class="font-semibold text-gray-800">সকাল ১০:০০ - রাত ০৮:০০</div>
                 </div>
             </div>
             
             <!-- স্থান -->
-            <div class="info-block-compact">
-                <div class="info-icon-compact">
+            <div class="premium-info-row">
+                <div class="premium-info-icon">
                     <i class="fas fa-map-marker-alt"></i>
                 </div>
-                <div class="info-content-compact">
-                    <div class="info-label-compact">স্থান</div>
-                    <div class="info-value-compact">স্কুল মাঠ, দৌলতপুর, কুষ্টিয়া</div>
+                <div>
+                    <div class="text-2xs text-gray-400 mb-0.5">স্থান</div>
+                    <div class="font-semibold text-gray-800">স্কুল মাঠ, দৌলতপুর, কুষ্টিয়া</div>
                 </div>
             </div>
             
             <!-- কাউন্টডাউন -->
-            <div class="countdown-compact">
-                <div class="countdown-title-compact">
+            <div class="premium-countdown">
+                <div class="premium-countdown-title">
                     <i class="fas fa-hourglass-half mr-1"></i>
                     শুরু হতে বাকি
                 </div>
-                <div class="countdown-digits-compact">
-                    <div class="digit-block-compact">
-                        <div class="digit-number-compact">১৫</div>
-                        <div class="digit-label-compact">দিন</div>
+                <div class="premium-countdown-digits">
+                    <div class="premium-digit">
+                        <div class="premium-digit-number">১৫</div>
+                        <div class="premium-digit-label">দিন</div>
                     </div>
-                    <div class="digit-block-compact">
-                        <div class="digit-number-compact">০৮</div>
-                        <div class="digit-label-compact">ঘন্টা</div>
+                    <div class="premium-digit">
+                        <div class="premium-digit-number">০৮</div>
+                        <div class="premium-digit-label">ঘন্টা</div>
                     </div>
-                    <div class="digit-block-compact">
-                        <div class="digit-number-compact">৩০</div>
-                        <div class="digit-label-compact">মিনিট</div>
+                    <div class="premium-digit">
+                        <div class="premium-digit-number">৩০</div>
+                        <div class="premium-digit-label">মিনিট</div>
                     </div>
                 </div>
             </div>
             
             <!-- যোগাযোগ -->
-            <div class="contact-compact">
-                <span class="contact-item-compact">
+            <div class="premium-contact">
+                <span class="premium-contact-item">
                     <i class="fas fa-ticket-alt"></i>
                     শেষ: ১০ ডিসেম্বর
                 </span>
-                <span class="contact-item-compact">
+                <span class="premium-contact-item">
                     <i class="fas fa-phone-alt"></i>
                     ০১৭০০-০০০০০০
                 </span>
             </div>
         </div>
 
-        <!-- সাকসেস কার্ড -->
-        <div id="successCard" style="display:none;" class="fade-in">
-            <div class="success-card-compact">
+        <!-- ===== প্রিমিয়াম সাকসেস কার্ড ===== -->
+        <div id="successCard" style="display:none;" class="animate-slide-up">
+            <div class="premium-success-card">
                 
-                <div class="text-center mb-4 no-print">
-                    <div class="w-14 h-14 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-2">
-                        <i class="fas fa-check-circle text-2xl text-green-500"></i>
+                <div class="text-center mb-5 no-print">
+                    <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
+                        <i class="fas fa-check text-white text-2xl"></i>
                     </div>
-                    <h2 class="text-xl font-bold">অভিনন্দন!</h2>
-                    <p class="text-xs text-gray-400">রেজিস্ট্রেশন সম্পন্ন</p>
+                    <h2 class="text-2xl font-bold text-gray-800">অভিনন্দন!</h2>
+                    <p class="text-xs text-gray-400">রেজিস্ট্রেশন সফল হয়েছে</p>
                 </div>
 
-                <div id="idCard" class="event-card-compact">
+                <!-- প্রিমিয়াম আইডি কার্ড -->
+                <div id="idCard" class="premium-id-card">
+                    
                     <div class="flex items-center justify-between mb-4">
-                        <div class="bg-gray-900 text-white px-4 py-1.5 rounded-full text-xs font-bold">DBHS</div>
-                        <div class="text-xs text-gray-500">প্রাক্তন শিক্ষার্থী</div>
+                        <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-5 py-2 rounded-full text-xs font-bold shadow-md">
+                            DBHS ELITE
+                        </div>
+                        <div class="text-2xs text-gray-400">প্রাক্তন শিক্ষার্থী</div>
                     </div>
                     
                     <div class="text-center mb-4">
-                        <h2 class="text-lg font-bold">ইভেন্ট পাস</h2>
-                        <p class="text-xs text-blue-600">দৌলতপুর বহুমুখী উচ্চ বিদ্যালয়</p>
+                        <h3 class="text-xl font-bold text-gray-800">ইভেন্ট পাস</h3>
+                        <p class="text-2xs text-blue-600">দৌলতপুর বহুমুখী উচ্চ বিদ্যালয়</p>
                     </div>
                     
-                    <div class="flex gap-3 mb-4">
-                        <div class="photo-area-compact">
-                            <img id="cardPhoto" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile">
+                    <div class="flex gap-4 mb-4">
+                        <div class="premium-photo">
+                            <img id="cardPhoto" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="w-full h-full object-cover">
                         </div>
                         
-                        <div class="info-area-compact flex-1">
-                            <h3 id="cardName" class="text-base">রাফি হাসান</h3>
+                        <div class="flex-1">
+                            <h4 id="cardName" class="text-lg font-bold text-gray-800 mb-2">রাফি হাসান</h4>
                             
-                            <div class="info-row-compact">
-                                <span class="info-label-compact-card">ব্যাচ</span>
-                                <span class="font-semibold" id="cardBatch">২৫ তম</span>
+                            <div class="flex items-center mb-1">
+                                <span class="text-2xs text-gray-400 w-16">ব্যাচ</span>
+                                <span class="text-sm font-semibold text-gray-700" id="cardBatch">২৫ তম</span>
                             </div>
                             
-                            <div class="info-row-compact">
-                                <span class="info-label-compact-card">ইভেন্ট</span>
-                                <span class="font-semibold" id="cardEvent">পুনর্মিলনী</span>
+                            <div class="flex items-center mb-1">
+                                <span class="text-2xs text-gray-400 w-16">ইভেন্ট</span>
+                                <span class="text-sm font-semibold text-gray-700" id="cardEvent">পুনর্মিলনী</span>
                             </div>
                             
-                            <div class="info-row-compact">
-                                <span class="info-label-compact-card">পেমেন্ট</span>
-                                <span class="font-semibold" id="cardPayment">অনলাইন</span>
+                            <div class="flex items-center">
+                                <span class="text-2xs text-gray-400 w-16">পেমেন্ট</span>
+                                <span class="text-sm font-semibold text-gray-700" id="cardPayment">বিকাশ</span>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="token-section-compact">
+                    <div class="premium-token-box">
                         <div>
-                            <div class="text-2xs text-gray-400 mb-0.5">টোকেন</div>
-                            <div class="token-id-compact text-sm" id="cardToken">DBHS7X9K2M</div>
+                            <div class="text-2xs text-gray-400 mb-1">টোকেন আইডি</div>
+                            <div class="premium-token" id="cardToken">DBHS7X9K2M</div>
                         </div>
-                        <div class="qr-box-compact">
-                            <div id="qrcode"></div>
-                        </div>
+                        <div id="qrcode"></div>
                     </div>
                     
                     <div class="text-center text-2xs text-gray-400 mt-3 pt-3 border-t border-gray-100">
@@ -756,21 +899,22 @@
                     </div>
                 </div>
 
-                <div class="flex gap-2 mt-4 no-print">
-                    <button onclick="downloadCardAsImage()" class="flex-1 py-3 text-xs bg-white border border-gray-200 rounded-full hover:border-blue-600">
+                <!-- অ্যাকশন বাটন -->
+                <div class="flex gap-2 mt-5 no-print">
+                    <button onclick="downloadCardAsImage()" class="flex-1 py-3.5 text-sm bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:shadow-xl transition">
                         <i class="fas fa-download mr-1"></i>ডাউনলোড
                     </button>
-                    <button onclick="window.print()" class="flex-1 py-3 text-xs bg-white border border-gray-200 rounded-full hover:border-blue-600">
+                    <button onclick="window.print()" class="flex-1 py-3.5 text-sm bg-white border border-gray-200 rounded-full hover:border-blue-600 transition">
                         <i class="fas fa-print mr-1"></i>প্রিন্ট
                     </button>
-                    <a href="index.html" class="flex-1 py-3 text-xs bg-white border border-gray-200 rounded-full hover:border-blue-600 text-center">
+                    <a href="#" class="flex-1 py-3.5 text-sm bg-white border border-gray-200 rounded-full hover:border-blue-600 transition text-center">
                         <i class="fas fa-home mr-1"></i>হোম
                     </a>
                 </div>
 
                 <div class="text-center mt-3 no-print">
-                    <button onclick="resetForm()" class="text-xs text-blue-600 bg-blue-50 px-5 py-2 rounded-full">
-                        নতুন রেজিস্ট্রেশন
+                    <button onclick="resetForm()" class="text-xs text-blue-600 bg-blue-50 px-6 py-2.5 rounded-full hover:bg-blue-100 transition">
+                        নতুন রেজিস্ট্রেশন করুন
                     </button>
                 </div>
             </div>
@@ -797,7 +941,30 @@
             reader.onload = function(){
                 document.getElementById('cardPhoto').src = reader.result;
             };
-            reader.readAsDataURL(event.target.files[0]);
+            if(event.target.files[0]) {
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        }
+
+        function toggleTransactionFields() {
+            const paymentMethod = document.getElementById('payment_method').value;
+            const transactionFields = document.getElementById('transactionFields');
+            
+            if (paymentMethod === 'Cash') {
+                transactionFields.classList.add('hidden-fields');
+                // ক্যাশ পেমেন্ট হলে ফিল্ডগুলো require সরান
+                document.getElementById('sender_number').required = false;
+                document.getElementById('transaction_id').required = false;
+            } else if (paymentMethod !== '') {
+                transactionFields.classList.remove('hidden-fields');
+                // অনলাইন পেমেন্ট হলে ফিল্ডগুলো require করুন
+                document.getElementById('sender_number').required = true;
+                document.getElementById('transaction_id').required = true;
+            } else {
+                transactionFields.classList.add('hidden-fields');
+                document.getElementById('sender_number').required = false;
+                document.getElementById('transaction_id').required = false;
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -808,26 +975,24 @@
                 batch.innerHTML += `<option value="${i}">${i} তম</option>`;
             }
             
-            for(let i = 2024; i >= 1970; i--) {
+            for(let i = 2025; i >= 1970; i--) {
                 year.innerHTML += `<option value="${i}">${i}</option>`;
             }
         });
 
         function downloadCardAsImage() {
             const card = document.getElementById('idCard');
-            const btn = event.target.closest('button');
-            const originalText = btn.innerHTML;
             
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            btn.disabled = true;
-            
-            html2canvas(card, { scale: 2 }).then((canvas) => {
+            html2canvas(card, { 
+                scale: 2,
+                backgroundColor: '#ffffff'
+            }).then((canvas) => {
                 const link = document.createElement('a');
                 link.download = `DBHS-${document.getElementById('cardToken').innerText}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
-                btn.innerHTML = originalText;
-                btn.disabled = false;
+            }).catch(error => {
+                alert('ডাউনলোড ব্যর্থ');
             });
         }
 
@@ -840,13 +1005,38 @@
             
             const mobile = document.getElementById('mobile').value;
             if (!/^01[3-9]\d{8}$/.test(mobile)) {
-                errorMessage.innerText = "সঠিক মোবাইল নম্বর দিন";
+                errorMessage.innerText = "সঠিক মোবাইল নম্বর দিন (যেমন: 017XXXXXXXX)";
                 errorBox.style.display = 'block';
                 return;
             }
+
+            const paymentMethod = document.getElementById('payment_method').value;
+            if (!paymentMethod) {
+                errorMessage.innerText = "পেমেন্ট মাধ্যম নির্বাচন করুন";
+                errorBox.style.display = 'block';
+                return;
+            }
+
+            // অনলাইন পেমেন্টের জন্য ট্রানজেকশন আইডি ও নাম্বার চেক
+            if (paymentMethod !== 'Cash') {
+                const senderNumber = document.getElementById('sender_number').value;
+                const transactionId = document.getElementById('transaction_id').value;
+                
+                if (!senderNumber || !/^01[3-9]\d{8}$/.test(senderNumber)) {
+                    errorMessage.innerText = "সঠিক প্রেরকের মোবাইল নাম্বার দিন";
+                    errorBox.style.display = 'block';
+                    return;
+                }
+                
+                if (!transactionId) {
+                    errorMessage.innerText = "ট্রানজেকশন আইডি দিন";
+                    errorBox.style.display = 'block';
+                    return;
+                }
+            }
             
             btn.disabled = true;
-            btn.innerHTML = '<span class="spinner-compact mr-2"></span> প্রসেসিং...';
+            btn.innerHTML = '<span class="spinner mr-2"></span> প্রসেসিং...';
             errorBox.style.display = 'none';
 
             const formData = new FormData(e.target);
@@ -863,13 +1053,22 @@
                 
                 if (result.result === 'success') {
                     document.getElementById('registrationCard').style.display = 'none';
-                    document.querySelector('.event-compact').style.display = 'none';
+                    document.querySelector('.premium-event-card').style.display = 'none';
                     document.getElementById('successCard').style.display = 'block';
                     
                     document.getElementById('cardName').innerText = formData.get('name') || 'প্রাক্তন শিক্ষার্থী';
                     document.getElementById('cardEvent').innerText = formData.get('event_type') || 'ইভেন্ট';
-                    document.getElementById('cardBatch').innerText = formData.get('batch_no') ? formData.get('batch_no') + ' তম' : '—';
-                    document.getElementById('cardPayment').innerText = formData.get('payment_method') === 'Online' ? 'অনলাইন' : 'নগদ';
+                    document.getElementById('cardBatch').innerText = (formData.get('batch_no') || '—') + ' তম';
+                    
+                    // পেমেন্ট মাধ্যম বাংলায় দেখানো
+                    const paymentMap = {
+                        'bKash': 'বিকাশ',
+                        'Nagad': 'নগদ',
+                        'Rocket': 'রকেট',
+                        'Bank': 'ব্যাংক',
+                        'Cash': 'নগদ'
+                    };
+                    document.getElementById('cardPayment').innerText = paymentMap[formData.get('payment_method')] || 'অনলাইন';
                     
                     const token = result.token || 'DBHS' + Math.random().toString(36).substr(2, 8).toUpperCase();
                     document.getElementById('cardToken').innerText = token;
@@ -878,17 +1077,18 @@
                     qrContainer.innerHTML = "";
                     new QRCode(qrContainer, {
                         text: token,
-                        width: 65,
-                        height: 65,
-                        colorDark: "#2563eb"
+                        width: 75,
+                        height: 75,
+                        colorDark: "#2563eb",
+                        colorLight: "#ffffff"
                     });
                     
-                    window.scrollTo({ top: 0 });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {
                     throw new Error('রেজিস্ট্রেশন ব্যর্থ');
                 }
             } catch (error) {
-                errorMessage.innerText = "সার্ভার সমস্যা";
+                errorMessage.innerText = "সার্ভার সমস্যা, আবার চেষ্টা করুন";
                 errorBox.style.display = 'block';
             } finally {
                 btn.disabled = false;
@@ -898,11 +1098,12 @@
 
         function resetForm() {
             document.getElementById('registrationCard').style.display = 'block';
-            document.querySelector('.event-compact').style.display = 'block';
+            document.querySelector('.premium-event-card').style.display = 'block';
             document.getElementById('successCard').style.display = 'none';
             document.getElementById('regForm').reset();
             document.getElementById('fee_amount').innerText = '0';
             document.getElementById('cardPhoto').src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+            document.getElementById('transactionFields').classList.add('hidden-fields');
         }
     </script>
 </body>
