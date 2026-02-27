@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>ইফতার মাহফিল গ্যালারি ২০২৪ | প্রাক্তন শিক্ষার্থী পরিষদ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body { 
+            font-family: 'Hind Siliguri', 'Inter', sans-serif; 
+            background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%);
+            color: #0f172a; 
+            min-height: 100vh;
+            padding: 12px;
+        }
+
+        /* প্রিমিয়াম মোবাইল কার্ড */
+        .premium-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 36px;
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 32, 64, 0.15),
+                0 0 0 1px rgba(59, 130, 246, 0.05) inset;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        /* গ্যালারি হেডার */
+        .gallery-header {
+            position: relative;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .gallery-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            border-radius: 3px;
+        }
+
+        .gallery-header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .gallery-header p {
+            color: #5b6e8c;
+            font-size: 0.9rem;
+        }
+
+        /* ইভেন্ট ব্যাজ */
+        .event-badge {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #0f172a;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* গ্যালারি গ্রিড */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 28px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            background: #ffffff;
+            box-shadow: 0 10px 20px -10px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 30px -10px rgba(37, 99, 235, 0.3);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* ভিডিও আইটেম */
+        .gallery-item.video {
+            aspect-ratio: 16/9;
+            grid-column: span 2;
+        }
+
+        .video-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #000;
+        }
+
+        .video-thumbnail img {
+            opacity: 0.8;
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(37, 99, 235, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            backdrop-filter: blur(4px);
+            border: 2px solid rgba(255,255,255,0.5);
+            transition: all 0.3s;
+            z-index: 2;
+        }
+
+        .gallery-item:hover .play-button {
+            transform: translate(-50%, -50%) scale(1.1);
+            background: #2563eb;
+        }
+
+        /* ছবির ওভারলে */
+        .image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 16px 12px 10px;
+            color: white;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .image-overlay {
+            transform: translateY(0);
+        }
+
+        .overlay-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .overlay-meta {
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #cbd5e1;
+        }
+
+        .overlay-meta i {
+            font-size: 0.6rem;
+        }
+
+        /* মিডিয়া ট্যাগ */
+        .media-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(37, 99, 235, 0.9);
+            backdrop-filter: blur(4px);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.3);
+            z-index: 2;
+        }
+
+        .media-tag.video-tag {
+            background: rgba(245, 158, 11, 0.9);
+        }
+
+        /* নেভি বার */
+        .nav-bar {
+            background: white/90;
+            backdrop-filter: blur(10px);
+            border-radius: 100px;
+            padding: 8px 16px;
+            box-shadow: 0 4px 20px -8px rgba(0,0,0,0.1);
+        }
+
+        /* ফিল্টার বাটন - শুধু ছবি/ভিডিও */
+        .filter-btn {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 40px;
+            padding: 8px 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #475569;
+            transition: all 0.2s;
+            flex: 1;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            border-color: transparent;
+        }
+
+        .filter-btn i {
+            margin-right: 6px;
+        }
+
+        /* স্ট্যাটিস্টিক্স কার্ড */
+        .stats-mini-card {
+            background: white;
+            border-radius: 30px;
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stats-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #dbeafe, #ffffff);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3b82f6;
+            font-size: 1.1rem;
+        }
+
+        .stats-number {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1;
+        }
+
+        .stats-label {
+            font-size: 0.65rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* মডাল */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 95%;
+            max-height: 80vh;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 30px 50px -20px black;
+        }
+
+        .modal-content img,
+        .modal-content iframe {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* র‍্যান্ডম লেআউটের জন্য বিশেষ ক্লাস */
+        .gallery-item.span-2 {
+            grid-column: span 2;
+        }
+
+        .gallery-item.tall {
+            grid-row: span 2;
+            aspect-ratio: 3/4;
+        }
+
+        @media (max-width: 380px) {
+            .gallery-grid {
+                gap: 8px;
+            }
+            
+            .gallery-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .stats-number {
+                font-size: 1.2rem;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        /* স্ক্রলবার হাইড */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- মডাল (বড় ছবি/ভিডিও দেখার জন্য) -->
+    <div id="modal" class="modal" onclick="closeModal()">
+        <span class="modal-close" onclick="closeModal(event)">
+            <i class="fas fa-times"></i>
+        </span>
+        <div class="modal-content" id="modalContent"></div>
+    </div>
+
+    <!-- নেভি বার -->
+    <nav class="fixed top-0 left-0 right-0 z-50" style="max-width: 450px; margin: 0 auto; left: 50%; transform: translateX(-50%);">
+        <div class="nav-bar mx-3 my-3">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-md">
+                        <i class="fas fa-graduation-cap text-white text-xs"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-gray-900 text-sm">DBHS ALUMNI</span>
+                        <span class="text-[9px] block text-gray-500">ইফতার গ্যালারি ২০২৪</span>
+                    </div>
+                </a>
+                <a href="index.html" class="text-xs text-gray-500 bg-gray-50 px-4 py-1.5 rounded-full border border-gray-200">
+                    <i class="fas fa-home mr-1"></i>হোম
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- মেইন কন্টেইনার -->
+    <div class="max-w-md mx-auto" style="margin-top: 75px; margin-bottom: 20px;">
+        
+        <!-- গ্যালারি হেডার -->
+        <div class="premium-card p-6 mb-4 animate-fade-in">
+            <div class="gallery-header">
+                <h1>ইফতার মাহফিল ২০২৪</h1>
+                <p>গত বছরের স্মৃতিময় মুহূর্তগুলো</p>
+            </div>
+
+            <!-- ইভেন্ট ব্যাজ ও তারিখ -->
+            <div class="flex justify-between items-center mb-4">
+                <span class="event-badge">
+                    <i class="fas fa-moon"></i>
+                    ২৭ রমজান ২০২৪
+                </span>
+                <span class="text-sm text-gray-400 bg-gray-50 px-3 py-1 rounded-full">
+                    ২০০+ সদস্য
+                </span>
+            </div>
+
+            <!-- পরিসংখ্যান -->
+            <div class="flex gap-3 mb-4">
+                <div class="stats-mini-card flex-1">
+                    <div class="stats-icon"><i class="fas fa-image"></i></div>
+                    <div>
+                        <div class="stats-number">৪৮</div>
+                        <div class="stats-label">ছবি</div>
+                    </div>
+                </div>
+                <div class="stats-mini-card flex-1">
+                    <div class="stats-icon"><i class="fas fa-video"></i></div>
+                    <div>
+                        <div class="stats-number">৮</div>
+                        <div class="stats-label">ভিডিও</div>
+                    </div>
+                </div>
+                <div class="stats-mini-card flex-1">
+                    <div class="stats-icon"><i class="fas fa-users"></i></div>
+                    <div>
+                        <div class="stats-number">২৩০</div>
+                        <div class="stats-label">অংশগ্রহণ</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ফিল্টার বাটন (শুধু ছবি/ভিডিও) -->
+            <div class="flex gap-2">
+                <button class="filter-btn active" onclick="filterGallery('all')">
+                    <i class="fas fa-border-all"></i>
+                    সবগুলো
+                </button>
+                <button class="filter-btn" onclick="filterGallery('photo')">
+                    <i class="fas fa-image"></i>
+                    ছবি
+                </button>
+                <button class="filter-btn" onclick="filterGallery('video')">
+                    <i class="fas fa-video"></i>
+                    ভিডিও
+                </button>
+            </div>
+        </div>
+
+        <!-- গ্যালারি গ্রিড (র‍্যান্ডম লেআউট) -->
+        <div class="premium-card p-5 animate-fade-in">
+            <div class="gallery-grid" id="galleryGrid">
+                
+                <!-- ফিচারড ভিডিও (বড়) -->
+                <div class="gallery-item video" data-type="video" onclick="openModal('video', 'https://www.youtube.com/embed/dQw4w9WgXcQ')">
+                    <div class="video-thumbnail">
+                        <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80" alt="ইফতার মাহফিল ভিডিও">
+                        <div class="play-button">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <span class="media-tag video-tag"><i class="fas fa-video mr-1"></i>ভিডিও</span>
+                        <div class="image-overlay">
+                            <div class="overlay-title">ইফতার মাহফিল ২০২৪ - স্পেশাল মোমেন্টস</div>
+                            <div class="overlay-meta">
+                                <span><i class="far fa-clock"></i> ৫:৩০ মিনিট</span>
+                                <span><i class="fas fa-eye"></i> ১.২কে ভিউ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ছবি ১ -->
+                <div class="gallery-item" data-type="photo" onclick="openModal('image', 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80')">
+                    <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80" alt="গ্রুপ ফটো">
+                    <span class="media-tag"><i class="fas fa-image mr-1"></i>ছবি</span>
+                    <div class="image-overlay">
+                        <div class="overlay-title">সকলের গ্রুপ ফটো</div>
+                        <div class="overlay-meta">
+                            <span><i class="fas fa-heart"></i> ৪৫</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ছবি ২ -->
+                <div class="gallery-item" data-type="photo" onclick="openModal('image', 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=800&q=80')">
+                    <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=800&q=80" alt="ইফতার টেবিল">
+                    <span class="media-tag"><i class="fas fa-image mr-1"></i>ছবি</span>
+                    <div class="image-overlay">
+                        <div class="overlay-title">ইফতার টেবিল সাজানো</div>
+                        <div class="overlay-meta">
+                            <span><i class="fas fa-heart"></i> ৩২</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ছবি ৩ (লম্বা) -->
+                <div class="gallery-item tall" data-type="photo" onclick="openModal('image', 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80')">
+                    <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80" alt="শিক্ষকরা">
+                    <span class="media-tag"><i class="fas fa-image mr-1"></i>ছবি</span>
+                    <div class="image-overlay">
+                        <div class="overlay-title">প্রাক্তন শিক্ষকদের সঙ্গে</div>
+                        <div class="overlay-meta">
+                            <span><i class="fas fa-heart"></i> ৬৭</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ভিডিও ২ -->
+                <div class="gallery-item" data-type="video" onclick="openModal('video', 'https://www.youtube.com/embed/dQw4w9WgXcQ')">
+                    <div class="video-thumbnail">
+                        <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=800&q=80" alt="ভিডিও থাম্বনেল">
+                        <div class="play-button">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <span class="media-tag video-tag"><i class="fas fa-video mr-1"></i>ভিডিও</span>
+                        <div class="image-overlay">
+                            <div class="overlay-title">দোয়া মাহফিলের বিশেষ মুহূর্ত</div>
+                            <div class="overlay-meta">
+                                <span><i class="far fa-clock"></i> ২:১৫ মিনিট</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ছবি ৪ -->
+                <div class="gallery-item" data-type="photo" onclick="openModal('image', 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80')">
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80" alt="বন্ধুদের আড্ডা">
+                    <span class="media-tag"><i class="fas fa-image mr-1"></i>ছবি</span>
+                    <div class="image-overlay">
+                        <div class="overlay-title">বন্ধুদের আড্ডা</div>
+                        <div class="overlay-meta">
+                            <span><i class="fas fa-heart"></i> ২৮</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ছবি ৫ -->
+                <div class="gallery-item" data-type="photo" onclick="openModal('image', 'https://images.unsplash.com/photo-1594608661623-aa0bd3a69799?auto=format&fit=crop&w=800&q=80')">
+                    <img src="https://images.unsplash.com/photo-1594608661623-aa0bd3a69799?auto=format&fit=crop&w=800&q=80" alt="ইফতার মুহূর্ত">
+                    <span class="media-tag"><i class="fas fa-image mr-1"></i>ছবি</span>
+                    <div class="image-overlay">
+                        <div class="overlay-title">ইফতারের আগে আড্ডা</div>
+                        <div class="overlay-meta">
+                            <span><i class="fas fa-heart"></i> ১৯</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ভিডিও ৩ (বড়) -->
+                <div class="gallery-item video span-2" data-type="video" onclick="openModal('video', 'https://www.youtube.com/embed/dQw4w9WgXcQ')">
+                    <div class="video-thumbnail">
+                        <img src="https://images.unsplash.com/photo-1542806200-8d0c6ac1de77?auto=format&fit=crop&w=800&q=80" alt="ভিডিও থাম্বনেল">
+                        <div class="play-button">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <span class="media-tag video-tag"><i class="fas fa-video mr-1"></i>ভিডিও</span>
+                        <div class="image-overlay">
+                            <div class="overlay-title">তারাবির পরের আড্ডা</div>
+                            <div class="overlay-meta">
+                                <span><i class="far fa-clock"></i> ৩:৪৫ মিনিট</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ছবি ৬ -->
+                <div class="gallery-item" data-type="photo" onclick="openModal('image', 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800&q=80')">
+                    <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800&q=80" alt="গ্রুপ ফটো">
+                    <span class="media-tag"><i class="fas fa-image mr-1"></i>ছবি</span>
+                    <div class="image-overlay">
+                        <div class="overlay-title">সকলের সম্মিলিত ছবি</div>
+                        <div class="overlay-meta">
+                            <span><i class="fas fa-heart"></i> ৮৯</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ছবি ৭ -->
+                <div class="gallery-item" data-type="photo" onclick="openModal('image', 'https://images.unsplash.com/photo-1531482615718-9ca1fbf4a966?auto=format&fit=crop&w=800&q=80')">
+                    <img src="https://images.unsplash.com/photo-1531482615718-9ca1fbf4a966?auto=format&fit=crop&w=800&q=80" alt="দোয়া মাহফিল">
+                    <span class="media-tag"><i class="fas fa-image mr-1"></i>ছবি</span>
+                    <div class="image-overlay">
+                        <div class="overlay-title">হাত তুলে দোয়ার মুহূর্ত</div>
+                        <div class="overlay-meta">
+                            <span><i class="fas fa-heart"></i> ৫৬</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ছবি ৮ -->
+                <div class="gallery-item" data-type="photo" onclick="openModal('image', 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=800&q=80')">
+                    <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=800&q=80" alt="গ্রুপ ফটো">
+                    <span class="media-tag"><i class="fas fa-image mr-1"></i>ছবি</span>
+                    <div class="image-overlay">
+                        <div class="overlay-title">স্কুল প্রাঙ্গণে আড্ডা</div>
+                        <div class="overlay-meta">
+                            <span><i class="fas fa-heart"></i> ৩৪</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- আরো দেখুন বাটন -->
+        <div class="text-center mt-4 mb-4">
+            <button onclick="loadMoreImages()" class="bg-white px-8 py-4 rounded-full text-sm font-semibold text-gray-600 shadow-sm border border-gray-200 hover:border-blue-600 transition">
+                <i class="fas fa-arrow-down mr-2"></i>
+                আরো ছবি লোড করুন
+            </button>
+        </div>
+
+        <!-- ফুটার -->
+        <div class="text-center mt-6 mb-4">
+            <p class="text-xs text-gray-400">
+                <i class="far fa-copyright mr-1"></i>
+                ইফতার মাহফিল ২০২৪ - দৌলতপুর বহুমুখী উচ্চ বিদ্যালয় প্রাক্তন শিক্ষার্থী পরিষদ
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let currentFilter = 'all';
+        
+        function openModal(type, src) {
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modalContent');
+            
+            if (type === 'image') {
+                modalContent.innerHTML = `<img src="${src}" alt="Gallery Image" style="width:100%; height:auto;">`;
+            } else if (type === 'video') {
+                modalContent.innerHTML = `
+                    <iframe width="100%" height="315" src="${src}" 
+                        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                `;
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeModal(e) {
+            if (e && e.stopPropagation) e.stopPropagation();
+            const modal = document.getElementById('modal');
+            modal.classList.remove('active');
+            document.getElementById('modalContent').innerHTML = '';
+        }
+
+        function filterGallery(type) {
+            currentFilter = type;
+            const items = document.querySelectorAll('.gallery-item');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            // বাটন আপডেট
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.includes(type === 'all' ? 'সবগুলো' : (type === 'photo' ? 'ছবি' : 'ভিডিও'))) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            items.forEach(item => {
+                if (type === 'all') {
+                    item.style.display = 'block';
+                } else if (type === 'photo') {
+                    item.style.display = item.dataset.type === 'photo' ? 'block' : 'none';
+                } else if (type === 'video') {
+                    item.style.display = item.dataset.type === 'video' ? 'block' : 'none';
+                }
+            });
+        }
+
+        function loadMoreImages() {
+            // এখানে আপনি AJAX কল করে আরো ছবি লোড করতে পারেন
+            alert('আরো ছবি লোড করার ফাংশন যুক্ত করতে হবে');
+        }
+
+        // এন্টার কী প্রেস করলে মডাল বন্ধ
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // র‍্যান্ডম লেআউট জেনারেট করতে চাইলে এই ফাংশন ব্যবহার করতে পারেন
+        function shuffleLayout() {
+            const grid = document.getElementById('galleryGrid');
+            const items = Array.from(grid.children);
+            
+            // শাফল অ্যালগরিদম
+            for (let i = items.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                grid.insertBefore(items[j], items[i]);
+            }
+        }
+        
+        // পেজ লোড হওয়ার পর লেআউট শাফল করতে চাইলে (ঐচ্ছিক)
+        // window.onload = shuffleLayout;
+    </script>
+</body>
+</html>
