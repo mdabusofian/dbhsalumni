@@ -37,7 +37,7 @@
             transition: all 0.3s ease;
         }
 
-      /* প্রিমিয়াম হেডার */
+        /* প্রিমিয়াম হেডার */
         .premium-header {
             position: relative;
             padding-bottom: 16px;
@@ -520,7 +520,6 @@
 </head>
 <body>
 
- 
     <!-- মেইন কন্টেইনার -->
     <div class="max-w-md mx-auto" style="margin-top: 75px; margin-bottom: 20px;">
         
@@ -547,26 +546,14 @@
                     </div>
                 </div>
 
-                <!-- ব্যাচ ও সাল -->
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="premium-input-group">
-                        <label class="premium-label">ব্যাচ</label>
-                        <div class="relative">
-                            <span class="premium-icon"><i class="fas fa-layer-group"></i></span>
-                            <select id="batch_no" name="batch_no" class="premium-field" required>
-                                <option value="">ব্যাচ</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="premium-input-group">
-                        <label class="premium-label">পাসের সাল</label>
-                        <div class="relative">
-                            <span class="premium-icon"><i class="fas fa-calendar"></i></span>
-                            <select id="pass_year" name="pass_year" class="premium-field" required>
-                                <option value="">সাল</option>
-                            </select>
-                        </div>
+                <!-- পাসের সাল (শুধু সাল থাকবে, ব্যাচ নং সরানো হয়েছে) -->
+                <div class="premium-input-group">
+                    <label class="premium-label">পাসের সাল</label>
+                    <div class="relative">
+                        <span class="premium-icon"><i class="fas fa-calendar"></i></span>
+                        <select id="pass_year" name="pass_year" class="premium-field" required>
+                            <option value="">সাল নির্বাচন করুন</option>
+                        </select>
                     </div>
                 </div>
 
@@ -753,16 +740,16 @@
                 <span class="premium-event-badge">
                     <i class="fas fa-calendar-alt mr-1"></i>আসন্ন
                 </span>
-                <span class="text-xs text-gray-400 bg-gray-50 px-3 py-1 rounded-full">১৫ ডিসেম্বর</span>
+                <span class="text-xs text-gray-400 bg-gray-50 px-3 py-1 rounded-full"> </span>
             </div>
             
-            <h2 class="premium-event-title">পুনর্মিলনী ২০২৫</h2>
+            <h2 class="premium-event-title">ইফতার মাহফিল ২০২৬</h2>
             
             <div class="premium-info-row">
                 <div class="premium-info-icon"><i class="fas fa-calendar-alt"></i></div>
                 <div>
                     <div class="text-2xs text-gray-400 mb-0.5">তারিখ</div>
-                    <div class="font-semibold text-gray-800">১৫ ডিসেম্বর ২০২৫, শুক্রবার</div>
+                    <div class="font-semibold text-gray-800">২৯ রমজান ১৪৪৭ হিজরী, শুক্রবার</div>
                 </div>
             </div>
             
@@ -770,7 +757,7 @@
                 <div class="premium-info-icon"><i class="fas fa-clock"></i></div>
                 <div>
                     <div class="text-2xs text-gray-400 mb-0.5">সময়</div>
-                    <div class="font-semibold text-gray-800">সকাল ১০:০০ - রাত ০৮:০০</div>
+                    <div class="font-semibold text-gray-800">বিকাল ৪:৩০ - রাত ০৮:০০</div>
                 </div>
             </div>
             
@@ -778,7 +765,7 @@
                 <div class="premium-info-icon"><i class="fas fa-map-marker-alt"></i></div>
                 <div>
                     <div class="text-2xs text-gray-400 mb-0.5">স্থান</div>
-                    <div class="font-semibold text-gray-800">স্কুল মাঠ, দৌলতপুর, কুষ্টিয়া</div>
+                    <div class="font-semibold text-gray-800"> দৌলতপুর বহুমূখী উচ্চ বিদ্যালয় মাঠ প্রাঙ্গন </div>
                 </div>
             </div>
         </div>
@@ -817,9 +804,16 @@
                         <div class="flex-1">
                             <h4 id="cardName" class="text-lg font-bold text-gray-800 mb-2">-</h4>
                             
+                            <!-- পাসের সাল দেখানো হবে -->
                             <div class="flex items-center mb-1">
-                                <span class="text-2xs text-gray-400 w-16">ব্যাচ</span>
-                                <span class="text-sm font-semibold text-gray-700" id="cardBatch">-</span>
+                                <span class="text-2xs text-gray-400 w-16">পাসের সাল</span>
+                                <span class="text-sm font-semibold text-gray-700" id="cardPassYear">-</span>
+                            </div>
+                            
+                            <!-- মোবাইল নম্বর দেখানো হবে -->
+                            <div class="flex items-center mb-1">
+                                <span class="text-2xs text-gray-400 w-16">মোবাইল</span>
+                                <span class="text-sm font-semibold text-gray-700" id="cardMobile">-</span>
                             </div>
                             
                             <div class="flex items-center mb-1">
@@ -929,17 +923,19 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const batch = document.getElementById('batch_no');
             const year = document.getElementById('pass_year');
             
-            for(let i = 1; i <= 60; i++) {
-                batch.innerHTML += `<option value="${i}">${i} তম</option>`;
-            }
-            
+            // শুধু পাসের সালের অপশন যোগ করা হচ্ছে (ব্যাচ নং বাদ দেওয়া হয়েছে)
             for(let i = 2025; i >= 1970; i--) {
                 year.innerHTML += `<option value="${i}">${i}</option>`;
             }
         });
+
+        // র্যান্ডম ৪ ডিজিটের টোকেন জেনারেটর
+        function generateToken() {
+            const randomNum = Math.floor(1000 + Math.random() * 9000); // 1000-9999 এর মধ্যে র্যান্ডম সংখ্যা
+            return `DBHS-${randomNum}`;
+        }
 
         function downloadCardAsImage() {
             const card = document.getElementById('idCard');
@@ -1019,7 +1015,12 @@
                     
                     document.getElementById('cardName').innerText = formData.get('name') || 'প্রাক্তন শিক্ষার্থী';
                     document.getElementById('cardEvent').innerText = formData.get('event_type') || 'ইভেন্ট';
-                    document.getElementById('cardBatch').innerText = (formData.get('batch_no') || '—') + ' তম';
+                    
+                    // পাসের সাল দেখানো
+                    document.getElementById('cardPassYear').innerText = formData.get('pass_year') || '—';
+                    
+                    // মোবাইল নম্বর দেখানো
+                    document.getElementById('cardMobile').innerText = formData.get('mobile') || '—';
                     
                     const paymentMap = {
                         'bKash': 'বিকাশ',
@@ -1030,7 +1031,8 @@
                     };
                     document.getElementById('cardPayment').innerText = paymentMap[formData.get('payment_method')] || 'অনলাইন';
                     
-                    const token = result.token || 'DBHS' + Math.random().toString(36).substr(2, 8).toUpperCase();
+                    // টোকেন জেনারেট DBHS-XXXX ফরম্যাটে
+                    const token = generateToken();
                     document.getElementById('cardToken').innerText = token;
 
                     const qrContainer = document.getElementById('qrcode');
