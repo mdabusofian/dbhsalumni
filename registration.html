@@ -134,7 +134,6 @@
             color: white;
         }
 
-        /* প্রিমিয়াম সিলেক্ট */
         select.premium-field {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%233b82f6' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
             background-repeat: no-repeat;
@@ -144,43 +143,80 @@
             padding-right: 45px;
         }
 
-        /* প্রিমিয়াম রেডিও */
-        .premium-radio-group {
-            background: #ffffff;
-            border-radius: 40px;
-            padding: 5px;
-            border: 1.5px solid #e2e8f0;
+        /* ব্যাচ প্রতিনিধি তথ্য বক্স - পেমেন্ট ফিল্ডের মধ্যে */
+        .batch-payment-info {
+            background: linear-gradient(135deg, #e0f2fe, #ffffff);
+            border-radius: 24px;
+            padding: 16px;
+            margin: 10px 0 15px;
+            border: 1px solid #7dd3fc;
+        }
+
+        .batch-payment-header {
             display: flex;
-            gap: 5px;
-        }
-
-        .premium-radio-option {
-            flex: 1;
-            position: relative;
-        }
-
-        .premium-radio-option input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-        }
-
-        .premium-radio-option label {
-            display: block;
-            text-align: center;
-            padding: 12px 8px;
-            background: transparent;
-            border-radius: 30px;
-            font-weight: 600;
-            color: #5b6e8c;
-            cursor: pointer;
-            transition: all 0.2s;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            color: #0369a1;
             font-size: 0.9rem;
+            font-weight: 600;
         }
 
-        .premium-radio-option input[type="radio"]:checked + label {
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        .batch-payment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .batch-payment-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 20px;
+            border: 1px solid #bae6fd;
+            transition: all 0.2s;
+        }
+
+        .batch-payment-item:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 4px 12px -8px #3b82f6;
+        }
+
+        .batch-payment-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #0284c7, #38bdf8);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            box-shadow: 0 8px 16px -8px #3b82f6;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .batch-payment-details {
+            flex: 1;
+        }
+
+        .batch-payment-name {
+            font-weight: 700;
+            color: #0c4a6e;
+            font-size: 0.95rem;
+        }
+
+        .batch-payment-number {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0284c7;
+        }
+
+        .batch-payment-note {
+            font-size: 0.7rem;
+            color: #0369a1;
+            margin-top: 2px;
         }
 
         /* প্রিমিয়াম ফি বক্স */
@@ -215,124 +251,7 @@
             color: #90b0d0;
         }
 
-        /* ব্যাংক তথ্য বক্স */
-        .bank-info-box {
-            background: linear-gradient(135deg, #f8fafc, #ffffff);
-            border-radius: 28px;
-            padding: 20px;
-            margin: 15px 0 18px;
-            border: 1px solid #bfdbfe;
-        }
-
-        .bank-info-title {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .bank-info-title i {
-            color: #3b82f6;
-            font-size: 1.1rem;
-        }
-
-        .bank-details {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .bank-detail-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            background: white;
-            border-radius: 24px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .bank-detail-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #dbeafe, #ffffff);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #3b82f6;
-            font-size: 1rem;
-            flex-shrink: 0;
-        }
-
-        .bank-detail-content {
-            flex: 1;
-        }
-
-        .bank-detail-label {
-            font-size: 0.7rem;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .bank-detail-value {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #0f172a;
-        }
-
-        /* পেমেন্ট তথ্য বক্স (মোবাইল ব্যাংকিং) */
-        .payment-info-box {
-            background: linear-gradient(135deg, #f8fafc, #ffffff);
-            border-radius: 28px;
-            padding: 18px;
-            margin: 15px 0 18px;
-            border: 1px solid #bfdbfe;
-        }
-
-        .payment-method-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 12px;
-            background: white;
-            border-radius: 20px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .payment-method-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1rem;
-        }
-
-        .payment-method-text {
-            flex: 1;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #0f172a;
-        }
-
-        .payment-method-number {
-            font-size: 0.8rem;
-            color: #3b82f6;
-            font-weight: 700;
-            background: #eff6ff;
-            padding: 4px 10px;
-            border-radius: 20px;
-        }
-
-        /* ট্রানজেকশন ফিল্ড */
+        /* ট্রানজেকশন ফিল্ডস */
         .transaction-fields {
             transition: all 0.3s ease;
             overflow: hidden;
@@ -342,7 +261,6 @@
             display: none;
         }
 
-        /* প্রিমিয়াম বাটন */
         .premium-button {
             background: linear-gradient(135deg, #3b82f6, #2563eb);
             color: white;
@@ -355,31 +273,8 @@
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 15px 25px -10px #2563eb;
-            position: relative;
-            overflow: hidden;
         }
 
-        .premium-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .premium-button:hover::before {
-            left: 100%;
-        }
-
-        .premium-button i {
-            margin-right: 8px;
-            font-size: 1.1rem;
-        }
-
-        /* প্রিমিয়াম ইভেন্ট কার্ড */
         .premium-event-card {
             background: #ffffff;
             border-radius: 32px;
@@ -399,14 +294,6 @@
             display: inline-block;
         }
 
-        .premium-event-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #0f172a;
-            margin: 12px 0 8px;
-        }
-
-        /* প্রিমিয়াম ইনফো ব্লক */
         .premium-info-row {
             display: flex;
             align-items: center;
@@ -416,13 +303,6 @@
             padding: 14px 16px;
             margin-bottom: 10px;
             border: 1px solid #edf2f7;
-            transition: all 0.2s;
-        }
-
-        .premium-info-row:hover {
-            background: #ffffff;
-            border-color: #3b82f6;
-            box-shadow: 0 5px 15px -8px #3b82f6;
         }
 
         .premium-info-icon {
@@ -435,11 +315,8 @@
             justify-content: center;
             color: #3b82f6;
             font-size: 1.2rem;
-            flex-shrink: 0;
-            border: 1px solid #bfdbfe;
         }
 
-        /* প্রিমিয়াম আইডি কার্ড */
         .premium-id-card {
             background: linear-gradient(145deg, #ffffff, #fafcff);
             border-radius: 36px;
@@ -486,12 +363,9 @@
             box-shadow: 0 5px 15px -8px #2563eb;
         }
 
-        /* মোবাইল স্পেসিফিক */
         @media (max-width: 380px) {
             .premium-header h1 { font-size: 1.8rem; }
-            .premium-field { padding: 14px 16px 14px 46px; }
             .premium-fee-amount { font-size: 2.5rem; }
-            .premium-event-title { font-size: 1.5rem; }
         }
 
         @keyframes slideUp {
@@ -527,7 +401,7 @@
         <div id="registrationCard" class="premium-card p-6 animate-slide-up">
             
             <div class="premium-header">
-                <h1> ইভেন্ট রেজিস্ট্রেশন</h1>
+                <h1>ইভেন্ট রেজিস্ট্রেশন</h1>
                 <p>সঠিক তথ্য দিয়ে রেজিষ্ট্রেশন নিশ্চিত করুন</p>
             </div>
 
@@ -546,17 +420,37 @@
                     </div>
                 </div>
 
-                <!-- পাসের সাল (শুধু সাল থাকবে, ব্যাচ নং সরানো হয়েছে) -->
+                <!-- পাসের সাল -->
                 <div class="premium-input-group">
                     <label class="premium-label">পাসের সাল</label>
                     <div class="relative">
                         <span class="premium-icon"><i class="fas fa-calendar"></i></span>
-                        <select id="pass_year" name="pass_year" class="premium-field" required>
+                        <select id="pass_year" name="pass_year" class="premium-field" onchange="updatePaymentInfo()" required>
                             <option value="">সাল নির্বাচন করুন</option>
                         </select>
                     </div>
                 </div>
 
+                <!-- বর্তমান পেশা ড্রপডাউন -->
+                <div class="premium-input-group">
+                    <label class="premium-label">বর্তমান পেশা <span class="text-gray-400 text-xs font-normal">(ঐচ্ছিক)</span></label>
+                    <div class="relative">
+                        <span class="premium-icon"><i class="fas fa-briefcase"></i></span>
+                        <select id="profession" name="profession" class="premium-field">
+                            <option value="">পেশা নির্বাচন করুন (ঐচ্ছিক)</option>
+                            <option value="চাকরি">চাকরি</option>
+                            <option value="ব্যবসা">ব্যবসা</option>
+                            <option value="শিক্ষকতা">শিক্ষকতা</option>
+                            <option value="চিকিৎসক">চিকিৎসক</option>
+                            <option value="ইঞ্জিনিয়ার">ইঞ্জিনিয়ার</option>
+                            <option value="আইনজীবী">আইনজীবী</option>
+                            <option value="কৃষি">কৃষি</option>
+                            <option value="ছাত্র">ছাত্র (উচ্চশিক্ষা)</option>
+                            <option value="গৃহিণী">গৃহিণী</option>
+                            <option value="অন্যান্য">অন্যান্য</option>
+                        </select>
+                    </div>
+                </div>
 
                 <!-- মোবাইল -->
                 <div class="premium-input-group">
@@ -598,108 +492,38 @@
                     </div>
                 </div>
 
-                <!-- পেমেন্ট মাধ্যম -->
+                <!-- পেমেন্ট তথ্য (ডায়নামিক - ব্যাচ অনুযায়ী) -->
+                <div id="paymentInfoContainer" class="hidden-fields">
+                    <div class="batch-payment-info">
+                        <div class="batch-payment-header">
+                            <i class="fas fa-users"></i>
+                            <span>আপনার ব্যাচের প্রতিনিধিগণ (যেকোন এক নম্বরে টাকা পাঠান)</span>
+                        </div>
+                        <div class="batch-payment-list" id="batchPaymentList">
+                            <!-- ডায়নামিকভাবে যোগ হবে -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- পেমেন্ট মাধ্যম (শুধু বিকাশ) -->
                 <div class="premium-input-group">
                     <label class="premium-label">পেমেন্ট মাধ্যম</label>
                     <div class="relative">
                         <span class="premium-icon"><i class="fas fa-credit-card"></i></span>
-                        <select id="payment_method" name="payment_method" class="premium-field" onchange="togglePaymentFields()" required>
+                        <select id="payment_method" name="payment_method" class="premium-field" required>
                             <option value="">পেমেন্ট মাধ্যম নির্বাচন করুন</option>
                             <option value="bKash">বিকাশ</option>
-                            <option value="Nagad">নগদ</option>
-                            <option value="Rocket">রকেট</option>
-                            <option value="Bank">ব্যাংক ট্রান্সফার</option>
-                            <option value="Cash">নগদ (ক্যাশ)</option>
                         </select>
                     </div>
                 </div>
 
-                <!-- ===== মোবাইল ব্যাংকিং তথ্য (বিকাশ/নগদ/রকেট) ===== -->
-                <div id="mobileBankingInfo" class="payment-info-box hidden-fields">
-                    <div class="payment-info-title">
-                        <i class="fas fa-mobile-alt"></i>
-                        <span>মোবাইল ব্যাংকিং অ্যাকাউন্ট</span>
-                    </div>
-                    <div class="payment-details">
-                        <div class="payment-method-item">
-                            <div class="payment-method-icon"><i class="fas fa-mobile-alt"></i></div>
-                            <div class="payment-method-text">বিকাশ (Personal)</div>
-                            <div class="payment-method-number">01700-000000</div>
-                        </div>
-                        <div class="payment-method-item">
-                            <div class="payment-method-icon"><i class="fas fa-mobile-alt"></i></div>
-                            <div class="payment-method-text">নগদ</div>
-                            <div class="payment-method-number">01600-000000</div>
-                        </div>
-                        <div class="payment-method-item">
-                            <div class="payment-method-icon"><i class="fas fa-mobile-alt"></i></div>
-                            <div class="payment-method-text">রকেট</div>
-                            <div class="payment-method-number">01800-000000</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ===== ব্যাংক ট্রান্সফার তথ্য (শুধু ব্যাংক সিলেক্ট করলে দেখাবে) ===== -->
-                <div id="bankInfo" class="bank-info-box hidden-fields">
-                    <div class="bank-info-title">
-                        <i class="fas fa-university"></i>
-                        <span>ব্যাংক অ্যাকাউন্টের বিবরণ</span>
-                    </div>
-                    <div class="bank-details">
-                        <!-- ব্যাংকের নাম -->
-                        <div class="bank-detail-item">
-                            <div class="bank-detail-icon"><i class="fas fa-university"></i></div>
-                            <div class="bank-detail-content">
-                                <div class="bank-detail-label">ব্যাংকের নাম</div>
-                                <div class="bank-detail-value">ইসলামী ব্যাংক বাংলাদেশ পিএলসি</div>
-                            </div>
-                        </div>
-                        
-                        <!-- ব্রাঞ্চের নাম -->
-                        <div class="bank-detail-item">
-                            <div class="bank-detail-icon"><i class="fas fa-map-marker-alt"></i></div>
-                            <div class="bank-detail-content">
-                                <div class="bank-detail-label">ব্রাঞ্চ</div>
-                                <div class="bank-detail-value">আনোয়ারা ব্রাঞ্চ,চট্টগ্রাম </div>
-                            </div>
-                        </div>
-                        
-                        <!-- রাউটিং নম্বর -->
-                        <div class="bank-detail-item">
-                            <div class="bank-detail-icon"><i class="fas fa-code-branch"></i></div>
-                            <div class="bank-detail-content">
-                                <div class="bank-detail-label">রাউটিং নম্বর</div>
-                                <div class="bank-detail-value">123456789</div>
-                            </div>
-                        </div>
-                        
-                        <!-- অ্যাকাউন্ট নম্বর -->
-                        <div class="bank-detail-item">
-                            <div class="bank-detail-icon"><i class="fas fa-id-card"></i></div>
-                            <div class="bank-detail-content">
-                                <div class="bank-detail-label">অ্যাকাউন্ট নম্বর</div>
-                                <div class="bank-detail-value">0012345678901</div>
-                            </div>
-                        </div>
-                        
-                        <!-- অ্যাকাউন্ট ধরণ -->
-                        <div class="bank-detail-item">
-                            <div class="bank-detail-icon"><i class="fas fa-tag"></i></div>
-                            <div class="bank-detail-content">
-                                <div class="bank-detail-label">অ্যাকাউন্ট টাইপ</div>
-                                <div class="bank-detail-value">সঞ্চয়ী (সেভিংস)</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- ট্রানজেকশন ফিল্ডস -->
-                <div id="transactionFields" class="transaction-fields hidden-fields">
+                <div id="transactionFields" class="transaction-fields">
                     <div class="premium-input-group">
                         <label class="premium-label">আপনার মোবাইল নাম্বার (যে নাম্বার থেকে টাকা দিয়েছেন)</label>
                         <div class="relative">
                             <span class="premium-icon"><i class="fas fa-phone-alt"></i></span>
-                            <input type="tel" id="sender_number" name="sender_number" class="premium-field" placeholder="যে নাম্বার থেকে টাকা দিয়েছেন">
+                            <input type="tel" id="sender_number" name="sender_number" class="premium-field" placeholder="যে নাম্বার থেকে টাকা দিয়েছেন" required>
                         </div>
                     </div>
 
@@ -707,7 +531,7 @@
                         <label class="premium-label">ট্রানজেকশন আইডি (TrxID)</label>
                         <div class="relative">
                             <span class="premium-icon"><i class="fas fa-hashtag"></i></span>
-                            <input type="text" id="transaction_id" name="transaction_id" class="premium-field" placeholder="TrxID দিন">
+                            <input type="text" id="transaction_id" name="transaction_id" class="premium-field" placeholder="TrxID দিন" required>
                         </div>
                     </div>
                 </div>
@@ -735,7 +559,7 @@
                 <div class="premium-info-icon"><i class="fas fa-calendar-alt"></i></div>
                 <div>
                     <div class="text-2xs text-gray-400 mb-0.5">তারিখ</div>
-                    <div class="font-semibold text-gray-800">২৯ রমজান ১৪৪৭ হিজরী, বৃহস্পতিবার </div>
+                    <div class="font-semibold text-gray-800">২৯ রমজান ১৪৪৭ হিজরী, বৃহস্পতিবার</div>
                 </div>
             </div>
             
@@ -751,7 +575,7 @@
                 <div class="premium-info-icon"><i class="fas fa-map-marker-alt"></i></div>
                 <div>
                     <div class="text-2xs text-gray-400 mb-0.5">স্থান</div>
-                    <div class="font-semibold text-gray-800"> দৌলতপুর বহুমূখী উচ্চ বিদ্যালয় মাঠ প্রাঙ্গন </div>
+                    <div class="font-semibold text-gray-800">দৌলতপুর বহুমূখী উচ্চ বিদ্যালয় মাঠ প্রাঙ্গন</div>
                 </div>
             </div>
         </div>
@@ -774,12 +598,12 @@
                         <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-5 py-2 rounded-full text-xs font-bold shadow-md">
                             ENTRY CARD
                         </div>
-                        <div class="text-2xs text-gray-400">ইফতার মাহফিল-২০২৬ </div>
+                        <div class="text-2xs text-gray-400">ইফতার মাহফিল-২০২৬</div>
                     </div>
                     
                     <div class="text-center mb-4">
                         <h3 class="text-xl font-bold text-gray-800">ইভেন্ট এন্ট্রি পাস</h3>
-                        <p class="text-2xs text-blue-600">দৌলতপুর বহুমুখী উচ্চ বিদ্যালয় প্রাক্তণ শিক্ষার্থী পরিষদ </p>
+                        <p class="text-2xs text-blue-600">দৌলতপুর বহুমুখী উচ্চ বিদ্যালয় প্রাক্তণ শিক্ষার্থী পরিষদ</p>
                     </div>
                     
                     <div class="flex gap-4 mb-4">
@@ -790,16 +614,22 @@
                         <div class="flex-1">
                             <h4 id="cardName" class="text-lg font-bold text-gray-800 mb-2">-</h4>
                             
-                            <!-- পাসের সাল দেখানো হবে -->
+                            <!-- পাসের সাল -->
                             <div class="flex items-center mb-1">
                                 <span class="text-2xs text-gray-400 w-16">পাসের সাল</span>
                                 <span class="text-sm font-semibold text-gray-700" id="cardPassYear">-</span>
                             </div>
                             
-                            <!-- মোবাইল নম্বর দেখানো হবে -->
+                            <!-- মোবাইল -->
                             <div class="flex items-center mb-1">
                                 <span class="text-2xs text-gray-400 w-16">মোবাইল</span>
                                 <span class="text-sm font-semibold text-gray-700" id="cardMobile">-</span>
+                            </div>
+                            
+                            <!-- বর্তমান পেশা -->
+                            <div class="flex items-center mb-1" id="cardProfessionRow" style="display: none;">
+                                <span class="text-2xs text-gray-400 w-16">পেশা</span>
+                                <span class="text-sm font-semibold text-gray-700" id="cardProfession">-</span>
                             </div>
                             
                             <div class="flex items-center mb-1">
@@ -823,7 +653,8 @@
                     </div>
                     
                     <div class="text-center text-2xs text-gray-400 mt-3 pt-3 border-t border-gray-100">
-গেটে প্রবেশের সময় এই কার্ড বা টোকেন আইডিটি অবশ্যই দেখাতে হবে। ডাউনলোড বা স্ক্রিনশট নিয়ে এটি আপনার ফোনে সংরক্ষণ করে স্থানে রাখুন।                    </div>
+                        গেটে প্রবেশের সময় এই কার্ড বা টোকেন আইডিটি অবশ্যই দেখাতে হবে। ডাউনলোড বা স্ক্রিনশট নিয়ে আপনার ফোনে সংরক্ষণ করে রাখুন।
+                    </div>
                 </div>
 
                 <div class="flex gap-2 mt-5 no-print">
@@ -853,6 +684,46 @@
             "আজীবন সদস্যপদ": 2000
         };
 
+        // ব্যাচ প্রতিনিধিদের ডাটাবেস (পেমেন্ট ফিল্ডের জন্য)
+        const batchPayments = {
+            "2010": [
+                { name: "মোঃ রফিকুল ইসলাম", number: "01700-111111" },
+                { name: "মোছাঃ শাহিদা আক্তার", number: "01700-222222" },
+                { name: "আব্দুল কাইয়ুম", number: "01700-333333" }
+            ],
+            "2011": [
+                { name: "আমিনুল হক", number: "01845842149" },
+            ],
+
+
+             "1988": [
+                { name: "নাজমা আক্তার", number: "01700-444444" },
+                { name: "জাকির হোসেন", number: "01700-555555" },
+                { name: "মাহমুদুল হাসান", number: "01700-666666" }
+            ],
+            
+            "2012": [
+                { name: "ফারহানা ইয়াসমিন", number: "01700-777777" },
+                { name: "সাইফুল ইসলাম", number: "01700-888888" },
+                { name: "রুবিনা আক্তার", number: "01700-999999" }
+            ],
+            "2013": [
+                { name: "সোহেল রানা", number: "01700-123456" },
+                { name: "তানভীর আহমেদ", number: "01700-789012" },
+                { name: "মরিয়ম বেগম", number: "01700-345678" }
+            ],
+            "2014": [
+                { name: "ইমরান হোসেন", number: "01700-901234" },
+                { name: "সাবরিনা সুলতানা", number: "01700-567890" },
+                { name: "রাশেদুল ইসলাম", number: "01700-432109" }
+            ],
+            "2015": [
+                { name: "নিশাত তাসনিম", number: "01700-876543" },
+                { name: "মোঃ রফিকুল ইসলাম", number: "01700-111111" },
+                { name: "মোছাঃ শাহিদা আক্তার", number: "01700-222222" }
+            ]
+        };
+
         function updateFee() {
             const event = document.getElementById('event_type').value;
             const fee = fees[event] || 0;
@@ -869,49 +740,40 @@
             }
         }
 
-        function togglePaymentFields() {
-            const paymentMethod = document.getElementById('payment_method').value;
-            const mobileBankingInfo = document.getElementById('mobileBankingInfo');
-            const bankInfo = document.getElementById('bankInfo');
-            const transactionFields = document.getElementById('transactionFields');
+        // পেমেন্ট তথ্য আপডেট - পাসের সাল অনুযায়ী
+        function updatePaymentInfo() {
+            const passYear = document.getElementById('pass_year').value;
+            const paymentContainer = document.getElementById('paymentInfoContainer');
+            const paymentList = document.getElementById('batchPaymentList');
             
-            // সবগুলো প্রথমে লুকান
-            mobileBankingInfo.classList.add('hidden-fields');
-            bankInfo.classList.add('hidden-fields');
-            transactionFields.classList.add('hidden-fields');
-            
-            if (paymentMethod === 'Bank') {
-                // শুধু ব্যাংক তথ্য দেখাবে
-                bankInfo.classList.remove('hidden-fields');
-                transactionFields.classList.remove('hidden-fields');
+            if (passYear && batchPayments[passYear]) {
+                const payments = batchPayments[passYear];
+                paymentList.innerHTML = '';
                 
-                // ব্যাংকের জন্য ট্রানজেকশন ফিল্ড প্রয়োজন
-                document.getElementById('sender_number').required = true;
-                document.getElementById('transaction_id').required = true;
+                payments.forEach((payment, index) => {
+                    paymentList.innerHTML += `
+                        <div class="batch-payment-item">
+                            <div class="batch-payment-icon">
+                                <i class="fas fa-${index === 0 ? 'crown' : 'user-tie'}"></i>
+                            </div>
+                            <div class="batch-payment-details">
+                                <div class="batch-payment-name">${payment.name}</div>
+                                <div class="batch-payment-number">${payment.number}</div>
+                                <div class="batch-payment-note">${index === 0 ? '★ প্রধান প্রতিনিধি' : 'সহকারী প্রতিনিধি'}</div>
+                            </div>
+                        </div>
+                    `;
+                });
                 
-            } else if (paymentMethod === 'bKash' || paymentMethod === 'Nagad' || paymentMethod === 'Rocket') {
-                // মোবাইল ব্যাংকিং তথ্য দেখাবে
-                mobileBankingInfo.classList.remove('hidden-fields');
-                transactionFields.classList.remove('hidden-fields');
-                
-                document.getElementById('sender_number').required = true;
-                document.getElementById('transaction_id').required = true;
-                
-            } else if (paymentMethod === 'Cash') {
-                // ক্যাশ পেমেন্ট - কিছু দেখাবে না
-                document.getElementById('sender_number').required = false;
-                document.getElementById('transaction_id').required = false;
-                
+                paymentContainer.classList.remove('hidden-fields');
             } else {
-                document.getElementById('sender_number').required = false;
-                document.getElementById('transaction_id').required = false;
+                paymentContainer.classList.add('hidden-fields');
             }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             const year = document.getElementById('pass_year');
             
-            // শুধু পাসের সালের অপশন যোগ করা হচ্ছে (ব্যাচ নং বাদ দেওয়া হয়েছে)
             for(let i = 2025; i >= 1970; i--) {
                 year.innerHTML += `<option value="${i}">${i}</option>`;
             }
@@ -919,7 +781,7 @@
 
         // র্যান্ডম ৪ ডিজিটের টোকেন জেনারেটর
         function generateToken() {
-            const randomNum = Math.floor(1000 + Math.random() * 9000); // 1000-9999 এর মধ্যে র্যান্ডম সংখ্যা
+            const randomNum = Math.floor(1000 + Math.random() * 9000);
             return `DBHS-${randomNum}`;
         }
 
@@ -960,22 +822,19 @@
                 return;
             }
 
-            // অনলাইন পেমেন্টের জন্য ট্রানজেকশন আইডি ও নাম্বার চেক
-            if (paymentMethod !== 'Cash') {
-                const senderNumber = document.getElementById('sender_number').value;
-                const transactionId = document.getElementById('transaction_id').value;
-                
-                if (!senderNumber || !/^01[3-9]\d{8}$/.test(senderNumber)) {
-                    errorMessage.innerText = "সঠিক প্রেরকের মোবাইল নাম্বার দিন";
-                    errorBox.style.display = 'block';
-                    return;
-                }
-                
-                if (!transactionId) {
-                    errorMessage.innerText = "ট্রানজেকশন আইডি দিন";
-                    errorBox.style.display = 'block';
-                    return;
-                }
+            const senderNumber = document.getElementById('sender_number').value;
+            const transactionId = document.getElementById('transaction_id').value;
+            
+            if (!senderNumber || !/^01[3-9]\d{8}$/.test(senderNumber)) {
+                errorMessage.innerText = "সঠিক প্রেরকের মোবাইল নাম্বার দিন";
+                errorBox.style.display = 'block';
+                return;
+            }
+            
+            if (!transactionId) {
+                errorMessage.innerText = "ট্রানজেকশন আইডি দিন";
+                errorBox.style.display = 'block';
+                return;
             }
             
             btn.disabled = true;
@@ -1001,23 +860,18 @@
                     
                     document.getElementById('cardName').innerText = formData.get('name') || 'প্রাক্তন শিক্ষার্থী';
                     document.getElementById('cardEvent').innerText = formData.get('event_type') || 'ইভেন্ট';
-                    
-                    // পাসের সাল দেখানো
                     document.getElementById('cardPassYear').innerText = formData.get('pass_year') || '—';
-                    
-                    // মোবাইল নম্বর দেখানো
                     document.getElementById('cardMobile').innerText = formData.get('mobile') || '—';
                     
-                    const paymentMap = {
-                        'bKash': 'বিকাশ',
-                        'Nagad': 'নগদ',
-                        'Rocket': 'রকেট',
-                        'Bank': 'ব্যাংক',
-                        'Cash': 'নগদ'
-                    };
-                    document.getElementById('cardPayment').innerText = paymentMap[formData.get('payment_method')] || 'অনলাইন';
+                    // পেশা দেখানো (যদি থাকে)
+                    const profession = formData.get('profession');
+                    if (profession) {
+                        document.getElementById('cardProfession').innerText = profession;
+                        document.getElementById('cardProfessionRow').style.display = 'flex';
+                    }
                     
-                    // টোকেন জেনারেট DBHS-XXXX ফরম্যাটে
+                    document.getElementById('cardPayment').innerText = 'বিকাশ';
+                    
                     const token = generateToken();
                     document.getElementById('cardToken').innerText = token;
 
@@ -1051,11 +905,8 @@
             document.getElementById('regForm').reset();
             document.getElementById('fee_amount').innerText = '0';
             document.getElementById('cardPhoto').src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
-            
-            // পেমেন্ট ফিল্ড লুকান
-            document.getElementById('mobileBankingInfo').classList.add('hidden-fields');
-            document.getElementById('bankInfo').classList.add('hidden-fields');
-            document.getElementById('transactionFields').classList.add('hidden-fields');
+            document.getElementById('paymentInfoContainer').classList.add('hidden-fields');
+            document.getElementById('cardProfessionRow').style.display = 'none';
         }
     </script>
 </body>
