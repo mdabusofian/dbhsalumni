@@ -437,14 +437,15 @@
                     <div class="relative">
                         <span class="premium-icon"><i class="fas fa-briefcase"></i></span>
                         <select id="profession" name="profession" class="premium-field">
-            <option value="চাকরি">চাকরি</option>
+                            <option value="">পেশা নির্বাচন করুন (ঐচ্ছিক)</option>
+                           <option value="বেসরকারি চাকরি"> বেসরকারি চাকরি</option>
             <option value="ব্যবসা">ব্যবসা</option>
             <option value="শিক্ষকতা">শিক্ষকতা</option>
             <option value="চিকিৎসক">চিকিৎসক</option>
             <option value="ইঞ্জিনিয়ার">ইঞ্জিনিয়ার</option>
             <option value="আইনজীবী">আইনজীবী</option>
             <option value="আইনজীবী">ব্যাংকার</option>
-            <option value="আইনজীবী">সরকারি চাকরিজীবি</option>
+            <option value="সরকারি চাকরিজীবিী">সরকারি চাকরিজীবি</option>
             <option value="কৃষি">কৃষি</option>
             <option value="ছাত্র">শিক্ষার্থী </option>
             <option value="প্রকৌশলী">প্রকৌশলী</option>
@@ -456,7 +457,7 @@
             <option value="ফ্রিল্যান্সার">ফ্রিল্যান্সার</option>
             <option value="উদ্যোক্তা">উদ্যোক্তা</option>
             <option value="এনজিও কর্মী">এনজিও কর্মী</option>
-                                        <option value="এনজিও কর্মী">প্রবাসী</option>
+                                        <option value="প্রবাসী">প্রবাসী</option>
             <option value="অন্যান্য">অন্যান্য</option>
                         </select>
                     </div>
@@ -467,7 +468,7 @@
                     <label class="premium-label">মোবাইল</label>
                     <div class="relative">
                         <span class="premium-icon"><i class="fas fa-phone-alt"></i></span>
-                        <input type="tel" id="mobile" name="mobile" class="premium-field" placeholder="018XXXXXXXX" required>
+                        <input type="tel" id="mobile" name="mobile" class="premium-field" placeholder="017XXXXXXXX" required>
                     </div>
                 </div>
 
@@ -507,7 +508,7 @@
                     <div class="batch-payment-info">
                         <div class="batch-payment-header">
                             <i class="fas fa-users"></i>
-                            <span>আপনার ব্যাচের প্রতিনিধিগণ (যেকোন এক নম্বরে টাকা পাঠান)</span>
+                            <span>আপনার ব্যাচের প্রতিনিধিগণ (যেকোন একটা নম্বরে টাকা পাঠান)</span>
                         </div>
                         <div class="batch-payment-list" id="batchPaymentList">
                             <!-- ডায়নামিকভাবে যোগ হবে -->
@@ -599,7 +600,7 @@
                         <i class="fas fa-check text-white text-2xl"></i>
                     </div>
                     <h2 class="text-2xl font-bold text-gray-800">অভিনন্দন!</h2>
-                    <p class="text-xs text-gray-400"> আপনার রেজিস্ট্রেশন সফল হয়েছে</p>
+                    <p class="text-xs text-gray-400">রেজিস্ট্রেশন সফল হয়েছে</p>
                 </div>
 
                 <div id="idCard" class="premium-id-card">
@@ -636,6 +637,11 @@
                                 <span class="text-sm font-semibold text-gray-700" id="cardMobile">-</span>
                             </div>
                             
+                            <!-- বর্তমান পেশা -->
+                            <div class="flex items-center mb-1" id="cardProfessionRow" style="display: none;">
+                                <span class="text-2xs text-gray-400 w-16">পেশা</span>
+                                <span class="text-sm font-semibold text-gray-700" id="cardProfession">-</span>
+                            </div>
                             
                             <div class="flex items-center mb-1">
                                 <span class="text-2xs text-gray-400 w-16">ইভেন্ট</span>
@@ -643,7 +649,7 @@
                             </div>
                             
                             <div class="flex items-center">
-                                <span class="text-2xs text-gray-400 w-16">পেমেন্ট মাধ্যম </span>
+                                <span class="text-2xs text-gray-400 w-16">পেমেন্ট</span>
                                 <span class="text-sm font-semibold text-gray-700" id="cardPayment">-</span>
                             </div>
                         </div>
@@ -720,7 +726,6 @@
             ],
            
         };
-
         function updateFee() {
             const event = document.getElementById('event_type').value;
             const fee = fees[event] || 0;
@@ -756,7 +761,7 @@
                             <div class="batch-payment-details">
                                 <div class="batch-payment-name">${payment.name}</div>
                                 <div class="batch-payment-number">${payment.number}</div>
-                                <div class="batch-payment-note">${index === 0 ? '★ উপরের পার্সনাল বিকাশ নাম্বারে টাকা পাঠান' : 'বিকাশ নাম্বার'}</div>
+                                <div class="batch-payment-note">${index === 0 ? ' উপরের বিকাশ নাম্বারে টাকা পাঠান ' : 'উপরের বিকাশ নাম্বারে টাকা পাঠান'}</div>
                             </div>
                         </div>
                     `;
