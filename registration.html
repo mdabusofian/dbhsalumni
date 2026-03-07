@@ -143,7 +143,7 @@
             padding-right: 45px;
         }
 
-        /* ব্যাচ প্রতিনিধি তথ্য বক্স - পেমেন্ট ফিল্ডের মধ্যে */
+        /* ব্যাচ প্রতিনিধি তথ্য বক্স */
         .batch-payment-info {
             background: linear-gradient(135deg, #e0f2fe, #ffffff);
             border-radius: 24px;
@@ -437,7 +437,7 @@
                     <div class="relative">
                         <span class="premium-icon"><i class="fas fa-briefcase"></i></span>
                         <select id="profession" name="profession" class="premium-field">
-                                <option value="">পেশা নির্বাচন করুন (ঐচ্ছিক)</option>
+                            <option value="">পেশা নির্বাচন করুন (ঐচ্ছিক)</option>
                             <option value="চাকরি">চাকরি</option>
                             <option value="ব্যবসা">ব্যবসা</option>
                             <option value="শিক্ষকতা">শিক্ষকতা</option>
@@ -445,10 +445,29 @@
                             <option value="ইঞ্জিনিয়ার">ইঞ্জিনিয়ার</option>
                             <option value="আইনজীবী">আইনজীবী</option>
                             <option value="কৃষি">কৃষি</option>
-                            <option value="ছাত্র"> শিক্ষার্থী </option>
-                            <option value="প্রবাসী">প্রবাসী </option>
+                            <option value="ছাত্র">শিক্ষার্থী</option>
+                            <option value="প্রবাসী">প্রবাসী</option>
                             <option value="অন্যান্য">অন্যান্য</option>
-                         </select>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- রক্তের গ্রুপ ড্রপডাউন (নতুন) - ঐচ্ছিক -->
+                <div class="premium-input-group">
+                    <label class="premium-label">রক্তের গ্রুপ <span class="text-gray-400 text-xs font-normal">(ঐচ্ছিক)</span></label>
+                    <div class="relative">
+                        <span class="premium-icon"><i class="fas fa-droplet"></i></span>
+                        <select id="blood_group" name="blood_group" class="premium-field">
+                            <option value="">রক্তের গ্রুপ নির্বাচন করুন (ঐচ্ছিক)</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
                     </div>
                 </div>
 
@@ -468,8 +487,8 @@
                         <span class="premium-icon"><i class="fas fa-ticket-alt"></i></span>
                         <select id="event_type" name="event_type" class="premium-field" onchange="updateFee()" required>
                             <option value="">ইভেন্ট নির্বাচন করুন</option>
-                             <option value="ইফতার মাহফিল">ইফতার মাহফিল (৩০০৳)</option>
-                         </select>
+                            <option value="ইফতার মাহফিল">ইফতার মাহফিল (৩০০৳)</option>
+                        </select>
                     </div>
                 </div>
 
@@ -624,11 +643,13 @@
                                 <span class="text-sm font-semibold text-gray-700" id="cardMobile">-</span>
                             </div>
                             
-                            <!-- বর্তমান পেশা -->
-                            <div class="flex items-center mb-1" id="cardProfessionRow" style="display: none;">
-                                <span class="text-2xs text-gray-400 w-16">পেশা</span>
-                                <span class="text-sm font-semibold text-gray-700" id="cardProfession">-</span>
+                            <!-- রক্তের গ্রুপ (নতুন) - শুধু থাকলে দেখাবে -->
+                            <div class="flex items-center mb-1" id="cardBloodGroupRow" style="display: none;">
+                                <span class="text-2xs text-gray-400 w-16">রক্তের গ্রুপ</span>
+                                <span class="text-sm font-semibold text-gray-700" id="cardBloodGroup">-</span>
                             </div>
+                            
+                            <!-- পেশা সরানো হয়েছে -->
                             
                             <div class="flex items-center mb-1">
                                 <span class="text-2xs text-gray-400 w-16">ইভেন্ট</span>
@@ -682,210 +703,72 @@
             "আজীবন সদস্যপদ": 2000
         };
 
-        // ব্যাচ প্রতিনিধিদের ডাটাবেস (পেমেন্ট ফিল্ডের জন্য)
+        // ব্যাচ প্রতিনিধিদের ডাটাবেস
         const batchPayments = {
-           
+            "1988": [{ name: "আমিনুল হক", number: "01845842149" }],
             "1989": [
-                { name: "গিয়াস উদ্দীন ", number: "01827878191" },
-                { name: "আবু বক্কর চৌধুরী ", number: "01818189068" },
-
-                
+                { name: "গিয়াস উদ্দীন", number: "01827878191" },
+                { name: "আবু বক্কর চৌধুরী", number: "01818189068" }
             ],
-          
-             "1988": [
-                { name: "আমিনুল হক", number: "01845842149" },
-            ],
-
-
-             "1993": [
-                { name: "শাহেদুল ইসলাম শাহেদ ", number: "01613-518222" },
-            ],
-
-            
-             "1995": [
-                { name: "নাছির উদ্দীন", number: "01819643697" },
-            ],
-            
-             "1996": [
-                { name: "আলী আক্কাস", number: "01818266451" },
-            ],
-
-            
-             "1997": [
-                { name: "মোহাম্মদ একরাম", number: "01876779118" },
-            ],
-
-            
+            "1993": [{ name: "শাহেদুল ইসলাম শাহেদ", number: "01613-518222" }],
+            "1995": [{ name: "নাছির উদ্দীন", number: "01819643697" }],
+            "1996": [{ name: "আলী আক্কাস", number: "01818266451" }],
+            "1997": [{ name: "মোহাম্মদ একরাম", number: "01876779118" }],
             "1998": [
-                { name: "সাইফুল ইসলাম ", number: "01833077121" },
-                 { name: "এমদাদুল হক  ", number: "01816485750" }
-
+                { name: "সাইফুল ইসলাম", number: "01833077121" },
+                { name: "এমদাদুল হক", number: "01816485750" }
             ],
-
-
- 
-            "1999": [
-                { name: "হাবিবুল্লাহ সোহেল  ", number: "01814266855" },
-
-            ],
-
-
-             
-            "2000": [
-                { name: "নাজিম ", number: "01817258030" },
-
-            ],
-
-
-             
-            "2001": [
-                { name: "মোর্শেদ ", number: "01863689638" },
-
-            ],
-
-            "2002": [
-                { name: "মুরাদ কাজেমী, মাসুদ ", number: "01812571475" },
-
-            ],
-
+            "1999": [{ name: "হাবিবুল্লাহ সোহেল", number: "01814266855" }],
+            "2000": [{ name: "নাজিম", number: "01817258030" }],
+            "2001": [{ name: "মোর্শেদ", number: "01863689638" }],
+            "2002": [{ name: "মুরাদ কাজেমী, মাসুদ", number: "01812571475" }],
             "2003": [
-                { name: "মুরাদ আবছার ", number: "01818109739" },
-                { name: "শহীদুল ইসলাম ", number: "01811334753" },
+                { name: "মুরাদ আবছার", number: "01818109739" },
+                { name: "শহীদুল ইসলাম", number: "01811334753" }
             ],
-
-            "2004": [
-                { name: " শামীম", number: "01815023050" },
-
-            ],
-
-            "2005": [
-                { name: "টিটু ", number: "01839047356" },
-
-            ],
-
-            "2006": [
-                { name: "রিদুয়ানুল হক চৌধুরী  ", number: "01690016091" },
-
-            ],
-
-            "2007": [
-                { name: "মাহমুদ ", number: "01819888700" },
-
-            ],
-
+            "2004": [{ name: "শামীম", number: "01815023050" }],
+            "2005": [{ name: "টিটু", number: "01839047356" }],
+            "2006": [{ name: "রিদুয়ানুল হক চৌধুরী", number: "01690016091" }],
+            "2007": [{ name: "মাহমুদ", number: "01819888700" }],
             "2008": [
-                { name: "শাকিল ", number: "01813594260" },
-                { name: "জোবাইর ", number: "01670456353" },
+                { name: "শাকিল", number: "01813594260" },
+                { name: "জোবাইর", number: "01670456353" }
             ],
-
-
-            "2009": [
-                { name: "তারেক শিকদার ", number: "01866797755" },
-
+            "2009": [{ name: "তারেক শিকদার", number: "01866797755" }],
+            "2010": [
+                { name: "মিজানুর রহমান", number: "01741211243" },
+                { name: "সাইফুল ইসলাম", number: "01830560499" }
             ],
-
-              "2010": [
-                { name: "মিজানুর রহমান ", number: "01741211243" },
-                  { name: "সাইফুল ইসলাম ", number: "01830560499" },
-
+            "2011": [{ name: "আব্দুল হালিম", number: "01813106136" }],
+            "2012": [{ name: "রবিউল", number: "01897199307" }],
+            "2013": [{ name: "জিয়াউর রহমান", number: "01849748476" }],
+            "2014": [{ name: "সাইফ জামিল", number: "01643879287" }],
+            "2015": [{ name: "মুরাদ", number: "01875997336" }],
+            "2016": [{ name: "মামুন", number: "018........" }],
+            "2017": [
+                { name: "মেহেদী", number: "01607115155" },
+                { name: "আরমান", number: "01871071144" },
+                { name: "মহিউদ্দীন", number: "01883551926" }
             ],
-
-              "2011": [
-                { name: "আব্দুল হালিম ", number: "01813106136" },
-
+            "2018": [
+                { name: "শাহরিয়ার জয়", number: "01625559162" },
+                { name: "হান্নান", number: "016.........." }
             ],
-
-              "2012": [
-                { name: "রবিউল ", number: "01897199307" },
-
-            ],
-
-
-              "2013": [
-                { name: "জিয়াউর রহমান", number: "01849748476" },
-
-            ],
-
-
-              "2014": [
-                { name: "সাইফ জামিল  ", number: "01643879287" },
-
-            ],
-
-
-              "2015": [
-                { name: "মুরাদ ", number: "01875997336" },
-
-            ],
-
-
-              "2016": [
-                { name: "মামুন ", number: "018........" },
-
-            ],
-
-
-              "2017": [
-                { name: "মেহেদী ", number: "01607115155" },
-                   { name: "আরমান ", number: "01871071144" },
-                   { name: "মহিউদ্দীন ", number: "01883551926" },
-
-            ],
-
-
-              "2018": [
-                { name: "শাহরিয়ার জয় ", number: "01625559162" },
-                 { name: "হান্নান ", number: "016.........." },
-
-
-            ],
-
-
-              "2019": [
+            "2019": [
                 { name: "সায়েম", number: "01870606661" },
-                { name: "রুবায়েত", number: "0 1756-832773" },
-
-
+                { name: "রুবায়েত", number: "01756-832773" }
             ],
-
-
-              "2020": [
-                { name: "তুহিন ", number: "01889283621" },
-
+            "2020": [{ name: "তুহিন", number: "01889283621" }],
+            "2021": [{ name: "শাওন", number: "01790308004" }],
+            "2022": [{ name: "সায়েদ মাহমুদ", number: "01823721127" }],
+            "2023": [{ name: "....", number: "....." }],
+            "2024": [
+                { name: "জিসান", number: "01624875278" },
+                { name: "ওয়াসিফ", number: "01818812397" }
             ],
-
-
-              "2021": [
-                { name: "শাওন ", number: "01790308004" },
-
-            ],
-
-              "2022": [
-                { name: "সায়েদ মাহমুদ ", number: "01823721127" },
-
-            ],
-
-
-              "2023": [
-                { name: ".... ", number: "....." },
-
-            ],
-
-
-              "2024": [
-                { name: "জিসান ", number: "01624875278" },
-                { name: "ওয়াসিফ  ", number: "01818812397" },
-
-            ],
-
-
-              "2025": [
-                { name: " নাবিল হোসাইন  ", number: "01581241742" },
-
-            ],
-
-
+            "2025": [{ name: "নাবিল হোসাইন", number: "01581241742" }]
         };
+
         function updateFee() {
             const event = document.getElementById('event_type').value;
             const fee = fees[event] || 0;
@@ -921,7 +804,7 @@
                             <div class="batch-payment-details">
                                 <div class="batch-payment-name">${payment.name}</div>
                                 <div class="batch-payment-number">${payment.number}</div>
-                                <div class="batch-payment-note">${index === 0 ? ' উপরের বিকাশ নাম্বারে টাকা পাঠান ' : 'উপরের বিকাশ নাম্বারে টাকা পাঠান'}</div>
+                                <div class="batch-payment-note">${index === 0 ? 'উপরের বিকাশ নাম্বারে টাকা পাঠান' : 'উপরের বিকাশ নাম্বারে টাকা পাঠান'}</div>
                             </div>
                         </div>
                     `;
@@ -1025,12 +908,14 @@
                     document.getElementById('cardPassYear').innerText = formData.get('pass_year') || '—';
                     document.getElementById('cardMobile').innerText = formData.get('mobile') || '—';
                     
-                    // পেশা দেখানো (যদি থাকে)
-                    const profession = formData.get('profession');
-                    if (profession) {
-                        document.getElementById('cardProfession').innerText = profession;
-                        document.getElementById('cardProfessionRow').style.display = 'flex';
+                    // রক্তের গ্রুপ দেখানো (যদি থাকে)
+                    const bloodGroup = formData.get('blood_group');
+                    if (bloodGroup) {
+                        document.getElementById('cardBloodGroup').innerText = bloodGroup;
+                        document.getElementById('cardBloodGroupRow').style.display = 'flex';
                     }
+                    
+                    // পেশা দেখানো হচ্ছে না (কার্ডে পেশা থাকবে না)
                     
                     document.getElementById('cardPayment').innerText = 'বিকাশ';
                     
@@ -1068,7 +953,9 @@
             document.getElementById('fee_amount').innerText = '0';
             document.getElementById('cardPhoto').src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
             document.getElementById('paymentInfoContainer').classList.add('hidden-fields');
-            document.getElementById('cardProfessionRow').style.display = 'none';
+            
+            // রক্তের গ্রুপ রো লুকান
+            document.getElementById('cardBloodGroupRow').style.display = 'none';
         }
     </script>
 </body>
