@@ -2,471 +2,848 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>প্রো মাস্টার অ্যাডমিন প্যানেল</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title> অ্যাডমিন ড্যাশবোর্ড | ইফতার মাহফিল ২০২৬</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Hind Siliguri', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
         
-        .premium-card { background: white; border: 1px solid rgba(226, 232, 240, 0.8); box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05); transition: all 0.3s ease; }
-        .premium-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-        
-        .sidebar-active { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: white !important; box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4); }
-        .hidden-section { display: none; }
-        .modal { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(10px); }
-
-        /* Mobile Table Fixes */
-        @media (max-width: 768px) {
-            .mobile-table thead { display: none; }
-            .mobile-table tr { display: block; margin-bottom: 1.5rem; background: white; border-radius: 2rem; padding: 1.5rem; border: 1px solid #e2e8f0; }
-            .mobile-table td { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f1f5f9; }
-            .mobile-table td:last-child { border: none; }
-            .mobile-table td::before { content: attr(data-label); font-weight: 700; color: #64748b; font-size: 0.8rem; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        /* Nav Bottom Style */
-        .mobile-bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 0.8rem; border-top: 1px solid #e2e8f0; z-index: 50; border-radius: 2rem 2rem 0 0; box-shadow: 0 -10px 25px rgba(0,0,0,0.05); }
-        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; font-weight: 700; color: #94a3b8; }
-        .nav-item.active { color: #4f46e5; }
+        body { 
+            font-family: 'Hind Siliguri', 'Inter', sans-serif; 
+            background: linear-gradient(145deg, #f0f4fa 0%, #e9eef5 100%);
+            color: #0b1e33;
+            min-height: 100vh;
+        }
 
-        .id-card { width: 300px; background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        /* প্রিমিয়াম কার্ড */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 
+                0 20px 40px -15px rgba(0, 20, 40, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+        }
+
+        .premium-card {
+            background: white;
+            border-radius: 36px;
+            padding: 24px;
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .premium-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 45px -12px rgba(37, 99, 235, 0.2);
+            border-color: #bfdbfe;
+        }
+
+        /* স্ট্যাটস কার্ড */
+        .stats-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 32px;
+            padding: 24px;
+            border: 1px solid #e2e8f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.03) 0%, transparent 70%);
+            transform: rotate(30deg);
+        }
+
+        .stats-number {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ফিল্টার সেকশন */
+        .filter-container {
+            background: white;
+            border-radius: 40px;
+            padding: 16px 20px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .filter-select {
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 40px;
+            padding: 14px 24px;
+            font-size: 0.95rem;
+            font-family: 'Hind Siliguri', sans-serif;
+            color: #1e293b;
+            outline: none;
+            transition: all 0.2s;
+            flex: 1;
+            min-width: 180px;
+            cursor: pointer;
+        }
+
+        .filter-select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+            background: white;
+        }
+
+        .export-btn {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            border-radius: 40px;
+            padding: 14px 32px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .export-btn:hover {
+            background: linear-gradient(135deg, #1e293b, #2d3b4f);
+            transform: scale(1.02);
+            box-shadow: 0 20px 25px -8px rgba(15, 23, 42, 0.3);
+        }
+
+        /* টেবিল ডিজাইন */
+        .table-wrapper {
+            background: white;
+            border-radius: 36px;
+            padding: 24px;
+            border: 1px solid #e2e8f0;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #475569;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 16px 12px;
+            text-align: left;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        td {
+            background: white;
+            padding: 14px 12px;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        tr:hover td {
+            background: #f8fafc;
+        }
+
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .status-present {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+
+        .status-absent {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            color: #ef6c00;
+            border: 1px solid #ffcc80;
+        }
+
+        /* লোডার */
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #e2e8f0;
+            border-top-color: #2563eb;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 40px auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* নেভিগেশন ট্যাব */
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            background: white;
+            padding: 8px;
+            border-radius: 60px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .nav-tab {
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #64748b;
+            flex: 1;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            color: white;
+            box-shadow: 0 10px 20px -8px #2563eb;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* লগইন প্যানেল */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #f0f4fa, #e9eef5);
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 48px;
+            padding: 48px 32px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-input {
+            width: 100%;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 40px;
+            padding: 18px 24px;
+            font-size: 1rem;
+            font-family: 'Hind Siliguri', sans-serif;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .login-input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+            background: white;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            color: white;
+            border-radius: 40px;
+            padding: 18px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 20px 25px -8px #2563eb;
+        }
+
+        .login-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 25px 30px -8px #2563eb;
+        }
+
+        /* মোবাইল অপ্টিমাইজেশন */
+        @media (max-width: 768px) {
+            .stats-number { font-size: 2rem; }
+            .nav-tabs { padding: 6px; }
+            .nav-tab { padding: 12px 16px; font-size: 0.85rem; }
+            .filter-container { flex-direction: column; }
+            .filter-select { width: 100%; }
+            .export-btn { width: 100%; justify-content: center; }
+            .table-wrapper { padding: 12px; }
+            td { font-size: 0.8rem; padding: 12px 8px; }
+        }
+
+        @media (max-width: 480px) {
+            .premium-card { padding: 16px; }
+            .stats-card { padding: 18px; }
+            .login-card { padding: 32px 20px; }
+        }
+
+        .token-badge {
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 36px;
+            padding: 24px;
+            border: 1px solid #e2e8f0;
+            margin-top: 24px;
+        }
     </style>
 </head>
-<body class="min-h-screen">
+<body>
 
-    <div id="login-overlay">
-        <div class="bg-white p-10 rounded-[3rem] shadow-2xl w-full max-w-md border border-slate-100 mx-4">
+    <!-- ===== লগইন প্যানেল ===== -->
+    <div id="loginPanel" class="login-container">
+        <div class="login-card">
             <div class="text-center mb-8">
-                <div class="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-[2rem] flex items-center justify-center mx-auto mb-4 text-3xl shadow-inner">
-                    <i class="fas fa-shield-halved"></i>
+                <div class="w-20 h-20 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-[2rem] flex items-center justify-center mx-auto mb-4 text-3xl">
+                    <i class="fas fa-shield-halved text-indigo-600"></i>
                 </div>
-                <h2 class="text-3xl font-black text-slate-800 tracking-tight">অ্যাডমিন গেটওয়ে</h2>
-                <p class="text-slate-500 mt-2 font-medium italic">সুরক্ষিতভাবে প্রবেশ করুন</p>
+                <h2 class="text-2xl font-black text-slate-800">অ্যাডমিন লগইন</h2>
+                <p class="text-slate-500 text-sm mt-2">ড্যাশবোর্ডে প্রবেশ করতে তথ্য দিন</p>
             </div>
+
             <div class="space-y-4">
-                <input type="text" id="username" class="w-full p-5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-indigo-500 transition-all outline-none" placeholder="ইউজারনেম">
-                <input type="password" id="password" class="w-full p-5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-indigo-500 transition-all outline-none" placeholder="পাসওয়ার্ড">
-                <button onclick="handleLogin()" class="w-full bg-indigo-600 text-white py-5 rounded-2xl font-bold text-lg shadow-lg shadow-indigo-200 hover:bg-indigo-700 active:scale-95 transition-all">প্যানেলে প্রবেশ</button>
+                <input type="text" id="username" class="login-input" placeholder="ইউজারনেম" value="admin">
+                <input type="password" id="password" class="login-input" placeholder="পাসওয়ার্ড" value="ADMIN123">
+                <button onclick="handleLogin()" class="login-btn">
+                    <i class="fas fa-arrow-right mr-2"></i> প্রবেশ করুন
+                </button>
                 <p id="loginError" class="text-red-500 text-sm text-center font-bold hidden">ভুল ইউজারনেম বা পাসওয়ার্ড!</p>
             </div>
         </div>
     </div>
 
-    <div id="admin-content" class="hidden">
-        <div class="lg:hidden mobile-bottom-nav">
-            <button onclick="showSection('summary', this)" class="nav-btn nav-item active">
-                <i class="fas fa-grid-2 text-xl mb-1"></i><span>হোম</span>
-            </button>
-            <button onclick="showSection('reg-list', this)" class="nav-btn nav-item">
-                <i class="fas fa-users text-xl mb-1"></i><span>তালিকা</span>
-            </button>
-            <button onclick="showSection('verify', this)" class="nav-btn nav-item">
-                <div class="w-12 h-12 bg-indigo-600 text-white rounded-full flex items-center justify-center -mt-10 shadow-lg border-4 border-white"><i class="fas fa-qrcode"></i></div>
-                <span>ভেরিফাই</span>
-            </button>
-            <button onclick="showSection('entry-list', this)" class="nav-btn nav-item">
-                <i class="fas fa-check-double text-xl mb-1"></i><span>উপস্থিতি</span>
-            </button>
-            <button onclick="showSection('analytics', this)" class="nav-btn nav-item">
-                <i class="fas fa-chart-bar text-xl mb-1"></i><span>গ্রাফ</span>
-            </button>
-        </div>
+    <!-- ===== ড্যাশবোর্ড ===== -->
+    <div id="dashboardPanel" style="display: none;">
+        <div class="max-w-7xl mx-auto p-4 md:p-6">
+            
+            <!-- হেডার -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-black text-slate-800 flex items-center gap-3">
+                        <i class="fas fa-crown text-amber-500 text-2xl"></i>
+                        ইফতার মাহফিল ম্যানেজমেন্ট সিস্টেম
+                    </h1>
+                    <p class="text-slate-500 mt-2 flex items-center gap-2">
+                        <i class="fas fa-circle text-[6px] text-emerald-500"></i>
+                        <span id="liveTime"></span>
+                    </p>
+                </div>
+                <button onclick="logout()" class="bg-white border border-red-200 text-red-500 px-6 py-3 rounded-2xl font-bold hover:bg-red-50 transition flex items-center gap-2 shadow-sm">
+                    <i class="fas fa-sign-out-alt"></i> লগআউট
+                </button>
+            </div>
 
-        <div class="flex">
-            <aside id="sidebar" class="hidden lg:flex w-80 bg-white border-r border-slate-200 flex-col h-screen sticky top-0 p-8">
-                <div class="mb-10 flex items-center gap-3">
-                    <div class="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center text-white text-xl shadow-lg shadow-indigo-200"><i class="fas fa-rocket"></i></div>
-                    <div>
-                        <h1 class="text-xl font-black text-slate-800 tracking-tight">অ্যাডমিন প্রো</h1>
-                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Event Manager</p>
+            <!-- লোডিং -->
+            <div id="loadingSpinner" class="loader"></div>
+
+            <!-- ড্যাশবোর্ড কন্টেন্ট -->
+            <div id="dashboardContent" style="display: none;">
+
+                <!-- নেভিগেশন ট্যাব -->
+                <div class="nav-tabs">
+                    <div class="nav-tab active" onclick="showSection('overview')">
+                        <i class="fas fa-chart-pie mr-2"></i> ওভারভিউ
+                    </div>
+                    <div class="nav-tab" onclick="showSection('all-members')">
+                        <i class="fas fa-users mr-2"></i> সকল সদস্য
+                    </div>
+                    <div class="nav-tab" onclick="showSection('present-members')">
+                        <i class="fas fa-check-circle mr-2"></i> উপস্থিত
+                    </div>
+                    <div class="nav-tab" onclick="showSection('charts')">
+                        <i class="fas fa-chart-line mr-2"></i> বিশ্লেষণ
                     </div>
                 </div>
-                <nav class="space-y-3 flex-grow">
-                    <button onclick="showSection('summary', this)" class="nav-btn sidebar-active w-full flex items-center gap-4 px-6 py-4 rounded-2xl font-bold transition-all"><i class="fas fa-house"></i> ড্যাশবোর্ড</button>
-                    <button onclick="showSection('reg-list', this)" class="nav-btn w-full flex items-center gap-4 px-6 py-4 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i class="fas fa-user-group"></i> সদস্য তালিকা</button>
-                    <button onclick="showSection('verify', this)" class="nav-btn w-full flex items-center gap-4 px-6 py-4 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i class="fas fa-qrcode"></i> এন্ট্রি ভেরিফাই</button>
-                    <button onclick="showSection('entry-list', this)" class="nav-btn w-full flex items-center gap-4 px-6 py-4 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i class="fas fa-clipboard-check"></i> উপস্থিতি</button>
-                    <button onclick="showSection('analytics', this)" class="nav-btn w-full flex items-center gap-4 px-6 py-4 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i class="fas fa-chart-line"></i> রিপোর্ট</button>
-                </nav>
-                <button onclick="logout()" class="mt-auto w-full flex items-center gap-4 px-6 py-4 rounded-2xl font-bold text-rose-500 hover:bg-rose-50 transition-all"><i class="fas fa-sign-out-alt"></i> লগআউট</button>
-            </aside>
 
-            <main class="flex-grow min-h-screen p-5 md:p-10 pb-24 lg:pb-10">
-                
-                <section id="summary-section">
-                    <div class="mb-10">
-                        <h2 class="text-3xl font-black text-slate-800">ওভারভিউ</h2>
-                        <p class="text-slate-400 font-medium">ইভেন্টের সর্বশেষ আপডেট দেখুন</p>
-                    </div>
-                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 mb-10">
-                        <div class="premium-card p-6 rounded-[2.5rem] relative overflow-hidden">
-                            <div class="absolute -right-4 -top-4 w-20 h-20 bg-indigo-50 rounded-full opacity-50"></div>
-                            <p class="text-slate-400 text-xs font-bold uppercase mb-2">মোট রেজিস্ট্রেশন</p>
-                            <h3 id="statTotal" class="text-4xl font-black text-slate-800">0</h3>
-                        </div>
-                        <div class="premium-card p-6 rounded-[2.5rem] relative overflow-hidden">
-                            <div class="absolute -right-4 -top-4 w-20 h-20 bg-emerald-50 rounded-full opacity-50"></div>
-                            <p class="text-slate-400 text-xs font-bold uppercase mb-2">উপস্থিতি</p>
-                            <h3 id="statPresent" class="text-4xl font-black text-emerald-600">0</h3>
-                        </div>
-                        <div class="premium-card p-6 rounded-[2.5rem] relative overflow-hidden">
-                            <div class="absolute -right-4 -top-4 w-20 h-20 bg-rose-50 rounded-full opacity-50"></div>
-                            <p class="text-slate-400 text-xs font-bold uppercase mb-2">অনুপস্থিত</p>
-                            <h3 id="statAbsent" class="text-4xl font-black text-rose-500">0</h3>
-                        </div>
-                        <div class="premium-card p-6 rounded-[2.5rem] relative overflow-hidden">
-                            <div class="absolute -right-4 -top-4 w-20 h-20 bg-amber-50 rounded-full opacity-50"></div>
-                            <p class="text-slate-400 text-xs font-bold uppercase mb-2">কালেকশন</p>
-                            <h3 id="statCash" class="text-2xl font-black text-amber-600">৳ 0</h3>
-                        </div>
-                    </div>
+                <!-- ===== ওভারভিউ সেকশন ===== -->
+                <div id="overview" class="section active">
                     
-                    <div class="premium-card rounded-[2.5rem] overflow-hidden bg-white">
-                        <div class="p-8 border-b border-slate-50 flex justify-between items-center">
-                            <h3 class="font-black text-slate-800">সাম্প্রতিক চেক-ইন</h3>
-                            <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-4 py-2 rounded-full uppercase tracking-widest">Live Updates</span>
+                    <!-- স্ট্যাটস কার্ড গ্রিড -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <div class="stats-card">
+                            <div class="flex items-start justify-between relative z-10">
+                                <div>
+                                    <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">মোট রেজিস্ট্রেশন</p>
+                                    <h2 id="statTotal" class="stats-number">0</h2>
+                                </div>
+                                <div class="w-14 h-14 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl flex items-center justify-center text-blue-600 text-2xl shadow-sm">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                            </div>
                         </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left mobile-table">
-                                <thead class="bg-slate-50/50 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
-                                    <tr>
-                                        <th class="px-8 py-5">নাম</th>
-                                        <th class="px-8 py-5">পাসের সাল</th>
-                                        <th class="px-8 py-5">মোবাইল</th>
-                                        <th class="px-8 py-5">স্ট্যাটাস</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="recentTableBody" class="divide-y divide-slate-50"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </section>
 
-                <section id="reg-list-section" class="hidden-section">
-                    <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-                        <h2 class="text-3xl font-black text-slate-800">সদস্য ডাটাবেস</h2>
-                        <div class="flex gap-3 w-full md:w-auto">
-                            <select id="batchFilterReg" onchange="filterTables()" class="bg-white border border-slate-200 px-6 py-4 rounded-2xl font-bold shadow-sm outline-none flex-grow">
-                                <option value="">সকল ব্যাচ</option>
-                            </select>
-                            <button onclick="exportToExcel()" class="bg-slate-900 text-white px-6 py-4 rounded-2xl font-bold flex items-center gap-2 shadow-lg shadow-slate-200"><i class="fas fa-file-excel"></i> EXCEL</button>
+                        <div class="stats-card">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">উপস্থিত</p>
+                                    <h2 id="statPresent" class="stats-number text-emerald-600">0</h2>
+                                </div>
+                                <div class="w-14 h-14 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-2xl flex items-center justify-center text-emerald-600 text-2xl">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stats-card">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">অনুপস্থিত</p>
+                                    <h2 id="statAbsent" class="stats-number text-amber-600">0</h2>
+                                </div>
+                                <div class="w-14 h-14 bg-gradient-to-br from-amber-100 to-orange-100 rounded-2xl flex items-center justify-center text-amber-600 text-2xl">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stats-card">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">মোট কালেকশন</p>
+                                    <h2 id="statCollection" class="stats-number text-indigo-600">৳0</h2>
+                                </div>
+                                <div class="w-14 h-14 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl flex items-center justify-center text-indigo-600 text-2xl">
+                                    <i class="fas fa-coins"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="premium-card rounded-[3rem] overflow-hidden">
-                        <table id="mainTable" class="w-full text-left mobile-table">
-                            <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] font-bold">
-                                <tr>
-                                    <th class="px-8 py-5">আইডি নং</th>
-                                    <th class="px-8 py-5">নাম</th>
-                                    <th class="px-8 py-5">পাসের সাল</th>
-                                    <th class="px-8 py-5">ব্যাচ নং</th>
-                                    <th class="px-8 py-5">স্ট্যাটাস</th>
-                                    <th class="px-8 py-5 text-center">কার্ড</th>
-                                </tr>
-                            </thead>
-                            <tbody id="regTableBody" class="divide-y divide-slate-100"></tbody>
-                        </table>
-                    </div>
-                </section>
 
-                <section id="verify-section" class="hidden-section max-w-2xl mx-auto py-10">
-                    <div class="premium-card p-10 rounded-[3rem] text-center">
-                        <div class="w-24 h-24 bg-indigo-600 text-white rounded-[2rem] flex items-center justify-center mx-auto mb-6 text-4xl shadow-2xl shadow-indigo-200"><i class="fas fa-shield-check"></i></div>
-                        <h2 class="text-3xl font-black text-slate-800 mb-2">এন্ট্রি ভেরিফিকেশন</h2>
-                        <p class="text-slate-400 font-medium mb-10">সার্চ বক্সে মেম্বার আইডি টাইপ করুন</p>
-                        
-                        <div class="relative mb-8">
-                            <input type="text" id="verifyInput" class="w-full p-8 bg-slate-50 rounded-[2.5rem] text-3xl font-black text-center text-indigo-600 outline-none ring-4 ring-slate-100 focus:ring-indigo-100 transition-all uppercase" value="DBHSP-">
-                            <button onclick="verifyMember()" class="w-full mt-6 bg-slate-900 text-white py-6 rounded-3xl font-black text-xl hover:bg-indigo-700 transition-all shadow-xl">সার্চ ও ভেরিফাই</button>
+                    <!-- ব্যাচ ভিত্তিক গ্রাফ -->
+                    <div class="chart-container">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center text-blue-600">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-800">ব্যাচ অনুযায়ী রেজিস্ট্রেশন</h3>
                         </div>
-                        
-                        <div id="verifyResult" class="transition-all duration-500"></div>
-                    </div>
-                </section>
-
-                <section id="entry-list-section" class="hidden-section">
-                    <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-                        <h2 class="text-3xl font-black text-slate-800">উপস্থিতি তালিকা</h2>
-                        <select id="batchFilterEntry" onchange="filterEntryTable()" class="bg-white border border-slate-200 px-6 py-4 rounded-2xl font-bold shadow-sm outline-none w-full md:w-auto">
-                            <option value="">ব্যাচ অনুযায়ী ফিল্টার</option>
-                        </select>
-                    </div>
-                    <div class="premium-card rounded-[3rem] overflow-hidden">
-                        <table class="w-full text-left mobile-table">
-                            <thead class="bg-slate-50 text-slate-400 text-[10px] font-bold">
-                                <tr>
-                                    <th class="px-8 py-5">নাম</th>
-                                    <th class="px-8 py-5">পাসের সাল</th>
-                                    <th class="px-8 py-5">ব্যাচ নং</th>
-                                    <th class="px-8 py-5">স্ট্যাটাস</th>
-                                </tr>
-                            </thead>
-                            <tbody id="entryTableBody" class="divide-y divide-slate-100"></tbody>
-                        </table>
-                    </div>
-                </section>
-
-                <section id="analytics-section" class="hidden-section">
-                    <h2 class="text-3xl font-black text-slate-800 mb-10">অ্যানালিটিক্স রিপোর্ট</h2>
-                    <div class="grid lg:grid-cols-2 gap-10">
-                        <div class="premium-card p-10 rounded-[3rem]">
-                            <h4 class="font-black text-slate-400 mb-8 uppercase text-xs tracking-[0.2em]">ব্যাচ অনুযায়ী রেজিস্ট্রেশন</h4>
-                            <canvas id="batchCompareChart"></canvas>
-                        </div>
-                        <div class="premium-card p-10 rounded-[3rem]">
-                            <h4 class="font-black text-slate-400 mb-8 uppercase text-xs tracking-[0.2em]">জেন্ডার রেশিও</h4>
-                            <div class="max-w-[300px] mx-auto"><canvas id="genderPieChart"></canvas></div>
-                        </div>
-                    </div>
-                </section>
-
-            </main>
-        </div>
-    </div>
-
-    <div id="idCardModal" class="modal fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-[3rem] p-10 max-w-sm w-full relative">
-            <button onclick="closeIdCard()" class="absolute top-8 right-8 text-slate-300 hover:text-slate-600 transition-colors"><i class="fas fa-times-circle text-2xl"></i></button>
-            <div id="idCardContent" class="flex flex-col items-center">
-                <div class="id-card">
-                    <div class="id-card-header bg-gradient-to-tr from-indigo-600 to-purple-600 p-8 text-white text-center">
-                        <p class="text-[10px] font-bold uppercase tracking-widest opacity-80 mb-1">Official Entry Pass</p>
-                        <h4 class="font-black text-xl">ALUMNI MEETUP</h4>
-                    </div>
-                    <div class="p-8 text-center bg-white">
-                        <div class="w-20 h-20 bg-slate-50 rounded-[1.5rem] mx-auto mb-4 flex items-center justify-center text-slate-200 text-3xl shadow-inner"><i class="fas fa-user-tie"></i></div>
-                        <h4 id="cardName" class="text-2xl font-black text-slate-800 mb-4"></h4>
-                        <div class="grid grid-cols-2 gap-4 text-left bg-slate-50 p-5 rounded-[1.5rem] text-[10px] mb-6">
-                            <div><p class="text-slate-400 font-bold uppercase mb-1">পাসের সাল</p><p id="cardYear" class="text-slate-800 font-black text-xs"></p></div>
-                            <div><p class="text-slate-400 font-bold uppercase mb-1">ব্যাচ নং</p><p id="cardBatch" class="text-slate-800 font-black text-xs"></p></div>
-                            <div class="col-span-2 mt-1"><p class="text-slate-400 font-bold uppercase mb-1">মোবাইল নম্বর</p><p id="cardMobile" class="text-slate-800 font-black text-xs"></p></div>
-                        </div>
-                        <div class="flex justify-center mb-4"><div id="cardQRCode"></div></div>
-                        <p id="cardToken" class="text-[14px] font-black text-indigo-600 tracking-[0.2em] uppercase"></p>
+                        <canvas id="batchChart" style="max-height: 400px;"></canvas>
                     </div>
                 </div>
-                <button onclick="window.print()" class="mt-8 w-full bg-slate-900 text-white py-5 rounded-2xl font-bold flex items-center justify-center gap-3 shadow-xl"><i class="fas fa-print"></i> ডাউনলোড ও প্রিন্ট</button>
+
+                <!-- ===== সকল সদস্যের তালিকা ===== -->
+                <div id="all-members" class="section">
+                    
+                    <div class="filter-container">
+                        <select id="filterYearAll" class="filter-select" onchange="filterAllMembers()">
+                            <option value="">সকল ব্যাচ (পাসের সাল)</option>
+                        </select>
+                        <select id="filterStatusAll" class="filter-select" onchange="filterAllMembers()">
+                            <option value="">সকল স্ট্যাটাস</option>
+                            <option value="Present">উপস্থিত</option>
+                            <option value="Not Entered">অনুপস্থিত</option>
+                        </select>
+                        <button onclick="exportToExcel('all')" class="export-btn">
+                            <i class="fas fa-file-excel"></i> এক্সেল ডাউনলোড
+                        </button>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table id="allMembersTable">
+                            <thead>
+                                <tr>
+                                    <th>টোকেন</th>
+                                    <th>নাম</th>
+                                    <th>পাসের সাল</th>
+                                    <th>পেশা</th>
+                                    <th>রক্তের গ্রুপ</th>
+                                    <th>মোবাইল</th>
+                                    <th>ইভেন্ট</th>
+                                    <th>পেমেন্ট</th>
+                                    <th>TrxID</th>
+                                    <th>স্ট্যাটাস</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allMembersBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ===== উপস্থিত সদস্যের তালিকা ===== -->
+                <div id="present-members" class="section">
+                    
+                    <div class="filter-container">
+                        <select id="filterYearPresent" class="filter-select" onchange="filterPresentMembers()">
+                            <option value="">সকল ব্যাচ (পাসের সাল)</option>
+                        </select>
+                        <button onclick="exportToExcel('present')" class="export-btn">
+                            <i class="fas fa-file-excel"></i> উপস্থিতদের এক্সেল
+                        </button>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table id="presentMembersTable">
+                            <thead>
+                                <tr>
+                                    <th>টোকেন</th>
+                                    <th>নাম</th>
+                                    <th>পাসের সাল</th>
+                                    <th>পেশা</th>
+                                    <th>রক্তের গ্রুপ</th>
+                                    <th>মোবাইল</th>
+                                    <th>ইভেন্ট</th>
+                                    <th>পেমেন্ট</th>
+                                </tr>
+                            </thead>
+                            <tbody id="presentMembersBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ===== গ্রাফ/বিশ্লেষণ সেকশন ===== -->
+                <div id="charts" class="section">
+                    <div class="chart-container">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl flex items-center justify-center text-purple-600">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-800">ব্যাচ ভিত্তিক রেজিস্ট্রেশন ট্রেন্ড</h3>
+                        </div>
+                        <canvas id="batchAnalyticsChart" style="max-height: 500px;"></canvas>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
-    <audio id="beep" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
-
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwg4wBbtvWiF0Zd9zzQfzQtd7aSZvgCNaCZ6GjMd5d8pnHfvfD6AS11mi1p77C6LFrF/exec';
+        const MASTER_PASS = "ADMIN123";
         let allData = [];
+        let batchChart, analyticsChart;
 
-        // Logic Functions
-        function checkAuth() {
-            if (localStorage.getItem('isAdminLoggedIn') === 'true') {
-                document.getElementById('login-overlay').style.display = 'none';
-                document.getElementById('admin-content').classList.remove('hidden');
-                loadDashboardData();
-            }
-        }
-
+        // ==================== লগইন ফাংশন ====================
         function handleLogin() {
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
-            if (user === 'admin' && pass === 'ADMIN123') {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === 'admin' && password === MASTER_PASS) {
                 localStorage.setItem('isAdminLoggedIn', 'true');
-                location.reload(); 
+                document.getElementById('loginPanel').style.display = 'none';
+                document.getElementById('dashboardPanel').style.display = 'block';
+                loadData();
             } else {
                 document.getElementById('loginError').classList.remove('hidden');
             }
         }
 
+        // ==================== লগআউট ====================
         function logout() {
             localStorage.removeItem('isAdminLoggedIn');
-            location.reload();
+            document.getElementById('loginPanel').style.display = 'flex';
+            document.getElementById('dashboardPanel').style.display = 'none';
         }
 
-        async function loadDashboardData() {
-            try {
-                const resStats = await fetch(`${scriptURL}?action=dashboard`);
-                const stats = await resStats.json();
-                
-                document.getElementById('statTotal').innerText = stats.totalRegistered;
-                document.getElementById('statPresent').innerText = stats.presentCount;
-                document.getElementById('statAbsent').innerText = stats.totalRegistered - stats.presentCount;
-                document.getElementById('statCash').innerText = "৳ " + (stats.totalRegistered * 500);
-                updateCharts(stats);
+        // ==================== অথেনটিকেশন চেক ====================
+        window.onload = function() {
+            if (localStorage.getItem('isAdminLoggedIn') === 'true') {
+                document.getElementById('loginPanel').style.display = 'none';
+                document.getElementById('dashboardPanel').style.display = 'block';
+                loadData();
+            }
+            updateLiveTime();
+        };
 
-                const filterReg = document.getElementById('batchFilterReg');
-                const filterEntry = document.getElementById('batchFilterEntry');
-                filterReg.innerHTML = '<option value="">সকল ব্যাচ</option>';
-                filterEntry.innerHTML = '<option value="">সকল ব্যাচ</option>';
+        // ==================== লাইভ টাইম ====================
+        function updateLiveTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('liveTime').innerHTML = `<i class="far fa-clock mr-1"></i> লাইভ আপডেট: ${timeStr}`;
+        }
+        setInterval(updateLiveTime, 1000);
+
+        // ==================== ডাটা লোড ====================
+        async function loadData() {
+            document.getElementById('loadingSpinner').style.display = 'block';
+            
+            try {
+                const response = await fetch(`${scriptURL}?action=get_all_registrations`);
+                allData = await response.json();
                 
-                Object.keys(stats.batchData).sort().forEach(batch => {
-                    const opt = `<option value="${batch}">পাসের সাল: ${batch}</option>`;
-                    filterReg.innerHTML += opt;
-                    filterEntry.innerHTML += opt;
+                updateStats();
+                populateYearFilters();
+                renderAllMembers(allData);
+                renderPresentMembers(allData);
+                updateCharts();
+                
+                document.getElementById('loadingSpinner').style.display = 'none';
+                document.getElementById('dashboardContent').style.display = 'block';
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('ডাটা লোড করতে সমস্যা হয়েছে!');
+            }
+        }
+
+        // ==================== স্ট্যাটস আপডেট ====================
+        function updateStats() {
+            const total = allData.length;
+            const present = allData.filter(m => m.status === 'Present').length;
+            const absent = total - present;
+            const collection = total * 300;
+            
+            document.getElementById('statTotal').innerText = total;
+            document.getElementById('statPresent').innerText = present;
+            document.getElementById('statAbsent').innerText = absent;
+            document.getElementById('statCollection').innerHTML = '৳' + collection.toLocaleString();
+        }
+
+        // ==================== ফিল্টার অপশন পপুলেট ====================
+        function populateYearFilters() {
+            const years = [...new Set(allData.map(m => m.passYear))].sort((a,b) => b - a);
+            
+            ['filterYearAll', 'filterYearPresent'].forEach(filterId => {
+                const select = document.getElementById(filterId);
+                select.innerHTML = '<option value="">সকল ব্যাচ (পাসের সাল)</option>';
+                years.forEach(year => {
+                    select.innerHTML += `<option value="${year}">${year}</option>`;
                 });
-
-                const resAll = await fetch(`${scriptURL}?action=get_all_registrations`);
-                allData = await resAll.json();
-                renderTables(allData);
-            } catch (e) { console.error(e); }
-        }
-
-        function renderTables(data) {
-            const regBody = document.getElementById('regTableBody');
-            const recentBody = document.getElementById('recentTableBody');
-            const entryBody = document.getElementById('entryTableBody');
-
-            regBody.innerHTML = ''; recentBody.innerHTML = ''; entryBody.innerHTML = '';
-
-            data.forEach((m, index) => {
-                const mob = m.mobile || m.phone || 'N/A';
-                // Fixed: passing year vs batch
-                const row = `
-                    <tr class="hover:bg-slate-50 transition-all">
-                        <td class="px-8 py-6 font-bold text-indigo-600" data-label="আইডি">${m.token}</td>
-                        <td class="px-8 py-6 font-bold text-slate-700" data-label="নাম">${m.name}</td>
-                        <td class="px-8 py-6 text-slate-500" data-label="পাসের সাল">${m.batch}</td>
-                        <td class="px-8 py-6 text-slate-500" data-label="ব্যাচ নং">${m.batchNo || m.batch}</td>
-                        <td class="px-8 py-6" data-label="স্ট্যাটাস">
-                            <span class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase ${m.status==='Present'?'bg-emerald-100 text-emerald-600':'bg-rose-100 text-rose-600'}">${m.status}</span>
-                        </td>
-                        <td class="px-8 py-6 text-center" data-label="কার্ড">
-                            <button onclick='showIdCard(${JSON.stringify(m)})' class="bg-slate-100 text-slate-600 w-10 h-10 rounded-xl hover:bg-indigo-600 hover:text-white transition-all"><i class="fas fa-id-card"></i></button>
-                        </td>
-                    </tr>`;
-                regBody.innerHTML += row;
-
-                if(m.status === 'Present') {
-                    entryBody.innerHTML += `
-                        <tr class="hover:bg-emerald-50">
-                            <td class="px-8 py-6 font-bold" data-label="নাম">${m.name}</td>
-                            <td class="px-8 py-6 text-slate-500" data-label="পাসের সাল">${m.batch}</td>
-                            <td class="px-8 py-6 text-slate-500" data-label="ব্যাচ নং">${m.batchNo || m.batch}</td>
-                            <td class="px-8 py-6 text-emerald-600 font-bold"><i class="fas fa-check-circle mr-2"></i>প্রবেশ করেছেন</td>
-                        </tr>`;
-                }
-            });
-
-            // Recent Table (Last 5)
-            [...data].reverse().slice(0, 5).forEach(m => {
-                recentBody.innerHTML += `
-                    <tr>
-                        <td class="px-8 py-5 font-bold text-slate-700">${m.name}</td>
-                        <td class="px-8 py-5 text-slate-500">${m.batch}</td>
-                        <td class="px-8 py-5 text-slate-500">${m.mobile || m.phone || 'N/A'}</td>
-                        <td class="px-8 py-5"><span class="px-3 py-1 rounded-full text-[10px] font-black ${m.status==='Present'?'bg-emerald-100 text-emerald-600':'bg-rose-100 text-rose-600'}">${m.status}</span></td>
-                    </tr>`;
             });
         }
 
-        async function verifyMember() {
-            const token = document.getElementById('verifyInput').value.trim();
-            const resultDiv = document.getElementById('verifyResult');
-            if(token === "DBHSP-") return alert("সঠিক আইডি দিন");
+        // ==================== সকল সদস্য টেবিল ====================
+        function renderAllMembers(data) {
+            const tbody = document.getElementById('allMembersBody');
+            tbody.innerHTML = '';
             
-            resultDiv.innerHTML = '<div class="h-10 w-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mt-10"></div>';
-            
-            try {
-                const response = await fetch(`${scriptURL}?action=search&token=${token}`);
-                const res = await response.json();
+            data.forEach(m => {
+                const statusClass = m.status === 'Present' ? 'status-present' : 'status-absent';
+                const statusText = m.status === 'Present' ? 'উপস্থিত' : 'অনুপস্থিত';
                 
-                if (res.result === 'success') {
-                    const m = res.data;
-                    const isPresent = m.status === "Present";
-                    
-                    resultDiv.innerHTML = `
-                        <div class="mt-8 p-8 rounded-[2.5rem] bg-white border-2 border-slate-100 shadow-2xl scale-100 animate-in fade-in zoom-in duration-300">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left mb-8">
-                                <div class="col-span-1 md:col-span-2 text-center border-b pb-4 mb-4">
-                                    <h4 class="text-3xl font-black text-indigo-600 uppercase mb-1">${m.name}</h4>
-                                    <span class="bg-indigo-50 text-indigo-600 px-4 py-1 rounded-full text-xs font-black">${m.token}</span>
-                                </div>
-                                <div><p class="text-slate-400 text-xs font-bold uppercase mb-1">মোবাইল নম্বর</p><p class="text-slate-800 font-black">${m.mobile || m.phone || 'N/A'}</p></div>
-                                <div><p class="text-slate-400 text-xs font-bold uppercase mb-1">পাসের সাল</p><p class="text-slate-800 font-black">${m.batch}</p></div>
-                                <div><p class="text-slate-400 text-xs font-bold uppercase mb-1">ব্যাচ নং</p><p class="text-slate-800 font-black">${m.batchNo || m.batch}</p></div>
-                                <div><p class="text-slate-400 text-xs font-bold uppercase mb-1">বর্তমান স্ট্যাটাস</p><p class="${isPresent ? 'text-emerald-600':'text-rose-500'} font-black uppercase">${m.status}</p></div>
-                            </div>
-                            
-                            ${isPresent ? 
-                            `<div class="bg-rose-50 text-rose-600 p-6 rounded-3xl font-black text-lg"><i class="fas fa-exclamation-triangle mr-2"></i> দুঃখিত! এই সদস্য পূর্বেই প্রবেশ করেছেন।</div>` : 
-                            `<button onclick="confirmEntry(${m.row})" class="w-full bg-emerald-500 text-white py-6 rounded-3xl font-black text-xl hover:bg-emerald-600 shadow-xl shadow-emerald-100 transition-all">এন্ট্রি নিশ্চিত করুন</button>`}
-                        </div>`;
-                    document.getElementById('beep').play();
-                } else {
-                    resultDiv.innerHTML = `<div class="mt-8 bg-rose-50 text-rose-600 p-8 rounded-[2.5rem] font-black">সদস্য খুঁজে পাওয়া যায়নি! সঠিক আইডি চেক করুন।</div>`;
-                }
-            } catch (e) { resultDiv.innerHTML = "সার্ভার এরর!"; }
+                tbody.innerHTML += `
+                    <tr>
+                        <td><span class="token-badge">${m.token || '—'}</span></td>
+                        <td class="font-bold">${m.name || '—'}</td>
+                        <td>${m.passYear || '—'}</td>
+                        <td>${m.profession || '—'}</td>
+                        <td><span class="font-mono font-bold text-purple-600">${m.bloodGroup || '—'}</span></td>
+                        <td>${m.mobile || '—'}</td>
+                        <td>${m.event || '—'}</td>
+                        <td>${m.payment || '—'}</td>
+                        <td class="font-mono text-xs">${m.transactionId || '—'}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    </tr>
+                `;
+            });
         }
 
-        async function confirmEntry(row) {
-            const btn = event.target;
-            btn.innerHTML = "প্রসেসিং..."; btn.disabled = true;
-            await fetch(`${scriptURL}?action=mark_entry&row=${row}`);
-            alert("উপস্থিতি সফলভাবে নিশ্চিত করা হয়েছে!");
-            location.reload();
+        // ==================== উপস্থিত সদস্য টেবিল ====================
+        function renderPresentMembers(data) {
+            const tbody = document.getElementById('presentMembersBody');
+            tbody.innerHTML = '';
+            
+            data.filter(m => m.status === 'Present').forEach(m => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><span class="token-badge">${m.token || '—'}</span></td>
+                        <td class="font-bold">${m.name || '—'}</td>
+                        <td>${m.passYear || '—'}</td>
+                        <td>${m.profession || '—'}</td>
+                        <td><span class="font-mono font-bold text-purple-600">${m.bloodGroup || '—'}</span></td>
+                        <td>${m.mobile || '—'}</td>
+                        <td>${m.event || '—'}</td>
+                        <td>${m.payment || '—'}</td>
+                    </tr>
+                `;
+            });
         }
 
-        function showIdCard(m) {
-            document.getElementById('cardName').innerText = m.name;
-            document.getElementById('cardMobile').innerText = m.mobile || m.phone || 'N/A';
-            document.getElementById('cardBatch').innerText = m.batchNo || m.batch;
-            document.getElementById('cardYear').innerText = m.batch;
-            document.getElementById('cardToken').innerText = m.token;
-            document.getElementById('cardQRCode').innerHTML = "";
-            new QRCode(document.getElementById("cardQRCode"), { text: m.token, width: 100, height: 100 });
-            document.getElementById('idCardModal').classList.remove('hidden');
+        // ==================== ফিল্টার ফাংশন ====================
+        function filterAllMembers() {
+            const year = document.getElementById('filterYearAll').value;
+            const status = document.getElementById('filterStatusAll').value;
+            
+            let filtered = allData;
+            if (year) filtered = filtered.filter(m => m.passYear == year);
+            if (status) filtered = filtered.filter(m => m.status === status);
+            
+            renderAllMembers(filtered);
         }
 
-        function closeIdCard() { document.getElementById('idCardModal').classList.add('hidden'); }
-
-        function showSection(id, btn) {
-            document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden-section'));
-            document.getElementById(id + '-section').classList.remove('hidden-section');
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('sidebar-active', 'active'));
-            btn.classList.add(window.innerWidth > 1024 ? 'sidebar-active' : 'active');
+        function filterPresentMembers() {
+            const year = document.getElementById('filterYearPresent').value;
+            
+            let filtered = allData.filter(m => m.status === 'Present');
+            if (year) filtered = filtered.filter(m => m.passYear == year);
+            
+            renderPresentMembers(filtered);
         }
 
-        function filterEntryTable() {
-            const val = document.getElementById('batchFilterEntry').value;
-            const filtered = val ? allData.filter(m => m.batch == val) : allData;
-            renderTables(filtered);
-        }
+        // ==================== চার্ট আপডেট ====================
+        function updateCharts() {
+            const yearCounts = {};
+            allData.forEach(m => {
+                const year = m.passYear;
+                yearCounts[year] = (yearCounts[year] || 0) + 1;
+            });
+            
+            const years = Object.keys(yearCounts).sort((a,b) => a - b);
+            const counts = years.map(y => yearCounts[y]);
 
-        function filterTables() {
-            const val = document.getElementById('batchFilterReg').value;
-            const filtered = val ? allData.filter(m => m.batch == val) : allData;
-            renderTables(filtered);
-        }
-
-        function updateCharts(stats) {
-            const ctxB = document.getElementById('batchCompareChart').getContext('2d');
-            new Chart(ctxB, {
+            // বার চার্ট
+            const ctx1 = document.getElementById('batchChart').getContext('2d');
+            if (batchChart) batchChart.destroy();
+            batchChart = new Chart(ctx1, {
                 type: 'bar',
                 data: {
-                    labels: Object.keys(stats.batchData),
-                    datasets: [{ label: 'রেজিস্ট্রেশন', data: Object.values(stats.batchData), backgroundColor: '#6366f1', borderRadius: 10 }]
+                    labels: years,
+                    datasets: [{
+                        label: 'রেজিস্ট্রেশন সংখ্যা',
+                        data: counts,
+                        backgroundColor: '#2563eb',
+                        borderRadius: 8
+                    }]
                 },
-                options: { plugins: { legend: { display: false } } }
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+                }
             });
-            const ctxG = document.getElementById('genderPieChart').getContext('2d');
-            new Chart(ctxG, {
-                type: 'doughnut',
+
+            // লাইন চার্ট
+            const ctx2 = document.getElementById('batchAnalyticsChart').getContext('2d');
+            if (analyticsChart) analyticsChart.destroy();
+            analyticsChart = new Chart(ctx2, {
+                type: 'line',
                 data: {
-                    labels: ['পুরুষ', 'মহিলা'],
-                    datasets: [{ data: [stats.genderData["পুরুষ"] || 0, stats.genderData["মহিলা"] || 0], backgroundColor: ['#6366f1', '#f43f5e'] }]
+                    labels: years,
+                    datasets: [{
+                        label: 'রেজিস্ট্রেশন ট্রেন্ড',
+                        data: counts,
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
                 },
-                options: { cutout: '75%' }
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } }
+                }
             });
         }
 
-        function exportToExcel() {
-            XLSX.writeFile(XLSX.utils.table_to_book(document.getElementById('mainTable')), "Alumni_Database.xlsx");
+        // ==================== এক্সেল এক্সপোর্ট ====================
+        function exportToExcel(type) {
+            let dataToExport = [];
+            const headers = ['টোকেন', 'নাম', 'পাসের সাল', 'পেশা', 'রক্তের গ্রুপ', 'মোবাইল', 'ইভেন্ট', 'পেমেন্ট', 'TrxID', 'স্ট্যাটাস'];
+            
+            if (type === 'all') {
+                const year = document.getElementById('filterYearAll').value;
+                const status = document.getElementById('filterStatusAll').value;
+                
+                let filtered = allData;
+                if (year) filtered = filtered.filter(m => m.passYear == year);
+                if (status) filtered = filtered.filter(m => m.status === status);
+                
+                dataToExport = filtered.map(m => [
+                    m.token || '—',
+                    m.name || '—',
+                    m.passYear || '—',
+                    m.profession || '—',
+                    m.bloodGroup || '—',
+                    m.mobile || '—',
+                    m.event || '—',
+                    m.payment || '—',
+                    m.transactionId || '—',
+                    m.status === 'Present' ? 'উপস্থিত' : 'অনুপস্থিত'
+                ]);
+            } else {
+                const year = document.getElementById('filterYearPresent').value;
+                
+                let filtered = allData.filter(m => m.status === 'Present');
+                if (year) filtered = filtered.filter(m => m.passYear == year);
+                
+                dataToExport = filtered.map(m => [
+                    m.token || '—',
+                    m.name || '—',
+                    m.passYear || '—',
+                    m.profession || '—',
+                    m.bloodGroup || '—',
+                    m.mobile || '—',
+                    m.event || '—',
+                    m.payment || '—'
+                ]);
+                headers.length = 8;
+            }
+
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet([headers, ...dataToExport]);
+            XLSX.utils.book_append_sheet(wb, ws, 'সদস্য তালিকা');
+            
+            const fileName = type === 'all' ? 'সকল_সদস্য.xlsx' : 'উপস্থিত_সদস্য.xlsx';
+            XLSX.writeFile(wb, fileName);
         }
 
-        window.onload = checkAuth;
+        // ==================== সেকশন চেঞ্জ ====================
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+        }
     </script>
 </body>
 </html>
