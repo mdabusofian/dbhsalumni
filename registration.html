@@ -980,6 +980,48 @@
             // রক্তের গ্রুপ রো লুকান
             document.getElementById('cardBloodGroupRow').style.display = 'none';
         }
+
+  // ফিক্সড: পাসের সালের অপশন লোড করার চূড়ান্ত সমাধান
+    (function() {
+        // ফাংশন যা অপশন লোড করবে
+        function loadYearOptions() {
+            console.log("Attempting to load year options...");
+            const yearSelect = document.getElementById('pass_year');
+            
+            if (!yearSelect) {
+                console.log("Year select not found, retrying in 200ms");
+                setTimeout(loadYearOptions, 200);
+                return;
+            }
+            
+            console.log("Year select found, loading options...");
+            
+            // আগের সব অপশন ক্লিয়ার করে ডিফল্ট যোগ করুন
+            yearSelect.innerHTML = '<option value="">সাল নির্বাচন করুন</option>';
+            
+            // ১৯৭০ থেকে ২০২৫ পর্যন্ত অপশন যোগ করুন
+            for(let year = 2025; year >= 1970; year--) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearSelect.appendChild(option);
+            }
+            
+            console.log("Year options loaded successfully. Total options:", yearSelect.options.length);
+        }
+        
+        // পেজ লোড হওয়ার সাথে সাথে কল করুন
+        loadYearOptions();
+        
+        // ব্যাকআপ হিসেবে DOMContentLoaded ইভেন্টেও কল করুন
+        document.addEventListener('DOMContentLoaded', loadYearOptions);
+        
+        // আরও ব্যাকআপ: window load ইভেন্টেও কল করুন
+        window.addEventListener('load', loadYearOptions);
+    })();
+
+        
+        
     </script>
 </body>
 </html>
