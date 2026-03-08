@@ -25,7 +25,7 @@
             padding: 12px;
         }
 
-        /* প্রিমিয়াম মোবাইল কার্ড */
+        /* প্রিমিয়াম মোবাইল কারڈ */
         .premium-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -214,7 +214,7 @@
             margin-top: 2px;
         }
 
-        /* প্রিমিয়াম ফি বক্স */
+        /* প্রিমিয়াম ফি বক্স - নতুন ডিজাইন (এডিটেবল ফি) */
         .premium-fee-box {
             background: linear-gradient(135deg, #0f2b4d, #1e3a6b);
             border-radius: 32px;
@@ -232,18 +232,47 @@
             margin-bottom: 6px;
         }
 
-        .premium-fee-amount {
-            font-size: 3rem;
+        .fee-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .fee-input-wrapper span {
+            font-size: 2.5rem;
             font-weight: 800;
             color: white;
-            line-height: 1;
             text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
         }
 
-        .premium-fee-amount small {
-            font-size: 1rem;
-            font-weight: 500;
+        .premium-fee-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 28px;
+            padding: 12px 16px;
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            width: 150px;
+            text-align: center;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .premium-fee-input:focus {
+            border-color: #fbbf24;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .premium-fee-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.5rem;
+        }
+
+        .fee-note {
+            font-size: 0.7rem;
             color: #90b0d0;
+            margin-top: 8px;
         }
 
         /* ট্রানজেকশন ফিল্ডস */
@@ -360,7 +389,8 @@
 
         @media (max-width: 380px) {
             .premium-header h1 { font-size: 1.8rem; }
-            .premium-fee-amount { font-size: 2.5rem; }
+            .premium-fee-input { font-size: 1.5rem; width: 120px; }
+            .fee-input-wrapper span { font-size: 2rem; }
         }
 
         @keyframes slideUp {
@@ -396,7 +426,7 @@
         <div id="registrationCard" class="premium-card p-6 animate-slide-up">
             
             <div class="premium-header">
-                <h1>ইভেন্ট রেজিস্ট্রেশন</h1>
+                <h1>ইফতার মাহফিল রেজিস্ট্রেশন</h1>
                 <p>সঠিক তথ্য দিয়ে রেজিষ্ট্রেশন নিশ্চিত করুন</p>
             </div>
 
@@ -415,7 +445,7 @@
                     </div>
                 </div>
 
-                <!-- পাসের সাল - ফিক্সড -->
+                <!-- পাসের সাল -->
                 <div class="premium-input-group">
                     <label class="premium-label">পাসের সাল (ব্যাচ) </label>
                     <div class="relative">
@@ -475,15 +505,12 @@
                     </div>
                 </div>
 
-                <!-- ইভেন্ট -->
+                <!-- ইভেন্ট (শুধু ইফতার মাহফিল) -->
                 <div class="premium-input-group">
                     <label class="premium-label">ইভেন্ট</label>
                     <div class="relative">
                         <span class="premium-icon"><i class="fas fa-ticket-alt"></i></span>
-                        <select id="event_type" name="event_type" class="premium-field" onchange="updateFee()" required>
-                            <option value="">ইভেন্ট নির্বাচন করুন</option>
-                            <option value="ইফতার মাহফিল">ইফতার মাহফিল (৩০০৳)</option>
-                        </select>
+                        <input type="text" id="event_type" name="event_type" class="premium-field" value="ইফতার মাহফিল" readonly>
                     </div>
                 </div>
 
@@ -496,12 +523,14 @@
                     </div>
                 </div>
 
-                <!-- ফি বক্স -->
+                <!-- ফি বক্স (এডিটেবল) -->
                 <div class="premium-fee-box">
-                    <div class="premium-fee-label">মোট ফি</div>
-                    <div class="premium-fee-amount">
-                        ৳<span id="fee_amount">0</span><small>.00</small>
+                    <div class="premium-fee-label">মোট ফি (ন্যূনতম ৩০০ টাকা)</div>
+                    <div class="fee-input-wrapper">
+                        <span>৳</span>
+                        <input type="number" id="fee_amount" name="fee_amount" class="premium-fee-input" value="300" min="300" step="50" required>
                     </div>
+                    <div class="fee-note">আপনার ইচ্ছামতো ডোনেশন যোগ করতে পারেন</div>
                 </div>
 
                 <!-- পেমেন্ট তথ্য (ডায়নামিক - ব্যাচ অনুযায়ী) -->
@@ -649,9 +678,15 @@
                                 <span class="text-sm font-semibold text-gray-700" id="cardEvent">-</span>
                             </div>
                             
-                            <div class="flex items-center">
+                            <div class="flex items-center mb-1">
                                 <span class="text-2xs text-gray-400 w-16">পেমেন্ট</span>
                                 <span class="text-sm font-semibold text-gray-700" id="cardPayment">-</span>
+                            </div>
+                            
+                            <!-- ফি দেখানো হবে -->
+                            <div class="flex items-center">
+                                <span class="text-2xs text-gray-400 w-16">ফি</span>
+                                <span class="text-sm font-bold text-indigo-600" id="cardFee">-</span>
                             </div>
                         </div>
                     </div>
@@ -687,298 +722,293 @@
         </div>
     </div>
 
-   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwg4wBbtvWiF0Zd9zzQfzQtd7aSZvgCNaCZ6GjMd5d8pnHfvfD6AS11mi1p77C6LFrF/exec';
-    
-    const fees = {
-        "পুনর্মিলনী ২০২৫": 1000,
-        "ইফতার মাহফিল": 300,
-        "আজীবন সদস্যপদ": 2000
-    };
-
-    // ব্যাচ প্রতিনিধিদের ডাটাবেস
-    const batchPayments = {
-        "1988": [{ name: "আমিনুল হক", number: "01845842149" }],
-        "1989": [
-            { name: "গিয়াস উদ্দীন", number: "01827878191" },
-            { name: "আবু বক্কর চৌধুরী", number: "01818189068" }
-        ],
-        "1993": [{ name: "শাহেদুল ইসলাম শাহেদ", number: "01613-518222" }],
-        "1995": [{ name: "নাছির উদ্দীন", number: "01819643697" }],
-        "1996": [{ name: "আলী আক্কাস", number: "01818266451" }],
-        "1997": [{ name: "মোহাম্মদ একরাম", number: "01876779118" }],
-        "1998": [
-            { name: "সাইফুল ইসলাম", number: "01833077121" },
-            { name: "এমদাদুল হক", number: "01816485750" }
-        ],
-        "1999": [{ name: "হাবিবুল্লাহ সোহেল", number: "01814266855" }],
-        "2000": [{ name: "নাজিম", number: "01817258030" }],
-        "2001": [{ name: "মোর্শেদ", number: "01863689638" }],
-        "2002": [{ name: "মুরাদ কাজেমী, মাসুদ", number: "01812571475" }],
-        "2003": [
-            { name: "মুরাদ আবছার", number: "01818109739" },
-            { name: "শহীদুল ইসলাম", number: "01811334753" }
-        ],
-        "2004": [{ name: "শামীম", number: "01815023050" }],
-        "2005": [{ name: "টিটু", number: "01839047356" }],
-        "2006": [{ name: "রিদুয়ানুল হক চৌধুরী", number: "01690016091" }],
-        "2007": [{ name: "মাহমুদ", number: "01819888700" }],
-        "2008": [
-            { name: "শাকিল", number: "01813594260" },
-            { name: "জোবাইর", number: "01670456353" }
-        ],
-        "2009": [{ name: "তারেক শিকদার", number: "01866797755" }],
-        "2010": [
-            { name: "মিজানুর রহমান", number: "01741211243" },
-            { name: "সাইফুল ইসলাম", number: "01830560499" }
-        ],
-        "2011": [{ name: "আব্দুল হালিম", number: "01813106136" }],
-        "2012": [{ name: "রবিউল", number: "01897199307" }],
-        "2013": [{ name: "জিয়াউর রহমান", number: "01849748476" }],
-        "2014": [{ name: "সাইফ জামিল", number: "01643879287" }],
-        "2015": [{ name: "মুরাদ", number: "01875997336" }],
-        "2016": [{ name: "মামুন", number: "018........" }],
-        "2017": [
-            { name: "মেহেদী", number: "01607115155" },
-            { name: "আরমান", number: "01871071144" },
-            { name: "মহিউদ্দীন", number: "01883551926" }
-        ],
-        "2018": [
-            { name: "শাহরিয়ার জয়", number: "01625559162" },
-            { name: "হান্নান", number: "016.........." }
-        ],
-        "2019": [
-            { name: "সায়েম", number: "01870606661" },
-            { name: "রুবায়েত", number: "01756-832773" }
-        ],
-        "2020": [{ name: "তুহিন", number: "01889283621" }],
-        "2021": [{ name: "শাওন", number: "01790308004" }],
-        "2022": [{ name: "সায়েদ মাহমুদ", number: "01823721127" }],
-        "2023": [{ name: "....", number: "....." }],
-        "2024": [
-            { name: "জিসান", number: "01624875278" },
-            { name: "ওয়াসিফ", number: "01818812397" }
-        ],
-        "2025": [{ name: "নাবিল হোসাইন", number: "01581241742" }]
-    };
-
-    function updateFee() {
-        const event = document.getElementById('event_type').value;
-        const fee = fees[event] || 0;
-        document.getElementById('fee_amount').innerText = fee;
-    }
-
-    function previewImage(event) {
-        const reader = new FileReader();
-        reader.onload = function(){
-            document.getElementById('cardPhoto').src = reader.result;
-        };
-        if(event.target.files[0]) {
-            reader.readAsDataURL(event.target.files[0]);
-        }
-    }
-
-    // পেমেন্ট তথ্য আপডেট - পাসের সাল অনুযায়ী
-    function updatePaymentInfo() {
-        const passYear = document.getElementById('pass_year').value;
-        const paymentContainer = document.getElementById('paymentInfoContainer');
-        const paymentList = document.getElementById('batchPaymentList');
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwg4wBbtvWiF0Zd9zzQfzQtd7aSZvgCNaCZ6GjMd5d8pnHfvfD6AS11mi1p77C6LFrF/exec';
         
-        if (passYear && batchPayments[passYear]) {
-            const payments = batchPayments[passYear];
-            paymentList.innerHTML = '';
-            
-            payments.forEach((payment, index) => {
-                paymentList.innerHTML += `
-                    <div class="batch-payment-item">
-                        <div class="batch-payment-icon">
-                            <i class="fas fa-${index === 0 ? 'crown' : 'user-tie'}"></i>
-                        </div>
-                        <div class="batch-payment-details">
-                            <div class="batch-payment-name">${payment.name}</div>
-                            <div class="batch-payment-number">${payment.number}</div>
-                            <div class="batch-payment-note">${index === 0 ? 'উপরের বিকাশ নাম্বারে টাকা পাঠান' : 'উপরের বিকাশ নাম্বারে টাকা পাঠান'}</div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            paymentContainer.classList.remove('hidden-fields');
-        } else {
-            paymentContainer.classList.add('hidden-fields');
-        }
-    }
+        // ফি ফাংশন সরানো হয়েছে - এখন এডিটেবল ইনপুট
 
-    // ========== ফিক্সড: পাসের সালের অপশন লোড করার চূড়ান্ত সমাধান ==========
-    (function() {
-        function loadYearOptions() {
-            console.log("Attempting to load year options...");
-            const yearSelect = document.getElementById('pass_year');
+        // ব্যাচ প্রতিনিধিদের ডাটাবেস
+        const batchPayments = {
+            "1988": [{ name: "আমিনুল হক", number: "01845842149" }],
+            "1989": [
+                { name: "গিয়াস উদ্দীন", number: "01827878191" },
+                { name: "আবু বক্কর চৌধুরী", number: "01818189068" }
+            ],
+            "1993": [{ name: "শাহেদুল ইসলাম শাহেদ", number: "01613-518222" }],
+            "1995": [{ name: "নাছির উদ্দীন", number: "01819643697" }],
+            "1996": [{ name: "আলী আক্কাস", number: "01818266451" }],
+            "1997": [{ name: "মোহাম্মদ একরাম", number: "01876779118" }],
+            "1998": [
+                { name: "সাইফুল ইসলাম", number: "01833077121" },
+                { name: "এমদাদুল হক", number: "01816485750" }
+            ],
+            "1999": [{ name: "হাবিবুল্লাহ সোহেল", number: "01814266855" }],
+            "2000": [{ name: "নাজিম", number: "01817258030" }],
+            "2001": [{ name: "মোর্শেদ", number: "01863689638" }],
+            "2002": [{ name: "মুরাদ কাজেমী, মাসুদ", number: "01812571475" }],
+            "2003": [
+                { name: "মুরাদ আবছার", number: "01818109739" },
+                { name: "শহীদুল ইসলাম", number: "01811334753" }
+            ],
+            "2004": [{ name: "শামীম", number: "01815023050" }],
+            "2005": [{ name: "টিটু", number: "01839047356" }],
+            "2006": [{ name: "রিদুয়ানুল হক চৌধুরী", number: "01690016091" }],
+            "2007": [{ name: "মাহমুদ", number: "01819888700" }],
+            "2008": [
+                { name: "শাকিল", number: "01813594260" },
+                { name: "জোবাইর", number: "01670456353" }
+            ],
+            "2009": [{ name: "তারেক শিকদার", number: "01866797755" }],
+            "2010": [
+                { name: "মিজানুর রহমান", number: "01741211243" },
+                { name: "সাইফুল ইসলাম", number: "01830560499" }
+            ],
+            "2011": [{ name: "আব্দুল হালিম", number: "01813106136" }],
+            "2012": [{ name: "রবিউল", number: "01897199307" }],
+            "2013": [{ name: "জিয়াউর রহমান", number: "01849748476" }],
+            "2014": [{ name: "সাইফ জামিল", number: "01643879287" }],
+            "2015": [{ name: "মুরাদ", number: "01875997336" }],
+            "2016": [{ name: "মামুন", number: "018........" }],
+            "2017": [
+                { name: "মেহেদী", number: "01607115155" },
+                { name: "আরমান", number: "01871071144" },
+                { name: "মহিউদ্দীন", number: "01883551926" }
+            ],
+            "2018": [
+                { name: "শাহরিয়ার জয়", number: "01625559162" },
+                { name: "হান্নান", number: "016.........." }
+            ],
+            "2019": [
+                { name: "সায়েম", number: "01870606661" },
+                { name: "রুবায়েত", number: "01756-832773" }
+            ],
+            "2020": [{ name: "তুহিন", number: "01889283621" }],
+            "2021": [{ name: "শাওন", number: "01790308004" }],
+            "2022": [{ name: "সায়েদ মাহমুদ", number: "01823721127" }],
+            "2023": [{ name: "....", number: "....." }],
+            "2024": [
+                { name: "জিসান", number: "01624875278" },
+                { name: "ওয়াসিফ", number: "01818812397" }
+            ],
+            "2025": [{ name: "নাবিল হোসাইন", number: "01581241742" }]
+        };
+
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function(){
+                document.getElementById('cardPhoto').src = reader.result;
+            };
+            if(event.target.files[0]) {
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        }
+
+        // পেমেন্ট তথ্য আপডেট - পাসের সাল অনুযায়ী
+        function updatePaymentInfo() {
+            const passYear = document.getElementById('pass_year').value;
+            const paymentContainer = document.getElementById('paymentInfoContainer');
+            const paymentList = document.getElementById('batchPaymentList');
             
-            if (!yearSelect) {
-                console.log("Year select not found, retrying in 200ms");
-                setTimeout(loadYearOptions, 200);
+            if (passYear && batchPayments[passYear]) {
+                const payments = batchPayments[passYear];
+                paymentList.innerHTML = '';
+                
+                payments.forEach((payment, index) => {
+                    paymentList.innerHTML += `
+                        <div class="batch-payment-item">
+                            <div class="batch-payment-icon">
+                                <i class="fas fa-${index === 0 ? 'crown' : 'user-tie'}"></i>
+                            </div>
+                            <div class="batch-payment-details">
+                                <div class="batch-payment-name">${payment.name}</div>
+                                <div class="batch-payment-number">${payment.number}</div>
+                                <div class="batch-payment-note">${index === 0 ? 'উপরের বিকাশ নাম্বারে টাকা পাঠান' : 'উপরের বিকাশ নাম্বারে টাকা পাঠান'}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                paymentContainer.classList.remove('hidden-fields');
+            } else {
+                paymentContainer.classList.add('hidden-fields');
+            }
+        }
+
+        // ========== ফিক্সড: পাসের সালের অপশন লোড করার চূড়ান্ত সমাধান ==========
+        (function() {
+            function loadYearOptions() {
+                console.log("Attempting to load year options...");
+                const yearSelect = document.getElementById('pass_year');
+                
+                if (!yearSelect) {
+                    console.log("Year select not found, retrying in 200ms");
+                    setTimeout(loadYearOptions, 200);
+                    return;
+                }
+                
+                console.log("Year select found, loading options...");
+                
+                // আগের সব অপশন ক্লিয়ার করে ডিফল্ট যোগ করুন
+                yearSelect.innerHTML = '<option value="">সাল নির্বাচন করুন</option>';
+                
+                // ১৯৭০ থেকে ২০২৫ পর্যন্ত অপশন যোগ করুন
+                for(let year = 2025; year >= 1970; year--) {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    yearSelect.appendChild(option);
+                }
+                
+                console.log("Year options loaded successfully. Total options:", yearSelect.options.length);
+            }
+            
+            // এখনই কল করুন
+            loadYearOptions();
+            
+            // ব্যাকআপ হিসেবে DOMContentLoaded ইভেন্টেও কল করুন
+            document.addEventListener('DOMContentLoaded', loadYearOptions);
+            
+            // আরও ব্যাকআপ: window load ইভেন্টেও কল করুন
+            window.addEventListener('load', loadYearOptions);
+        })();
+
+        // র্যান্ডম ৪ ডিজিটের টোকেন জেনারেটর
+        function generateToken() {
+            const randomNum = Math.floor(1000 + Math.random() * 9000);
+            return `DBHS-${randomNum}`;
+        }
+
+        function downloadCardAsImage() {
+            const card = document.getElementById('idCard');
+            
+            html2canvas(card, { 
+                scale: 2,
+                backgroundColor: '#ffffff'
+            }).then((canvas) => {
+                const link = document.createElement('a');
+                link.download = `DBHS-${document.getElementById('cardToken').innerText}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }).catch(error => {
+                alert('ডাউনলোড ব্যর্থ');
+            });
+        }
+
+        document.getElementById('regForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submitBtn');
+            const errorBox = document.getElementById('errorAlert');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            const mobile = document.getElementById('mobile').value;
+            if (!/^01[3-9]\d{8}$/.test(mobile)) {
+                errorMessage.innerText = "সঠিক মোবাইল নম্বর দিন (যেমন: 017XXXXXXXX)";
+                errorBox.style.display = 'block';
+                return;
+            }
+
+            const paymentMethod = document.getElementById('payment_method').value;
+            if (!paymentMethod) {
+                errorMessage.innerText = "পেমেন্ট মাধ্যম নির্বাচন করুন";
+                errorBox.style.display = 'block';
+                return;
+            }
+
+            const senderNumber = document.getElementById('sender_number').value;
+            const transactionId = document.getElementById('transaction_id').value;
+            
+            if (!senderNumber || !/^01[3-9]\d{8}$/.test(senderNumber)) {
+                errorMessage.innerText = "সঠিক প্রেরকের মোবাইল নাম্বার দিন";
+                errorBox.style.display = 'block';
                 return;
             }
             
-            console.log("Year select found, loading options...");
-            
-            // আগের সব অপশন ক্লিয়ার করে ডিফল্ট যোগ করুন
-            yearSelect.innerHTML = '<option value="">সাল নির্বাচন করুন</option>';
-            
-            // ১৯৭০ থেকে ২০২৫ পর্যন্ত অপশন যোগ করুন
-            for(let year = 2025; year >= 1970; year--) {
-                const option = document.createElement('option');
-                option.value = year;
-                option.textContent = year;
-                yearSelect.appendChild(option);
+            if (!transactionId) {
+                errorMessage.innerText = "ট্রানজেকশন আইডি দিন";
+                errorBox.style.display = 'block';
+                return;
             }
             
-            console.log("Year options loaded successfully. Total options:", yearSelect.options.length);
-        }
-        
-        // এখনই কল করুন
-        loadYearOptions();
-        
-        // ব্যাকআপ হিসেবে DOMContentLoaded ইভেন্টেও কল করুন
-        document.addEventListener('DOMContentLoaded', loadYearOptions);
-        
-        // আরও ব্যাকআপ: window load ইভেন্টেও কল করুন
-        window.addEventListener('load', loadYearOptions);
-    })();
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner mr-2"></span> প্রসেসিং...';
+            errorBox.style.display = 'none';
 
-    // র্যান্ডম ৪ ডিজিটের টোকেন জেনারেটর
-    function generateToken() {
-        const randomNum = Math.floor(1000 + Math.random() * 9000);
-        return `DBHS-${randomNum}`;
-    }
-
-    function downloadCardAsImage() {
-        const card = document.getElementById('idCard');
-        
-        html2canvas(card, { 
-            scale: 2,
-            backgroundColor: '#ffffff'
-        }).then((canvas) => {
-            const link = document.createElement('a');
-            link.download = `DBHS-${document.getElementById('cardToken').innerText}.png`;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        }).catch(error => {
-            alert('ডাউনলোড ব্যর্থ');
-        });
-    }
-
-    document.getElementById('regForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const btn = document.getElementById('submitBtn');
-        const errorBox = document.getElementById('errorAlert');
-        const errorMessage = document.getElementById('errorMessage');
-        
-        const mobile = document.getElementById('mobile').value;
-        if (!/^01[3-9]\d{8}$/.test(mobile)) {
-            errorMessage.innerText = "সঠিক মোবাইল নম্বর দিন (যেমন: 017XXXXXXXX)";
-            errorBox.style.display = 'block';
-            return;
-        }
-
-        const paymentMethod = document.getElementById('payment_method').value;
-        if (!paymentMethod) {
-            errorMessage.innerText = "পেমেন্ট মাধ্যম নির্বাচন করুন";
-            errorBox.style.display = 'block';
-            return;
-        }
-
-        const senderNumber = document.getElementById('sender_number').value;
-        const transactionId = document.getElementById('transaction_id').value;
-        
-        if (!senderNumber || !/^01[3-9]\d{8}$/.test(senderNumber)) {
-            errorMessage.innerText = "সঠিক প্রেরকের মোবাইল নাম্বার দিন";
-            errorBox.style.display = 'block';
-            return;
-        }
-        
-        if (!transactionId) {
-            errorMessage.innerText = "ট্রানজেকশন আইডি দিন";
-            errorBox.style.display = 'block';
-            return;
-        }
-        
-        btn.disabled = true;
-        btn.innerHTML = '<span class="spinner mr-2"></span> প্রসেসিং...';
-        errorBox.style.display = 'none';
-
-        const formData = new FormData(e.target);
-        formData.append('fee', document.getElementById('fee_amount').innerText);
-        formData.append('timestamp', new Date().toLocaleString('bn-BD'));
-
-        try {
-            const response = await fetch(scriptURL, {
-                method: 'POST',
-                body: new URLSearchParams(formData)
-            });
-
-            const result = await response.json();
+            const formData = new FormData(e.target);
             
-            if (result.result === 'success') {
-                document.getElementById('registrationCard').style.display = 'none';
-                document.querySelector('.premium-event-card').style.display = 'none';
-                document.getElementById('successCard').style.display = 'block';
-                
-                document.getElementById('cardName').innerText = formData.get('name') || 'প্রাক্তন শিক্ষার্থী';
-                document.getElementById('cardEvent').innerText = formData.get('event_type') || 'ইভেন্ট';
-                document.getElementById('cardPassYear').innerText = formData.get('pass_year') || '—';
-                document.getElementById('cardMobile').innerText = formData.get('mobile') || '—';
-                
-                // রক্তের গ্রুপ দেখানো (যদি থাকে)
-                const bloodGroup = formData.get('blood_group');
-                if (bloodGroup) {
-                    document.getElementById('cardBloodGroup').innerText = bloodGroup;
-                    document.getElementById('cardBloodGroupRow').style.display = 'flex';
-                }
-                
-                document.getElementById('cardPayment').innerText = 'বিকাশ';
-                
-                const token = generateToken();
-                document.getElementById('cardToken').innerText = token;
+            // ফি ইনপুট থেকে ভ্যালু নেওয়া
+            const feeValue = document.getElementById('fee_amount').value;
+            formData.append('fee', feeValue);
+            formData.append('timestamp', new Date().toLocaleString('bn-BD'));
 
-                const qrContainer = document.getElementById('qrcode');
-                qrContainer.innerHTML = "";
-                new QRCode(qrContainer, {
-                    text: token,
-                    width: 75,
-                    height: 75,
-                    colorDark: "#2563eb",
-                    colorLight: "#ffffff"
+            try {
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: new URLSearchParams(formData)
                 });
+
+                const result = await response.json();
                 
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else {
-                throw new Error('রেজিস্ট্রেশন ব্যর্থ');
+                if (result.result === 'success') {
+                    document.getElementById('registrationCard').style.display = 'none';
+                    document.querySelector('.premium-event-card').style.display = 'none';
+                    document.getElementById('successCard').style.display = 'block';
+                    
+                    document.getElementById('cardName').innerText = formData.get('name') || 'প্রাক্তন শিক্ষার্থী';
+                    document.getElementById('cardEvent').innerText = 'ইফতার মাহফিল';
+                    document.getElementById('cardPassYear').innerText = formData.get('pass_year') || '—';
+                    document.getElementById('cardMobile').innerText = formData.get('mobile') || '—';
+                    
+                    // রক্তের গ্রুপ দেখানো (যদি থাকে)
+                    const bloodGroup = formData.get('blood_group');
+                    if (bloodGroup) {
+                        document.getElementById('cardBloodGroup').innerText = bloodGroup;
+                        document.getElementById('cardBloodGroupRow').style.display = 'flex';
+                    }
+                    
+                    document.getElementById('cardPayment').innerText = 'বিকাশ';
+                    
+                    // ফি দেখানো
+                    document.getElementById('cardFee').innerText = '৳' + (feeValue || '300');
+                    
+                    const token = generateToken();
+                    document.getElementById('cardToken').innerText = token;
+
+                    const qrContainer = document.getElementById('qrcode');
+                    qrContainer.innerHTML = "";
+                    new QRCode(qrContainer, {
+                        text: token,
+                        width: 75,
+                        height: 75,
+                        colorDark: "#2563eb",
+                        colorLight: "#ffffff"
+                    });
+                    
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    throw new Error('রেজিস্ট্রেশন ব্যর্থ');
+                }
+            } catch (error) {
+                errorMessage.innerText = "সার্ভার সমস্যা, আবার চেষ্টা করুন";
+                errorBox.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-check-circle mr-2"></i>রেজিস্ট্রেশন করুন';
             }
-        } catch (error) {
-            errorMessage.innerText = "সার্ভার সমস্যা, আবার চেষ্টা করুন";
-            errorBox.style.display = 'block';
-        } finally {
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-check-circle mr-2"></i>রেজিস্ট্রেশন করুন';
+        });
+
+        function resetForm() {
+            document.getElementById('registrationCard').style.display = 'block';
+            document.querySelector('.premium-event-card').style.display = 'block';
+            document.getElementById('successCard').style.display = 'none';
+            document.getElementById('regForm').reset();
+            document.getElementById('fee_amount').value = '300';
+            document.getElementById('cardPhoto').src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+            document.getElementById('paymentInfoContainer').classList.add('hidden-fields');
+            
+            // রক্তের গ্রুপ রো লুকান
+            document.getElementById('cardBloodGroupRow').style.display = 'none';
         }
-    });
-
-    function resetForm() {
-        document.getElementById('registrationCard').style.display = 'block';
-        document.querySelector('.premium-event-card').style.display = 'block';
-        document.getElementById('successCard').style.display = 'none';
-        document.getElementById('regForm').reset();
-        document.getElementById('fee_amount').innerText = '0';
-        document.getElementById('cardPhoto').src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
-        document.getElementById('paymentInfoContainer').classList.add('hidden-fields');
-        
-        // রক্তের গ্রুপ রো লুকান
-        document.getElementById('cardBloodGroupRow').style.display = 'none';
-    }
-
 
 // ========== সাইট মেইনটেনেন্স মোড ==========
 const MAINTENANCE_MODE = true; // true = রেজিস্ট্রেশন বন্ধ, false = চালু
@@ -998,20 +1028,21 @@ function showMaintenanceMessage() {
                     <i class="fas fa-tools text-amber-600 text-xl"></i>
                 </div>
                 <div>
-                    <h3 class="font-bold text-amber-800 text-lg">রেজিস্ট্রেশন সাময়িক বন্ধ আছে </h3>
-                    <p class="text-amber-600 text-xs">সাময়িক অসুবিধার জন্য আমরা আন্তরিকভাবে দুঃখিত </p>
+                    <h3 class="font-bold text-amber-800 text-lg">রেজিস্ট্রেশন সাময়িক বন্ধ</h3>
+                    <p class="text-amber-600 text-xs">প্রযুক্তিগত সমস্যার কারণে</p>
                 </div>
             </div>
             
             <div class="bg-white rounded-xl p-4 mb-3">
                 <p class="text-gray-700 text-sm leading-relaxed">
-                   রেজিস্ট্রেশন সাময়িকভাবে বন্ধ রাখা হয়েছে। খুব শীঘ্রই আবার রেজিস্ট্রেশন চালু হবে।
+                    একটি প্রযুক্তিগত সমস্যার কারণে রেজিস্ট্রেশন সাময়িকভাবে বন্ধ রাখা হয়েছে। 
+                    আমরা দ্রুত সমস্যা সমাধানের চেষ্টা করছি। খুব শীঘ্রই আবার রেজিস্ট্রেশন চালু হবে।
                 </p>
             </div>
             
             <div class="flex items-center gap-2 text-xs text-amber-700">
                 <i class="fas fa-clock"></i>
-                <span>আপডেটের জন্য পরে আবার চেষ্টা করুন </span>
+                <span>আপডেটের জন্য নিচের বাটনে ক্লিক করুন</span>
             </div>
         </div>
     `;
@@ -1033,9 +1064,6 @@ function showMaintenanceMessage() {
 document.addEventListener('DOMContentLoaded', function() {
     showMaintenanceMessage();
 });
-       
-
-        
         
     </script>
 </body>
